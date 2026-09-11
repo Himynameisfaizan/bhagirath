@@ -1,0 +1,346 @@
+/* Custom Premium Styling */
+.custom-navbar {
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  padding: 10px 0;
+}
+
+/* Logo Animation */
+.logo-animate {
+  height: 60px;
+  transition: transform 0.3s ease;
+}
+.logo-animate:hover {
+  transform: scale(1.05);
+}
+
+/* Navigation Links */
+.custom-navbar .nav-link {
+  color: #17385a !important; /* Logo ka Dark Blue */
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 12px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Hover & Active State (Red Highlight) */
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+  color: #e3000f !important; /* Logo ka Red */
+}
+
+/* Smooth Bottom Border Animation */
+.custom-navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: -5px;
+  left: 0;
+  background-color: #e3000f;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.custom-navbar .nav-link:hover::after,
+.custom-navbar .nav-link.active::after {
+  width: 100%;
+}
+
+/* Premium Call to Action Button */
+.btn-quote {
+  background-color: #e3000f;
+  color: white;
+  border-radius: 30px;
+  padding: 8px 24px;
+  font-weight: 600;
+  border: 2px solid #e3000f;
+  transition: all 0.3s ease;
+}
+.btn-quote:hover {
+  background-color: transparent;
+  color: #e3000f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(227, 0, 15, 0.2);
+}
+
+/* Company Name Text Styling */
+.company-name {
+    color: #e3000f !important; 
+  font-weight: 700; 
+  font-size: 20px;
+  white-space: nowrap; 
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover .company-name {
+  color: #e3000f6c; 
+}
+
+/* Mobile Devices ke liye font size thoda adjust kiya hai */
+@media (max-width: 576px) {
+  .company-name {
+    font-size: 16px; 
+  }
+}
+
+/* Mobile specific adjustments */
+@media (max-width: 991px) {
+  .custom-navbar .nav-link::after {
+    display: none; /* Mobile mein underline animation hide karne ke liye */
+  }
+  .nav-item {
+    margin-bottom: 10px;
+  }
+}
+
+.custom-footer {
+  background-color: #0b1a2a; /* Extra dark blue for contrast */
+  color: #a4b4c7;
+  padding: 60px 0 0 0; /* Thoda padding kam kiya */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* FIX: Brand Logo Wrapper */
+.footer-brand {
+  display: inline-block;
+  margin-bottom: 25px;
+  /* HATA DIYA: background-color: white; aur padding jisse white box na bane */
+}
+
+/* FIX: Logo Image Control */
+.footer-brand img {
+  height: auto;
+  max-width: 250px; /* Logo ki max-width fix ki taaki bada na dikhe */
+  width: 100%;
+}
+
+.custom-footer p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.custom-footer h5 {
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 12px;
+  font-size: 1.25rem; /* Heading size thodi badhai */
+}
+
+/* Footer heading bottom line */
+.custom-footer h5::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px; /* Line thodi lambi ki */
+  height: 2px;
+  background-color: #e3000f; /* Brand Red */
+}
+
+/* Footer Links */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 15px; /* Links ke beech space badhaya */
+}
+
+.footer-links a {
+  color: #a4b4c7;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.footer-links a i {
+  color: #a4b4c7; /* Icon color link jaisa */
+  transition: all 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-links a:hover i {
+  color: #e3000f; /* Hover pe sab Red */
+}
+
+.footer-links a:hover {
+  transform: translateX(5px);
+}
+
+/* Contact Info styling */
+.footer-contact li {
+  display: flex;
+  margin-bottom: 20px; /* Contact details ke beech space */
+  align-items: flex-start;
+}
+
+.footer-contact i {
+  color: #e3000f; /* Icons Red rahenge */
+  font-size: 1.2rem;
+  margin-right: 15px;
+  margin-top: 3px;
+}
+
+.footer-contact span,
+.footer-contact a {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.footer-contact a:hover {
+  color: #e3000f !important;
+  transform: none; /* Contact links pe slide effect nahi */
+}
+
+/* Social Icons */
+.social-icons {
+  margin-top: 30px;
+}
+
+.social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border-radius: 50%;
+  margin-right: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.social-icons a:hover {
+  background-color: #e3000f;
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* Copyright & Developer bar */
+.footer-bottom {
+  background-color: #07111c;
+  padding: 20px 0;
+  margin-top: 50px;
+  font-size: 0.9rem;
+}
+
+.developer-link {
+  color: #e3000f;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.developer-link:hover {
+  color: #ffffff;
+}
+
+
+/* ==============================
+       BREADCRUMB SECTION STYLING
+       ============================== */
+.breadcrumb-wrapper {
+  background:
+    linear-gradient(rgba(43, 94, 44, 0.85), rgba(20, 54, 21, 0.95)),
+    url("https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2000&auto=format&fit=crop")
+      center center / cover no-repeat fixed;
+  padding: 100px 0 80px 0;
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+  margin-top: 0;
+}
+
+.breadcrumb-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  text-transform: capitalize;
+  animation: slideDown 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.custom-breadcrumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  animation: slideUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.custom-breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.custom-breadcrumb li a {
+  color: var(--accent-orange, #e67e22);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.custom-breadcrumb li a:hover {
+  color: #ffffff;
+}
+
+.custom-breadcrumb li i {
+  margin-right: 6px;
+}
+
+.custom-breadcrumb li + li::before {
+  content: "\276F";
+  padding: 0 12px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+}
+
+.custom-breadcrumb li.active {
+  color: #d1d5db;
+}
+
+@keyframes slideDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .breadcrumb-wrapper {
+    padding: 80px 0 60px 0;
+  }
+  .breadcrumb-title {
+    font-size: 2.2rem;
+  }
+  .custom-breadcrumb {
+    font-size: 0.95rem;
+  }
+}
+  
