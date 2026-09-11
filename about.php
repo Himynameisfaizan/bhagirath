@@ -1,32 +1,44 @@
 <?php
-$pageTitle = "EURASIASTONEINDIA - Global Agri Exporters";
-$meta_description = "EURASIASTONEINDIA is a trusted exporter of premium Indian agricultural products, specializing in Basmati Rice, Red Chilli, Turmeric, and authentic whole spices.";
-$meta_keywords = "agricultural exporter India, premium basmati rice export, Indian spices supplier, turmeric exporter, cumin seeds, EURASIASTONEINDIA, global agri trade";
+include 'config/connect.php';
+
+// SEO Optimized Variables for Bhagirath Enterprise
+$pageTitle = "About Us ";
+$meta_description = "Bhagirath Enterprise is a leading global exporter of premium Indian agricultural products, specializing in Dry Fruits, Whole Spices, and authentic farm-fresh goods.";
+$meta_keywords = "Bhagirath Enterprise, agricultural exporter India, premium dry fruits export, Indian whole spices supplier, bulk spices exporter, global agri trade, New Delhi exporters";
+
+$brands_array = [];
+if (isset($conn)) {
+    $brands_res = mysqli_query($conn, "SELECT * FROM brands ORDER BY id DESC");
+    if ($brands_res && mysqli_num_rows($brands_res) > 0) {
+        while ($brand = mysqli_fetch_assoc($brands_res)) {
+            $brands_array[] = $brand;
+        }
+    }
+}
 ?>
 
 <?php include 'includes/header.php'; ?>
 
 <?php include 'includes/breadcrumb.php'; ?>
 
-<!-- 1. ABOUT COMPANY SECTION -->
-<section class="inner-about">
+<!-- 1. ABOUT COMPANY SECTION (SEO H1 Tag applied here) -->
+<section class="inner-about section-padding">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 reveal">
-                <div class="about-image-collage">
-                    <!-- Replace with actual warehouse/farming images -->
-                    <img src="https://images.unsplash.com/photo-1716816211590-c15a328a5ff0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3BpY2VzfGVufDB8fDB8fHww" alt="EURASIASTONEINDIA Export Facility" class="about-img-1">
-                    <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=600&auto=format&fit=crop" alt="Premium Indian Spices" class="about-img-2">
+            <div class="col-lg-6 reveal mb-4 mb-lg-0">
+                <div class="about-image-collage position-relative">
+                    <img src="https://images.unsplash.com/photo-1716816211590-c15a328a5ff0?w=500&auto=format&fit=crop&q=60" alt="Bhagirath Enterprise Export Facility" class="about-img-1 w-100 rounded shadow-lg" style="object-fit: cover; height: 350px;">
+                    <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=600&auto=format&fit=crop" alt="Premium Indian Spices and Dry Fruits" class="about-img-2 position-absolute border border-white border-5 rounded shadow" style="width: 250px; bottom: -30px; right: -20px;">
                 </div>
             </div>
-            <div class="col-lg-6 ps-lg-5 reveal">
-                <span class="sec-subtitle">About EURASIASTONEINDIA</span>
-                <h2 class="sec-title">Exporting the Finest Agricultural Wealth of India to the World.</h2>
-                <p class="about-desc">
-                    <strong>EURASIASTONEINDIA</strong> has established itself as a premier global exporter of high-quality agricultural commodities. We bridge the gap between India's rich, fertile farms and international markets, delivering excellence in every shipment.
+            <div class="col-lg-6 ps-lg-5 reveal mt-5 mt-lg-0">
+                <span class="sec-subtitle text-uppercase fw-bold" style="color: #E3000F; letter-spacing: 1px; font-size: 14px;">About Bhagirath Enterprise</span>
+                <h1 class="sec-title mb-4" style="color: #17385A; font-weight: 700; font-size: 2.2rem; line-height: 1.3;">Exporting the Finest Agricultural Wealth of India to the World.</h1>
+                <p class="about-desc mb-3" style="color: #555; line-height: 1.7;">
+                    <strong>Bhagirath Enterprise</strong> has established itself as a premier global exporter of high-quality agricultural commodities. Operating from the heart of Delhi, India, we bridge the gap between India's rich, fertile farms and international markets, delivering excellence in every shipment.
                 </p>
-                <p class="about-desc">
-                    Specializing in the export of premium Rice, Chilli, Turmeric, Cumin Seeds, and Authentic Food Products, we ensure that our global clientele receives 100% pure, unadulterated, and export-grade materials. Our stringent quality control and direct-from-farm sourcing make us a trusted partner in the international food trade.
+                <p class="about-desc mb-4" style="color: #555; line-height: 1.7;">
+                    Specializing in the export of premium <strong>Whole Spices, Dry Fruits,</strong> and authentic agricultural products, we ensure that our global clientele receives 100% pure, unadulterated, and export-grade materials. Our stringent quality control, hygienic processing, and direct-from-farm sourcing make us a trusted partner in the international food trade.
                 </p>
             </div>
         </div>
@@ -34,26 +46,30 @@ $meta_keywords = "agricultural exporter India, premium basmati rice export, Indi
 </section>
 
 <!-- 2. MISSION & VISION SECTION -->
-<section class="mv-section">
+<section class="mv-section section-padding" style="background-color: #f8f9fa;">
     <div class="container">
         <div class="row g-4">
             <!-- Mission Card -->
             <div class="col-lg-6 reveal">
-                <div class="mv-card">
-                    <i class="fa-solid fa-bullseye mv-icon"></i>
-                    <h3 class="mv-title">Our Mission</h3>
-                    <p class="about-desc">
-                        To consistently deliver superior quality agricultural products to global markets while maintaining ethical sourcing practices. We aim to empower local farmers and provide international consumers with safe, hygienic, and authentic Indian flavors.
+                <div class="mv-card bg-white p-5 rounded-4 shadow-sm h-100" style="border-top: 4px solid #E3000F;">
+                    <div class="icon-wrap mb-4" style="width: 60px; height: 60px; background: rgba(227,0,15,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-bullseye mv-icon" style="font-size: 24px; color: #E3000F;"></i>
+                    </div>
+                    <h3 class="mv-title" style="color: #17385A; font-weight: 700; margin-bottom: 15px;">Our Mission</h3>
+                    <p class="about-desc mb-0" style="color: #666; line-height: 1.6;">
+                        To consistently deliver superior quality agricultural products to global markets while maintaining ethical sourcing practices. We aim to empower local Indian farmers and provide international consumers with safe, hygienic, and authentic flavors.
                     </p>
                 </div>
             </div>
             <!-- Vision Card -->
             <div class="col-lg-6 reveal">
-                <div class="mv-card">
-                    <i class="fa-solid fa-eye mv-icon"></i>
-                    <h3 class="mv-title">Our Vision</h3>
-                    <p class="about-desc">
-                        To be the world's most reliable and sustainable partner in the agricultural export industry, recognized globally for our uncompromising quality standards, timely deliveries, and commitment to global food safety.
+                <div class="mv-card bg-white p-5 rounded-4 shadow-sm h-100" style="border-top: 4px solid #17385A;">
+                    <div class="icon-wrap mb-4" style="width: 60px; height: 60px; background: rgba(23,56,90,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-eye mv-icon" style="font-size: 24px; color: #17385A;"></i>
+                    </div>
+                    <h3 class="mv-title" style="color: #17385A; font-weight: 700; margin-bottom: 15px;">Our Vision</h3>
+                    <p class="about-desc mb-0" style="color: #666; line-height: 1.6;">
+                        To be the world's most reliable and sustainable partner in the agricultural export industry, recognized globally for our uncompromising quality standards, competitive pricing, and commitment to global food safety.
                     </p>
                 </div>
             </div>
@@ -62,54 +78,55 @@ $meta_keywords = "agricultural exporter India, premium basmati rice export, Indi
 </section>
 
 <!-- 3. WHY CHOOSE US -->
-<section class="inner-wcu">
+<section class="inner-wcu section-padding">
     <div class="container">
         <div class="row text-center mb-5 reveal">
             <div class="col-12">
-                <span class="sec-subtitle">The EURASIASTONEINDIA Advantage</span>
-                <h2 class="sec-title">Why Partner With Us?</h2>
+                <span class="sec-subtitle text-uppercase fw-bold" style="color: #E3000F; letter-spacing: 1px; font-size: 14px;">The Bhagirath Enterprise Advantage</span>
+                <h2 class="sec-title" style="color: #17385A; font-weight: 700;">Why Partner With Us?</h2>
             </div>
         </div>
 
         <div class="row align-items-center">
             <!-- Left Side Points -->
             <div class="col-lg-4 reveal">
-                <div class="wcu-list-item">
-                    <div class="wcu-list-icon"><i class="fa-solid fa-leaf"></i></div>
+                <div class="wcu-list-item d-flex align-items-start mb-4">
+                    <div class="wcu-list-icon me-3 mt-1" style="color: #E3000F; font-size: 1.5rem;"><i class="fa-solid fa-leaf"></i></div>
                     <div class="wcu-list-content">
-                        <h4>Farm-Fresh Sourcing</h4>
-                        <p>We procure our rice and spices directly from the most fertile and trusted agricultural regions in India.</p>
+                        <h4 style="color: #17385A; font-weight: 600; font-size: 1.1rem;">Farm-Fresh Sourcing</h4>
+                        <p class="small text-muted">We procure our dry fruits and spices directly from the most fertile and trusted agricultural regions.</p>
                     </div>
                 </div>
-                <div class="wcu-list-item">
-                    <div class="wcu-list-icon"><i class="fa-solid fa-certificate"></i></div>
+                <div class="wcu-list-item d-flex align-items-start mb-4">
+                    <div class="wcu-list-icon me-3 mt-1" style="color: #E3000F; font-size: 1.5rem;"><i class="fa-solid fa-certificate"></i></div>
                     <div class="wcu-list-content">
-                        <h4>Certified Quality</h4>
-                        <p>Strict adherence to global food safety standards, fully compliant with FSSAI, APEDA, and international boards.</p>
+                        <h4 style="color: #17385A; font-weight: 600; font-size: 1.1rem;">Certified Quality</h4>
+                        <p class="small text-muted">Strict adherence to global food safety standards, fully compliant with international export boards.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Center Image -->
-            <div class="col-lg-4 text-center reveal">
-                <!-- Replace with an attractive export/shipping/globe image -->
-                <img src="https://images.unsplash.com/photo-1493946243886-c4d6f4614ff3?q=80&w=600&auto=format&fit=crop" alt="Global Export" style="width: 100%; border-radius: 50%; padding: 10px; border: 2px dashed #17385A;">
+            <div class="col-lg-4 text-center reveal mb-4 mb-lg-0">
+                <div style="padding: 15px; border: 2px dashed #E3000F; border-radius: 50%; display: inline-block;">
+                    <img src="https://images.unsplash.com/photo-1493946243886-c4d6f4614ff3?q=80&w=600&auto=format&fit=crop" alt="Global Export" style="width: 100%; max-width: 300px; border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
+                </div>
             </div>
 
             <!-- Right Side Points -->
             <div class="col-lg-4 reveal">
-                <div class="wcu-list-item">
-                    <div class="wcu-list-icon"><i class="fa-solid fa-box-open"></i></div>
+                <div class="wcu-list-item d-flex align-items-start mb-4">
+                    <div class="wcu-list-icon me-3 mt-1" style="color: #E3000F; font-size: 1.5rem;"><i class="fa-solid fa-box-open"></i></div>
                     <div class="wcu-list-content">
-                        <h4>Premium Export Packaging</h4>
-                        <p>Moisture-proof, container-safe packaging that preserves aroma, taste, and product integrity during transit.</p>
+                        <h4 style="color: #17385A; font-weight: 600; font-size: 1.1rem;">Premium Export Packaging</h4>
+                        <p class="small text-muted">Moisture-proof, container-safe packaging that preserves aroma, taste, and product integrity during transit.</p>
                     </div>
                 </div>
-                <div class="wcu-list-item">
-                    <div class="wcu-list-icon"><i class="fa-solid fa-ship"></i></div>
+                <div class="wcu-list-item d-flex align-items-start mb-4">
+                    <div class="wcu-list-icon me-3 mt-1" style="color: #E3000F; font-size: 1.5rem;"><i class="fa-solid fa-ship"></i></div>
                     <div class="wcu-list-content">
-                        <h4>Global Logistics</h4>
-                        <p>A robust supply chain and freight network ensuring safe, hassle-free, and timely delivery across borders.</p>
+                        <h4 style="color: #17385A; font-weight: 600; font-size: 1.1rem;">Global Logistics</h4>
+                        <p class="small text-muted">A robust supply chain and freight network ensuring safe, hassle-free, and timely delivery across borders.</p>
                     </div>
                 </div>
             </div>
@@ -117,7 +134,41 @@ $meta_keywords = "agricultural exporter India, premium basmati rice export, Indi
     </div>
 </section>
 
-<!-- 4. HOW WE WORK (WORKING PROCESS) -->
+<!-- 4. Dynamic Brands / Clients Slider Section -->
+<section class="brands-slider-section py-5" style="background-color: #f8f9fa; border-top: 1px solid #eaeaea;">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: #17385A; font-weight: 700; font-size: 1.5rem; letter-spacing: 1px;">OUR TRUSTED CLIENTS & PARTNERS</h2>
+        
+        <div class="brand-slider-container">
+            <div class="brand-slide-track">
+                <?php if(!empty($brands_array)): ?>
+                    <?php 
+                    for($loop = 0; $loop < 2; $loop++):
+                        foreach($brands_array as $brand):
+                            $brandLogo = !empty($brand['logo_path']) ? $brand['logo_path'] : '';
+                    ?>
+                    <div class="brand-slide">
+                        <?php if(!empty($brandLogo)): ?>
+                            <img src="admin/<?= htmlspecialchars($brandLogo) ?>" alt="<?= htmlspecialchars($brand['brand_name']) ?>" title="<?= htmlspecialchars($brand['brand_name']) ?>">
+                        <?php else: ?>
+                            <span class="fw-bold text-dark"><?= htmlspecialchars($brand['brand_name']) ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <?php 
+                        endforeach; 
+                    endfor; 
+                    ?>
+                <?php else: ?>
+                    <div class="brand-slide"><h4 class="brand-logo" style="color: #999;">FSSAI</h4></div>
+                    <div class="brand-slide"><h4 class="brand-logo" style="color: #999;">APEDA</h4></div>
+                    <div class="brand-slide"><h4 class="brand-logo" style="color: #999;">SPICES BOARD</h4></div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 5. HOW WE WORK (WORKING PROCESS) -->
 <section class="process-section">
     <div class="container">
         <div class="row text-center mb-4 reveal">
@@ -156,82 +207,41 @@ $meta_keywords = "agricultural exporter India, premium basmati rice export, Indi
     </div>
 </section>
 
-<!-- 5. FREQUENTLY ASKED QUESTIONS -->
-<section class="section-padding bg-light-gray">
-    <div class="container">
-        <div class="row justify-content-center">
 
-            <div class="col-lg-8 reveal">
-                <div class="text-center mb-5">
-                    <span class="sec-subtitle">Clear Your Doubts</span>
-                    <h2 class="sec-title">Frequently Asked Questions</h2>
-                </div>
 
-                <!-- Bootstrap 5 Accordion -->
-                <div class="accordion faq-accordion" id="exportFaqAccordion">
 
-                    <!-- FAQ Item 1 -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faqHeading1">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
-                                Are your agricultural products certified for global export?
-                            </button>
-                        </h2>
-                        <div id="faqCollapse1" class="accordion-collapse collapse show" aria-labelledby="faqHeading1" data-bs-parent="#exportFaqAccordion">
-                            <div class="accordion-body">
-                                Yes, absolutely. We strictly comply with global food safety standards. Our exports are backed by necessary certifications (such as FSSAI, APEDA, and Phytosanitary certificates) to clear customs smoothly in your destination country.
-                            </div>
-                        </div>
-                    </div>
+<!-- Simple CSS for smooth reveals on scroll (If not already in your CSS file) -->
+<style>
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    /* Adding connecting lines for process steps on desktop */
+    @media (min-width: 992px) {
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            border-top: 2px dashed rgba(255, 255, 255, 0.5);
+            z-index: 0;
+        }
+        .process-step .process-icon {
+            position: relative;
+            z-index: 1;
+        }
+    }
+</style>
 
-                    <!-- FAQ Item 2 -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faqHeading2">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
-                                Do you handle B2B bulk orders and container shipments?
-                            </button>
-                        </h2>
-                        <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#exportFaqAccordion">
-                            <div class="accordion-body">
-                                Yes, our core expertise lies in B2B wholesale and bulk container shipments (FCL/LCL). We supply high volumes of rice, chilli, turmeric, and other commodities tailored to your commercial needs.
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- FAQ Item 3 -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faqHeading3">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
-                                What is your Minimum Order Quantity (MOQ)?
-                            </button>
-                        </h2>
-                        <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#exportFaqAccordion">
-                            <div class="accordion-body">
-                                The Minimum Order Quantity (MOQ) varies depending on the specific product (e.g., metric tons for rice vs. specific kgs for premium spices) and the shipping method. Please reach out to our sales team for exact product-wise MOQs.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FAQ Item 4 -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faqHeading4">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
-                                Do you offer customized or private label packaging?
-                            </button>
-                        </h2>
-                        <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#exportFaqAccordion">
-                            <div class="accordion-body">
-                                Yes, we offer customized packaging solutions, including bulk PP bags, jute bags, and private labeling for retail brands. Let us know your packaging requirements during the inquiry process.
-                            </div>
-                        </div>
-                    </div>
-
-                </div> <!-- End Accordion -->
-            </div>
-
-        </div>
-    </div>
-</section>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -250,6 +260,5 @@ $meta_keywords = "agricultural exporter India, premium basmati rice export, Indi
         reveals.forEach(reveal => revealOnScroll.observe(reveal));
     });
 </script>
-
 <!-- Include Footer -->
 <?php include 'includes/footer.php'; ?>

@@ -65,7 +65,7 @@ include 'includes/breadcrumb.php';
 ?>
 
 <section class="products-page-section">
-    <div class="container">
+    <div class="products-page-container">
         <div class="row">
 
             <!-- ==============================
@@ -91,11 +91,7 @@ include 'includes/breadcrumb.php';
                     <div class="sidebar-widget">
                         <h4 class="sidebar-title">All Categories</h4>
                         <ul class="cat-list">
-                            <li>
-                                <a href="products.php" class="<?php echo !isset($_GET['category']) ? 'active' : ''; ?>">
-                                    View All Products
-                                </a>
-                            </li>
+                          
                             <?php 
                             // Fetch active categories from database
                             $catQuery = mysqli_query($conn, "SELECT * FROM categories WHERE status = 1");
@@ -143,10 +139,8 @@ include 'includes/breadcrumb.php';
                     
                     <div class="sort-box">
                         <label for="sortBy">Sort by:</label>
-                        <!-- JavaScript handles the form submission when dropdown changes -->
                         <select id="sortBy" onchange="window.location.href=this.value;">
                             <?php 
-                            // Building base URL for sorting to keep search/category intact
                             $sortBaseUrl = "products.php?";
                             $sortParams = [];
                             if(isset($_GET['category'])) $sortParams[] = "category=".$_GET['category'];

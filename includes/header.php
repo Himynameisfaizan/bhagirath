@@ -5,7 +5,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 // --- DYNAMIC SEO HANDLING ---
 // Agar kisi page par variables set nahi hain, toh ye default values show hongi
 if (!isset($pageTitle)) { 
-    $pageTitle = "EURASIASTONEINDIA | Premium Agricultural Exports"; 
+    $pageTitle = "Bhagirath Enterprises | Premium Agricultural Exports"; 
 }
 if (!isset($meta_description)) { 
     $meta_description = "EURASIASTONEINDIA is a trusted global exporter of premium quality rice, chilli, turmeric, and authentic Indian spices."; 
@@ -66,7 +66,7 @@ if (isset($conn)) {
         
         <a class="navbar-brand d-flex align-items-center" href="index.php">
             <img src="<?= htmlspecialchars($header_logo); ?>" alt="EURASIASTONEINDIA Logo" class="logo-animate" onerror="this.src='assets/images/logo/logo.png'">
-            <span class="company-name ms-2">EURASIASTONEINDIA</span>
+            <!-- <span class="company-name ms-2">EURASIASTONEINDIA</span> -->
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
