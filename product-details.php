@@ -29,7 +29,7 @@ include 'includes/breadcrumb.php';
 
         <div class="row">
             <!-- Left Column: Image Gallery -->
-            <div class="col-lg-5 mb-5 mb-lg-0 reveal">
+            <div class="col-lg-5 mb-5 mb-lg-0 reveal py-5">
                 <div class="pd-image-gallery">
                     <!-- Dynamic Main Image -->
                     <div class="pd-main-img">
@@ -57,12 +57,12 @@ include 'includes/breadcrumb.php';
             </div>
 
             <!-- Right Column: Product Info -->
-            <div class="col-lg-7 ps-lg-5 reveal">
+            <div class="col-lg-7 ps-lg-5 reveal py-5">
                 <span class="pd-category"><?php echo $product['brand_name']; ?></span>
                 <p style="font-size: 13px; color: #888;">
                     <i class="fa-solid fa-shield-check text-success"></i> 100% Secure & Verified Supplier
                 </p>
-                <h2 class="pd-title"><?php echo $product['pro_name']; ?></h2>
+                <!-- <h2 class="pd-title"><?php echo $product['pro_name']; ?></h2> -->
 
                 <!-- Short Description from DB -->
                 <div class="pd-overview">
@@ -109,35 +109,53 @@ include 'includes/breadcrumb.php';
 <!-- RELATED PRODUCTS SECTION -->
 <section class="related-products" style="padding: 0 0 100px 0; background-color: #ffffff;">
     <div class="container">
+        <!-- Section Title with Updated Brand Colors -->
         <div class="text-center mb-5 reveal">
-            <h2 style="font-size: 2rem; font-weight: 800; color: var(--primary-green);">Explore Related Products</h2>
-            <div style="width: 60px; height: 3px; background: var(--accent-orange); margin: 15px auto;"></div>
+            <h2 style="font-size: 2rem; font-weight: 800; color: #222222;">Explore Related Products</h2>
+            <div style="width: 60px; height: 3px; background: #711b3c; margin: 15px auto;"></div>
         </div>
 
         <div class="row g-4 reveal">
             <?php
-            // Fetch 4 random related products excluding the current one
             $relatedQuery = mysqli_query($conn, "SELECT * FROM products WHERE status = 1 AND id != '$product_id' ORDER BY RAND() LIMIT 4");
             while ($related = mysqli_fetch_assoc($relatedQuery)):
+                $shortDesc = !empty($related['short_desc']) ? $related['short_desc'] : (!empty($related['meta_desc']) && $related['meta_desc'] != $related['pro_name'] ? $related['meta_desc'] : 'Premium quality agricultural export product sourced directly from Indian farms.');
             ?>
                 <div class="col-lg-3 col-md-6">
-                    <div class="product-card" style="border: 1px solid #f0f0f0; border-radius: 16px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.02);">
-                        <a href="product-details.php?id=<?php echo $related['id']; ?>">
-                            <div style="aspect-ratio: 4/3; overflow: hidden; background: #f9f9f9;">
-                                <img src="admin/assets/img/uploads/<?php echo $related['pro_img']; ?>" style="width: 100%; height: 100%; object-fit: cover;" alt="<?php echo $related['pro_name']; ?>">
+                    <div class="product-card h-100 d-flex flex-column" style="border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.03); background: #ffffff;">
+
+                        <!-- Product Image -->
+                        <a href="product-details.php?id=<?php echo $related['id']; ?>" style="text-decoration:none;">
+                            <div style="height: 200px; overflow: hidden; background: #f8f9fa; padding: 10px;">
+                                <img src="admin/assets/img/uploads/<?php echo $related['pro_img']; ?>" style="width: 100%; height: 100%; object-fit: contain;" alt="<?php echo htmlspecialchars($related['pro_name']); ?>" onerror="this.src='assets/images/black.png'">
                             </div>
                         </a>
-                        <div style="padding: 20px;">
-                            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 15px;">
-                                <a href="product-details.php?id=<?php echo $related['id']; ?>" style="color: #1A1A1A; text-decoration: none;">
-                                    <?php echo $related['pro_name']; ?>
+
+                        <!-- Product Content -->
+                        <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
+                            <!-- Product Title -->
+                            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">
+                                <a href="product-details.php?id=<?php echo $related['id']; ?>" style="color: #222222; text-decoration: none;">
+                                    <?php echo htmlspecialchars($related['pro_name']); ?>
                                 </a>
                             </h3>
-                            <div style="display: flex; gap: 10px; border-top: 1px solid #f0f0f0; padding-top: 15px;">
-                                <a href="contact.php?product=<?php echo urlencode($related['pro_name']); ?>" style="flex-grow: 1; text-align: center; border: 1.5px solid var(--primary-green); color: var(--primary-green); padding: 8px; border-radius: 8px; font-weight: 600; font-size: 13px; text-decoration: none;">Request Quote</a>
-                                <a href="tel:<?php echo $sitePhone; ?>" style="background: rgba(230,126,34,0.1); color: var(--accent-orange); padding: 8px 12px; border-radius: 8px;"><i class="fa-solid fa-phone"></i></a>
+
+                            <!-- Product Short Description (Limited to exactly 2 lines) -->
+                            <p class="text-muted mb-4" style="font-size: 0.85rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3em;">
+                                <?php echo htmlspecialchars(strip_tags($shortDesc)); ?>
+                            </p>
+
+                            <!-- Action Buttons (Left: View Details, Right: Request Quote) -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 15px; margin-top: auto;">
+                                <a href="product-details.php?id=<?php echo $related['id']; ?>" style="color: #711b3c; text-decoration: none; font-weight: 600; font-size: 13px;">
+                                    View Details <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                                <a href="contact.php?product=<?php echo urlencode($related['pro_name']); ?>" style="background-color: #222222; color: white; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; text-decoration: none;">
+                                    Request Quote
+                                </a>
                             </div>
                         </div>
+
                     </div>
                 </div>
             <?php endwhile; ?>

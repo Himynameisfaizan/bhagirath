@@ -1,23 +1,62 @@
-/* Custom Premium Styling */
+/* =====================================
+   TOPBAR STYLING
+   ===================================== */
+.topbar {
+  background-color: #711b3c; /* Brand Maroon */
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.topbar a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.topbar a:hover {
+  opacity: 0.8;
+}
+
+.topbar-right a {
+  display: inline-block;
+  margin-left: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.topbar-right a:hover {
+  background: #ffffff;
+  color: #711b3c;
+  transform: translateY(-2px);
+}
+
+/* =====================================
+   NAVBAR STYLING
+   ===================================== */
 .custom-navbar {
   background-color: #ffffff;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   padding: 10px 0;
+  z-index: 1030;
 }
 
 /* Logo Animation */
 .logo-animate {
-  height: 60px;
   transition: transform 0.3s ease;
 }
 .logo-animate:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 /* Navigation Links */
 .custom-navbar .nav-link {
-  color: #17385a !important; /* Logo ka Dark Blue */
+  color: #222222 !important; /* Brand Charcoal */
   font-weight: 600;
   font-size: 16px;
   margin: 0 12px;
@@ -25,10 +64,10 @@
   transition: color 0.3s ease;
 }
 
-/* Hover & Active State (Red Highlight) */
+/* Hover & Active State (Maroon Highlight) */
 .custom-navbar .nav-link:hover,
 .custom-navbar .nav-link.active {
-  color: #e3000f !important; /* Logo ka Red */
+  color: #711b3c !important; /* Brand Maroon */
 }
 
 /* Smooth Bottom Border Animation */
@@ -39,7 +78,7 @@
   height: 3px;
   bottom: -5px;
   left: 0;
-  background-color: #e3000f;
+  background-color: #711b3c;
   transition: width 0.3s ease;
   border-radius: 2px;
 }
@@ -49,210 +88,80 @@
   width: 100%;
 }
 
+/* Dropdown Hover Logic for Desktop */
+@media all and (min-width: 992px) {
+  .custom-navbar .dropdown-menu {
+    display: none;
+    margin-top: 0;
+    border-radius: 8px;
+    padding: 10px 0;
+  }
+  .custom-navbar .dropdown:hover .dropdown-menu {
+    display: block;
+    animation: fadeDropdown 0.3s ease forwards;
+  }
+}
+
+@keyframes fadeDropdown {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+  font-weight: 500;
+  padding: 8px 20px;
+  color: #444;
+  transition: all 0.2s;
+}
+
+.dropdown-item:hover,
+.active-dropdown-item {
+  background-color: rgba(113, 27, 60, 0.05);
+  color: #711b3c !important;
+  font-weight: 700;
+  padding-left: 25px; /* Slight indent on hover/active */
+}
+
 /* Premium Call to Action Button */
 .btn-quote {
-  background-color: #e3000f;
+  background-color: #711b3c;
   color: white;
   border-radius: 30px;
   padding: 8px 24px;
   font-weight: 600;
-  border: 2px solid #e3000f;
+  border: 2px solid #711b3c;
   transition: all 0.3s ease;
 }
 .btn-quote:hover {
   background-color: transparent;
-  color: #e3000f;
+  color: #711b3c;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(227, 0, 15, 0.2);
-}
-
-/* Company Name Text Styling */
-.company-name {
-    color: #e3000f !important; 
-  font-weight: 700; 
-  font-size: 20px;
-  white-space: nowrap; 
-  transition: color 0.3s ease;
-}
-
-.navbar-brand:hover .company-name {
-  color: #e3000f6c; 
-}
-
-/* Mobile Devices ke liye font size thoda adjust kiya hai */
-@media (max-width: 576px) {
-  .company-name {
-    font-size: 16px; 
-  }
+  box-shadow: 0 4px 12px rgba(113, 27, 60, 0.2);
 }
 
 /* Mobile specific adjustments */
 @media (max-width: 991px) {
   .custom-navbar .nav-link::after {
-    display: none; /* Mobile mein underline animation hide karne ke liye */
+    display: none; /* Mobile mein underline hide */
   }
   .nav-item {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    padding-left: 10px;
+  }
+  .custom-navbar {
+    padding: 15px 0;
+  }
+  /* Ensure mobile toggler outline is removed */
+  .navbar-toggler:focus {
+    box-shadow: none;
   }
 }
-
-.custom-footer {
-  background-color: #0b1a2a; /* Extra dark blue for contrast */
-  color: #a4b4c7;
-  padding: 60px 0 0 0; /* Thoda padding kam kiya */
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* FIX: Brand Logo Wrapper */
-.footer-brand {
-  display: inline-block;
-  margin-bottom: 25px;
-  /* HATA DIYA: background-color: white; aur padding jisse white box na bane */
-}
-
-/* FIX: Logo Image Control */
-.footer-brand img {
-  height: auto;
-  max-width: 250px; /* Logo ki max-width fix ki taaki bada na dikhe */
-  width: 100%;
-}
-
-.custom-footer p {
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.custom-footer h5 {
-  color: #ffffff;
-  font-weight: 600;
-  margin-bottom: 25px;
-  position: relative;
-  padding-bottom: 12px;
-  font-size: 1.25rem; /* Heading size thodi badhai */
-}
-
-/* Footer heading bottom line */
-.custom-footer h5::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 50px; /* Line thodi lambi ki */
-  height: 2px;
-  background-color: #e3000f; /* Brand Red */
-}
-
-/* Footer Links */
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-links li {
-  margin-bottom: 15px; /* Links ke beech space badhaya */
-}
-
-.footer-links a {
-  color: #a4b4c7;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  font-size: 0.95rem;
-}
-
-.footer-links a i {
-  color: #a4b4c7; /* Icon color link jaisa */
-  transition: all 0.3s ease;
-}
-
-.footer-links a:hover,
-.footer-links a:hover i {
-  color: #e3000f; /* Hover pe sab Red */
-}
-
-.footer-links a:hover {
-  transform: translateX(5px);
-}
-
-/* Contact Info styling */
-.footer-contact li {
-  display: flex;
-  margin-bottom: 20px; /* Contact details ke beech space */
-  align-items: flex-start;
-}
-
-.footer-contact i {
-  color: #e3000f; /* Icons Red rahenge */
-  font-size: 1.2rem;
-  margin-right: 15px;
-  margin-top: 3px;
-}
-
-.footer-contact span,
-.footer-contact a {
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.footer-contact a:hover {
-  color: #e3000f !important;
-  transform: none; /* Contact links pe slide effect nahi */
-}
-
-/* Social Icons */
-.social-icons {
-  margin-top: 30px;
-}
-
-.social-icons a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
-  border-radius: 50%;
-  margin-right: 12px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  font-size: 1.1rem;
-}
-
-.social-icons a:hover {
-  background-color: #e3000f;
-  color: white;
-  transform: translateY(-3px);
-}
-
-/* Copyright & Developer bar */
-.footer-bottom {
-  background-color: #07111c;
-  padding: 20px 0;
-  margin-top: 50px;
-  font-size: 0.9rem;
-}
-
-.developer-link {
-  color: #e3000f;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s;
-}
-
-.developer-link:hover {
-  color: #ffffff;
-}
-
-
 /* ==============================
        BREADCRUMB SECTION STYLING
        ============================== */
 .breadcrumb-wrapper {
   background:
-    linear-gradient(rgba(43, 94, 44, 0.85), rgba(20, 54, 21, 0.95)),
+    linear-gradient(rgba(113, 27, 60, 0.9), rgba(34, 34, 34, 0.95)), /* Maroon to Charcoal Gradient */
     url("https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2000&auto=format&fit=crop")
       center center / cover no-repeat fixed;
   padding: 100px 0 80px 0;
@@ -260,10 +169,11 @@
   color: #ffffff;
   position: relative;
   margin-top: 0;
+  border-bottom: 4px solid #711b3c; /* Maroon border at bottom for premium feel */
 }
 
 .breadcrumb-title {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: inherit; /* Website ki default premium font lega */
   font-size: 3rem;
   font-weight: 800;
   letter-spacing: 1px;
@@ -294,13 +204,14 @@
 }
 
 .custom-breadcrumb li a {
-  color: var(--accent-orange, #e67e22);
+  color: rgba(255, 255, 255, 0.7); /* Slightly faded white for inactive link */
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .custom-breadcrumb li a:hover {
   color: #ffffff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
 .custom-breadcrumb li i {
@@ -308,14 +219,15 @@
 }
 
 .custom-breadcrumb li + li::before {
-  content: "\276F";
+  content: "\276F"; /* Right-pointing angle quotation mark */
   padding: 0 12px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 0.9rem;
 }
 
 .custom-breadcrumb li.active {
-  color: #d1d5db;
+  color: #ffffff;
+  font-weight: 700;
 }
 
 @keyframes slideDown {
@@ -343,4 +255,162 @@
     font-size: 0.95rem;
   }
 }
-  
+
+.custom-footer {
+  background-color: #151515;
+  color: #e0e0e0;
+  font-family: "Inter", sans-serif;
+}
+
+.footer-heading {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.15rem;
+  position: relative;
+  padding-bottom: 12px;
+  margin-bottom: 25px;
+}
+
+.footer-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 45px;
+  height: 3px;
+  background-color: #711b3c; /* Brand Maroon */
+  border-radius: 2px;
+}
+
+.footer-text {
+  color: #a9a9a9 !important; /* Light Grey for visibility */
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #a9a9a9 !important;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  color: #ffffff !important;
+  transform: translateX(5px);
+}
+
+.footer-contact-icon {
+  width: 35px;
+  height: 35px;
+  background-color: rgba(113, 27, 60, 0.15); /* Soft maroon bg */
+  color: #df6e97; /* Lighter maroon for dark bg contrast */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  margin-right: 15px;
+}
+
+.footer-social a {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.footer-social a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.floating-contact {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 9999;
+}
+
+/* Common Button Styling */
+.float-btn {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Hover effect */
+.float-btn:hover {
+  transform: scale(1.1);
+  color: #ffffff;
+}
+
+/* WhatsApp Specific Styling */
+.float-whatsapp {
+  background-color: #25d366;
+}
+
+.float-whatsapp:hover {
+  background-color: #20b858;
+}
+
+/* Phone Specific Styling (Using Brand Maroon) */
+.float-phone {
+  background-color: #711b3c;
+}
+
+.float-phone:hover {
+  background-color: #5a152f;
+}
+
+/* Optional Pulse Animation for WhatsApp to grab attention */
+.float-whatsapp {
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* Mobile Responsive adjustments */
+@media (max-width: 768px) {
+  .floating-contact {
+    bottom: 20px;
+    right: 20px;
+    gap: 12px;
+  }
+  .float-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+}

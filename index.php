@@ -120,7 +120,7 @@ include("includes/header.php");
                 </div>
             </div>
             <div class="col-lg-6 ps-lg-5">
-                <h2 class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Who We Are</h2>
+                <span class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Who We Are</span>
                 <h1 class="section-title mb-4 h2">Exporting the Finest Flavors & Agricultural Wealth of India</h1>
                 <p class="text-muted-custom mb-4">At <strong>Bhagirath Enterprise</strong>, we specialize in processing and exporting premium quality whole spices, dry fruits, and authentic Indian agricultural products. Our commitment is to deliver farm-fresh, unadulterated, and richly flavored food products to global markets while maintaining the highest levels of purity.</p>
                 <ul class="list-unstyled mb-4 text-muted-custom">
@@ -137,8 +137,8 @@ include("includes/header.php");
 <!-- Dynamic Categories Section -->
 <section class="section-padding bg-light-grey">
     <div class="container">
-        <div class="text-center mb-5">
-            <h4 class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Shop By Category</h4>
+        <div class="text-center mb-5 d-flex flex-column">
+            <span class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Shop By Category</span>
             <h2 class="section-title mx-auto">Our Premium Categories</h2>
             <p class="text-muted-custom mt-3 max-w-700 mx-auto" style="max-width: 600px;">Explore our diverse range of high-quality, farm-fresh agricultural categories, carefully sourced to meet global standards.</p>
         </div>
@@ -176,8 +176,8 @@ include("includes/header.php");
 <!-- Why Choose Us Section -->
 <section class="section-padding">
     <div class="container">
-        <div class="text-center mb-5">
-            <h4 class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Why Bhagirath Enterprise</h4>
+        <div class="text-center mb-5 d-flex flex-column">
+            <span class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Why Bhagirath Enterprise</span>
             <h2 class="section-title mx-auto">The Trusted Choice for Global Exports</h2>
         </div>
 
@@ -219,7 +219,7 @@ include("includes/header.php");
     <div class="container">
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div>
-                <h4 class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Our Produce</h4>
+                <span class="text-uppercase d-flex flex-column" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Our Produce</span>
                 <h2 class="section-title mb-0">Premium Export Products</h2>
             </div>
             <div class="d-none d-md-block">
@@ -277,8 +277,8 @@ include("includes/header.php");
 <!-- Dynamic Testimonials Section -->
 <section class="section-padding" style="background-color: #fdfdfd; border-top: 1px solid #f0f0f0;">
     <div class="container">
-        <div class="text-center mb-5">
-            <h4 class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Client Feedback</h4>
+        <div class="text-center mb-5 d-flex flex-column">
+            <span class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Client Feedback</span>
             <h2 class="section-title mx-auto">What Our Trusted Partners Say</h2>
         </div>
         
@@ -472,11 +472,11 @@ include("includes/header.php");
 
                     <!-- FAQ Item 1 -->
                     <div class="accordion-item border-0 mb-3 rounded overflow-hidden">
-                        <h2 class="accordion-header" id="faqHeading1">
+                        <h3 class="accordion-header" id="faqHeading1">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1" style="font-weight: 600; color: #17385A; background-color: #f8f9fa;">
                                 Are your agricultural products certified for global export?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faqCollapse1" class="accordion-collapse collapse show" aria-labelledby="faqHeading1" data-bs-parent="#exportFaqAccordion">
                             <div class="accordion-body text-muted small">
                                 Yes, absolutely. Bhagirath Enterprise strictly complies with global food safety standards. Our exports are backed by necessary quality checks and certifications to clear customs smoothly in your destination country.
@@ -486,11 +486,11 @@ include("includes/header.php");
 
                     <!-- FAQ Item 2 -->
                     <div class="accordion-item border-0 mb-3 rounded overflow-hidden">
-                        <h2 class="accordion-header" id="faqHeading2">
+                        <h3 class="accordion-header" id="faqHeading2">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2" style="font-weight: 600; color: #17385A; background-color: #f8f9fa;">
                                 Do you handle B2B bulk orders and container shipments?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#exportFaqAccordion">
                             <div class="accordion-body text-muted small">
                                 Yes, our core expertise lies in B2B wholesale and bulk container shipments (FCL/LCL). We supply high volumes of dry fruits, whole spices, and other commodities tailored to your commercial needs.
@@ -500,11 +500,11 @@ include("includes/header.php");
 
                     <!-- FAQ Item 3 -->
                     <div class="accordion-item border-0 mb-3 rounded overflow-hidden">
-                        <h2 class="accordion-header" id="faqHeading3">
+                        <h3 class="accordion-header" id="faqHeading3">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3" style="font-weight: 600; color: #17385A; background-color: #f8f9fa;">
                                 What is your Minimum Order Quantity (MOQ)?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#exportFaqAccordion">
                             <div class="accordion-body text-muted small">
                                 The Minimum Order Quantity (MOQ) varies depending on the specific product and the shipping method. Please reach out to our sales team at bhagirathenterprise7@gmail.com for exact product-wise MOQs.
@@ -514,11 +514,11 @@ include("includes/header.php");
 
                     <!-- FAQ Item 4 -->
                     <div class="accordion-item border-0 mb-3 rounded overflow-hidden">
-                        <h2 class="accordion-header" id="faqHeading4">
+                        <h3 class="accordion-header" id="faqHeading4">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4" style="font-weight: 600; color: #17385A; background-color: #f8f9fa;">
                                 Do you offer customized or private label packaging?
                             </button>
-                        </h2>
+                        </h3>
                         <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#exportFaqAccordion">
                             <div class="accordion-body text-muted small">
                                 Yes, we offer customized packaging solutions, including bulk PP bags, jute bags, vacuum packs, and private labeling for retail brands. Let us know your packaging requirements during the inquiry process.
