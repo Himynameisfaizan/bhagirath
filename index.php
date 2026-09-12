@@ -148,6 +148,7 @@ include("includes/header.php");
             if ($categories_res && mysqli_num_rows($categories_res) > 0):
                 while ($cat = mysqli_fetch_assoc($categories_res)):
                     $catImg = !empty($cat['image']) ? 'admin/uploads/category/' . $cat['image'] : 'assets/images/black.png';
+                    $catSlug = !empty($cat['slug_url']) ? $cat['slug_url'] : $cat['cate_id'];
             ?>
                     <div class="col-lg-4 col-md-6">
                         <div class="service-card h-100 bg-white shadow-sm rounded overflow-hidden text-center">
@@ -159,7 +160,7 @@ include("includes/header.php");
                                 <p class="text-muted-custom small mb-4">
                                     <?= htmlspecialchars(substr($cat['meta_desc'], 0, 80)) ?>...
                                 </p>
-                                <a href="products.php?category=<?= urlencode($cat['cate_id']) ?>" class="btn-quote-outline d-inline-block mt-2">View Category</a>
+                                <a href="products.php?category=<?= urlencode($catSlug) ?>" class="btn-quote-outline d-inline-block mt-2">View Category</a>
                             </div>
                         </div>
                     </div>
@@ -232,24 +233,26 @@ include("includes/header.php");
             if ($products_res && mysqli_num_rows($products_res) > 0):
                 while ($prod = mysqli_fetch_assoc($products_res)):
                     $proImg = !empty($prod['pro_img']) ? 'admin/assets/img/uploads/' . $prod['pro_img'] : 'assets/images/black.png';
-                    $product = !empty($prod['id']) ? $prod : $prod;
+                    
+                    // Slug check: Agar slug_url database mein khali hai toh fallback ke liye id use karega
+                    $productSlug = !empty($prod['slug_url']) ? $prod['slug_url'] : $prod['id'];
             ?>
                     <div class="col-lg-3 col-md-6">
                         <div class="product-card h-100 shadow-sm border rounded overflow-hidden">
                             <span class="product-badge">Export Grade</span>
                             <div class="product-img-wrapper" style="height: 200px; overflow: hidden;">
-                                <a href="product-details.php?id=<?php echo $product['id']; ?>" >
+                                <a href="product-details.php?slug=<?php echo urlencode($productSlug); ?>">
                                 <img src="<?= htmlspecialchars($proImg) ?>" alt="<?= htmlspecialchars($prod['pro_name']) ?>" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='assets/images/black.png'">
                                 </a>
                             </div>
                             <div class="p-4">
-                                <a href="product-details.php?id=<?php echo $product['id']; ?>" style="text-decoration:none;"> 
+                                <a href="product-details.php?slug=<?php echo urlencode($productSlug); ?>" style="text-decoration:none;"> 
                                 <h3 class="product-title" style="font-size: 1.05rem; font-weight: 700; height: 48px; overflow: hidden;">
                                     <?= htmlspecialchars($prod['pro_name']) ?>
                                 </h3>
                                 </a>
                                 <div class="mb-3">
-                                    <a href="product-details.php?id=<?php echo $product['id']; ?>" class="view-details-link">View Details <i class="bi bi-chevron-right" style="font-size: 0.8rem;"></i></a>
+                                    <a href="product-details.php?slug=<?php echo urlencode($productSlug); ?>" class="view-details-link">View Details <i class="bi bi-chevron-right" style="font-size: 0.8rem;"></i></a>
                                 </div>
                                 <div class="d-flex gap-2">
                                     <a href="tel:+918448211202" class="btn-call" title="Call for inquiry">

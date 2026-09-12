@@ -14,9 +14,20 @@ $whereClause = "WHERE status = 1";
 $urlParams = [];
 
 if (isset($_GET['category']) && !empty($_GET['category'])) {
-    $cat_id = mysqli_real_escape_string($conn, $_GET['category']);
-    $whereClause .= " AND pro_cate = '$cat_id'";
-    $urlParams[] = "category=$cat_id";
+    $cat_input = mysqli_real_escape_string($conn, $_GET['category']);
+    
+    // SMART FIX: Check if input is a slug/name or a direct ID/cate_id
+    $catCheckQ = mysqli_query($conn, "SELECT cate_id FROM categories WHERE slug_url = '$cat_input' OR cate_id = '$cat_input' OR categories = '$cat_input' LIMIT 1");
+    if ($catCheckQ && mysqli_num_rows($catCheckQ) > 0) {
+        $catData = mysqli_fetch_assoc($catCheckQ);
+        $cat_id = $catData['cate_id'];
+        $whereClause .= " AND pro_cate = '$cat_id'";
+    } else {
+        // Fallback direct match
+        $whereClause .= " AND pro_cate = '$cat_input'";
+    }
+    
+    $urlParams[] = "category=" . urlencode($cat_input);
 }
 
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -85,10 +96,10 @@ include 'includes/breadcrumb.php';
                             while($cat = mysqli_fetch_assoc($catQuery)): 
                                 $countQ = mysqli_query($conn, "SELECT COUNT(*) as c FROM products WHERE pro_cate='".$cat['cate_id']."' AND status=1");
                                 $pCount = mysqli_fetch_assoc($countQ)['c'];
-                                $isActive = (isset($_GET['category']) && $_GET['category'] == $cat['cate_id']) ? 'active' : '';
+                                $isActive = (isset($_GET['category']) && $_GET['category'] == $cat['slug_url']) ? 'active' : '';
                             ?>
                             <li>
-                                <a href="products.php?category=<?php echo $cat['cate_id']; ?>" class="<?php echo $isActive; ?>">
+                                <a href="products.php?category=<?php echo $cat['slug_url']; ?>" class="<?php echo $isActive; ?>">
                                     <?php echo $cat['categories']; ?> <span><?php echo $pCount; ?></span>
                                 </a>
                             </li>
@@ -145,14 +156,14 @@ if($total_records > 0) {
 ?>
                         <div class="col-lg-4 col-md-6 col-12 reveal">
                             <div class="product-card h-100 shadow-sm border rounded overflow-hidden d-flex flex-column" style="background: #ffffff; transition: all 0.3s ease;">
-                                <a href="product-details.php?id=<?php echo $product['id']; ?>" class="product-img-link" style="text-decoration:none;">
+                                <a href="product-details.php?slug=<?php echo $product['slug_url']; ?>" class="product-img-link" style="text-decoration:none;">
                                     <div class="product-img-wrapper" style="height: 220px; overflow: hidden; background: #f8f9fa;">
                                         <img src="admin/assets/img/uploads/<?php echo $product['pro_img']; ?>" alt="<?php echo $product['pro_name']; ?>" style="width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform 0.5s ease;" onerror="this.src='assets/images/black.png'">
                                     </div>
                                 </a>
 
                                 <div class="product-content p-4 d-flex flex-column flex-grow-1">
-                                    <a href="product-details.php?id=<?php echo $product['id']; ?>" style="text-decoration: none;">
+                                    <a href="product-details.php?slug=<?php echo $product['slug_url']; ?>" style="text-decoration: none;">
                                         <h3 class="product-title" style="font-size: 1.15rem; font-weight: 700; color: #222222; margin-bottom: 8px;">
                                             <?php echo htmlspecialchars($product['pro_name']); ?>
                                         </h3>
@@ -165,7 +176,7 @@ if($total_records > 0) {
 
                                     <!-- Action Buttons (Left: View Details, Right: Quote) -->
                                     <div class="product-actions mt-auto d-flex justify-content-between align-items-center border-top pt-3">
-                                        <a href="product-details.php?id=<?php echo $product['id']; ?>" class="view-details-link small fw-bold" style="color: #711b3c; text-decoration: none; transition: 0.3s;">
+                                        <a href="product-details.php?slug=<?php echo $product['slug_url']; ?>" class="view-details-link small fw-bold" style="color: #711b3c; text-decoration: none; transition: 0.3s;">
                                             View Details <i class="bi bi-arrow-right ms-1"></i>
                                         </a>
                                         <a href="contact.php?product=<?php echo urlencode($product['pro_name']); ?>" class="btn-quote-full small px-3 py-2 rounded" style="background-color: #222222; color: white; text-decoration: none; font-weight: 600; transition: all 0.3s;">

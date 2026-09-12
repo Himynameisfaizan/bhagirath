@@ -1,21 +1,33 @@
 <?php
 include('config/connect.php');
-$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Fetch Specific Product
-$productQuery = mysqli_query($conn, "SELECT * FROM products WHERE id = '$product_id' AND status = 1");
-$product = mysqli_fetch_assoc($productQuery);
+// Check karein ki URL mein slug hai ya id
+if (isset($_GET['slug']) && !empty($_GET['slug'])) {
+    $product_slug = mysqli_real_escape_string($conn, $_GET['slug']);
+    // Slug ya id dono se match karne ka check taaki purane links bhi na tutein
+    $productQuery = mysqli_query($conn, "SELECT * FROM products WHERE (slug_url = '$product_slug' OR id = '$product_slug') AND status = 1");
+} elseif (isset($_GET['id']) && !empty($_GET['id'])) {
+    $product_id = intval($_GET['id']);
+    $productQuery = mysqli_query($conn, "SELECT * FROM products WHERE id = '$product_id' AND status = 1");
+} else {
+    $productQuery = false;
+}
 
-// If product not found, redirect to products page
+$product = ($productQuery) ? mysqli_fetch_assoc($productQuery) : null;
+
+// Agar product nahi mila, toh products page par redirect kar do
 if (!$product) {
     echo "<script>window.location.href='products.php';</script>";
     exit;
 }
 
+// Global variable for product ID (agar related products ya gallery me aage use ho raha ho)
+$product_id = $product['id'];
+
 // Fetch Global Contact Info for Call Buttons
 $contactQuery = mysqli_query($conn, "SELECT phone FROM contacts LIMIT 1");
 $contactInfo = mysqli_fetch_assoc($contactQuery);
-$sitePhone = !empty($contactInfo['phone']) ? $contactInfo['phone'] : '+919717179432';
+$sitePhone = !empty($contactInfo['phone']) ? $contactInfo['phone'] : '+91-8448211202';
 
 // Dynamic Page Title
 $pageTitle = $product['pro_name'];
@@ -125,7 +137,7 @@ include 'includes/breadcrumb.php';
                     <div class="product-card h-100 d-flex flex-column" style="border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.03); background: #ffffff;">
 
                         <!-- Product Image -->
-                        <a href="product-details.php?id=<?php echo $related['id']; ?>" style="text-decoration:none;">
+                        <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="text-decoration:none;">
                             <div style="height: 200px; overflow: hidden; background: #f8f9fa; padding: 10px;">
                                 <img src="admin/assets/img/uploads/<?php echo $related['pro_img']; ?>" style="width: 100%; height: 100%; object-fit: contain;" alt="<?php echo htmlspecialchars($related['pro_name']); ?>" onerror="this.src='assets/images/black.png'">
                             </div>
@@ -135,7 +147,7 @@ include 'includes/breadcrumb.php';
                         <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
                             <!-- Product Title -->
                             <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">
-                                <a href="product-details.php?id=<?php echo $related['id']; ?>" style="color: #222222; text-decoration: none;">
+                                <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="color: #222222; text-decoration: none;">
                                     <?php echo htmlspecialchars($related['pro_name']); ?>
                                 </a>
                             </h3>
@@ -147,7 +159,7 @@ include 'includes/breadcrumb.php';
 
                             <!-- Action Buttons (Left: View Details, Right: Request Quote) -->
                             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 15px; margin-top: auto;">
-                                <a href="product-details.php?id=<?php echo $related['id']; ?>" style="color: #711b3c; text-decoration: none; font-weight: 600; font-size: 13px;">
+                                <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="color: #711b3c; text-decoration: none; font-weight: 600; font-size: 13px;">
                                     View Details <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
                                 <a href="contact.php?product=<?php echo urlencode($related['pro_name']); ?>" style="background-color: #222222; color: white; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; text-decoration: none;">

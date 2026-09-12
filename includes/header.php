@@ -129,10 +129,9 @@ if (isset($conn)) {
                         <?php 
                         if (isset($cats_dropdown_query) && mysqli_num_rows($cats_dropdown_query) > 0) {
                             while($cat = mysqli_fetch_assoc($cats_dropdown_query)) {
-                                // Checking if this specific category is active via URL parameter
-                                $isActiveCat = (isset($_GET['category']) && $_GET['category'] == $cat['cate_id']) ? 'active-dropdown-item' : '';
+                                $isActiveCat = (isset($_GET['category']) && $_GET['category'] == $cat['slug_url']) ? 'active-dropdown-item' : '';
                         ?>
-                            <li><a class="dropdown-item <?= $isActiveCat; ?>" href="products.php?category=<?= $cat['cate_id']; ?>"><?= htmlspecialchars($cat['categories']); ?></a></li>
+                            <li><a class="dropdown-item <?= $isActiveCat; ?>" href="products.php?category=<?= $cat['slug_url']; ?>"><?= htmlspecialchars($cat['categories']); ?></a></li>
                         <?php 
                             }
                         } 
