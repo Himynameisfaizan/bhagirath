@@ -1,8 +1,7 @@
 <?php
-// Database connection file zaroor include karein
 include ('config/connect.php'); 
 
-$pageTitle = "News & Insights"; 
+$pageTitle = "Blogs"; 
 include 'includes/header.php';
 include 'includes/breadcrumb.php';
 
@@ -12,36 +11,30 @@ include 'includes/breadcrumb.php';
 $limit = 6; // Ek page par 6 blogs dikhayenge grid mein
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 
-// Total active blogs count
 $totalQuery = mysqli_query($conn, "SELECT COUNT(*) as total FROM blogs WHERE status = 1");
 $totalRow = mysqli_fetch_assoc($totalQuery);
 $total_blogs = $totalRow['total'];
 
-// Grid ke liye total records (Total - 1 Featured Post)
 $grid_total_records = max(0, $total_blogs - 1);
 $total_pages = ceil($grid_total_records / $limit);
 
-// Offset calculation: Page 1 pe 1 se start hoga (taki featured skip ho), aage usi hisab se
-$offset = (($page - 1) * $limit) + 1;
+// $offset = (($page - 1) * $limit) + 1;
 
-// Fetch Latest 1 Post for Featured Section
 $featuredQuery = mysqli_query($conn, "SELECT * FROM blogs WHERE status = 1 ORDER BY created_at DESC LIMIT 1");
 $featuredBlog = mysqli_fetch_assoc($featuredQuery);
 
-// Fetch Remaining Posts for Grid
-$gridQuery = mysqli_query($conn, "SELECT * FROM blogs WHERE status = 1 ORDER BY created_at DESC LIMIT $limit OFFSET $offset");
+$gridQuery = mysqli_query($conn, "SELECT * FROM blogs WHERE status = 1 ORDER BY created_at DESC");
 ?>
 
 <section class="blog-page-section">
     <div class="container">
-        
-        <?php if($featuredBlog): 
+<!--         
+        <?#php if($featuredBlog): 
             $f_date = date('M d, Y', strtotime($featuredBlog['created_at']));
             $f_excerpt = mb_substr(strip_tags($featuredBlog['description']), 0, 180) . '...';
             // Checking if image exists, else fallback
             $f_img = !empty($featuredBlog['image']) ? 'admin/assets/img/uploads/blogs/' . $featuredBlog['image'] : 'https://images.unsplash.com/photo-1606914501449-5a96b6ce24ca?q=80&w=1200';
         ?>
-        <!-- FEATURED POST (Latest Blog) -->
         <div class="row reveal">
             <div class="col-12">
                 <div class="featured-blog">
@@ -67,7 +60,7 @@ $gridQuery = mysqli_query($conn, "SELECT * FROM blogs WHERE status = 1 ORDER BY 
                 </div>
             </div>
         </div>
-        <?php endif; ?>
+        <#?php endif; ?> -->
 
         <!-- BLOG GRID -->
         <div class="row g-4 mt-2">
@@ -76,7 +69,7 @@ $gridQuery = mysqli_query($conn, "SELECT * FROM blogs WHERE status = 1 ORDER BY 
                 while($blog = mysqli_fetch_assoc($gridQuery)): 
                     $date = date('M d, Y', strtotime($blog['created_at']));
                     $excerpt = mb_substr(strip_tags($blog['description']), 0, 100) . '...';
-                    $img = !empty($blog['image']) ? 'admin/asset/img/uploads/blogs/' . $blog['image'] : 'https://images.unsplash.com/photo-1615486171448-4228965f7c32?q=80&w=800';
+                    $img = !empty($blog['image']) ? 'admin/assets/img/uploads/blogs/' . $blog['image'] : 'https://images.unsplash.com/photo-1615486171448-4228965f7c32?q=80&w=800';
             ?>
             <div class="col-lg-4 col-md-6 reveal">
                 <div class="blog-card">

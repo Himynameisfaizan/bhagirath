@@ -64,9 +64,14 @@ if (!isset($_SESSION['admin_logged_in'])) {
         </li>
 
         <li>
-                <li><a href="blog.php"><i class="fas fa-blog" style="color: #9b59b6;"></i> Blogs & News</a></li>
-            
+            <a class="has-arrow" href="#"><i class="fas fa-blog" style="color: #9b59b6;"></i><span>Blogs</span></a>
+            <ul>
+                <li><a href="blog.php">Show Blogs</a></li>
+                <li><a href="add-blog.php">Add Blog</a></li>
+            </ul>
         </li>
+
+      
 
         <!-- <li>
             <a class="has-arrow" href="#"><i class="fas fa-award" style="color: #1abc9c;"></i> <span>Country Export</span></a>
