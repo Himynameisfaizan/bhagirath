@@ -54,9 +54,8 @@ if (isset($conn)) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="eX_sXjETkL7O-emXnSDL6-LirHz1VsbiMIZMyFqgvIw" />
     <title><?= htmlspecialchars($pageTitle); ?></title>
     <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
     <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
@@ -67,16 +66,41 @@ if (isset($conn)) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-     <link rel="stylesheet" href="assets/style/include.css">
-    <link rel="stylesheet" href="assets/style/style.css">
-    <link rel="stylesheet" href="assets/style/about.css">
-    <link rel="stylesheet" href="assets/style/blog.css">
-    <link rel="stylesheet" href="assets/style/contact.css">
-    <link rel="stylesheet" href="assets/style/gallery.css">
-    <link rel="stylesheet" href="assets/style/product.css">
+     <link rel="stylesheet" href="assets/style/include.css?v=<?php echo time() ?>">
+    <link rel="stylesheet" href="assets/style/style.css?v=<?php echo time() ?>">
+    <link rel="stylesheet" href="assets/style/about.css?v=<?php echo time() ?>">
+    <link rel="stylesheet" href="assets/style/blog.css?v=<?php echo time() ?>">
+    <link rel="stylesheet" href="assets/style/contact.css?v=<?php echo time() ?>">
+    <link rel="stylesheet" href="assets/style/gallery.css?v=<?php echo time() ?>">
+    <link rel="stylesheet" href="assets/style/product.css?v=<?php echo time() ?>">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JGVQX47GN"></script>
+ <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PJCRLJB3');
+    
+    </script>
+  
+  
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JGVQX47GN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-3JGVQX47GN');
+    </script>
     
 </head>
 <body>
+
+
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJCRLJB3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
 
 <!-- Topbar Section (Desktop Only) -->
 <div class="topbar d-none d-lg-block shadow-sm">
