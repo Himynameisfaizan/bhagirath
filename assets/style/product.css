@@ -360,7 +360,7 @@
     }
 
     .btn-lg-quote {
-        background: var(--primary-green);
+        background: var(--primary-brand);
         color: #ffffff !important;
         padding: 15px 35px;
         border-radius: 8px;
@@ -369,17 +369,17 @@
         display: inline-flex;
         align-items: center;
         transition: all 0.3s ease;
-        border: 2px solid var(--primary-green);
+        border: 2px solid var(--primary-brand);
     }
 
     .btn-lg-quote:hover {
         background: transparent;
-        color: var(--primary-green) !important;
+        color: var(--secondary-brand) !important;
     }
 
     .btn-lg-call {
         background: transparent;
-        color: var(--accent-orange) !important;
+        color: var(--primary-brand) !important;
         padding: 15px 30px;
         border-radius: 8px;
         font-weight: 700;
@@ -387,11 +387,11 @@
         display: inline-flex;
         align-items: center;
         transition: all 0.3s ease;
-        border: 2px solid var(--accent-orange);
+        border: 2px solid var(--primary-brand);
     }
 
     .btn-lg-call:hover {
-        background: var(--accent-orange);
+        background: var(--primary-brand);
         color: #ffffff !important;
     }
 
@@ -424,7 +424,7 @@
         left: 0;
         width: 0%;
         height: 3px;
-        background-color: var(--primary-green);
+        background-color: var(--primary-brand);
         transition: width 0.3s ease;
     }
 

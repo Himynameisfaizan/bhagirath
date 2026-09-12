@@ -17,10 +17,10 @@ if ($local) {
     $site = "http://localhost/office_php_project/bhagirath/";
 } else {
     $host = 'localhost';
-    $username = 'u799879276_dngfire';
-    $password = 'Dng@fire1';
-    $dbName = 'u799879276_dngfire';
-    $site = 'https://dngfireengineering.com/';
+    $username = 'u799879276_bhagirath_db';
+    $password = 'Bhagi@rath1';
+    $dbName = 'u799879276_bhagirath_db';
+    $site = 'https://royalblue-gazelle-538620.hostingersite.com/';
 }
 
 // Make `$site` global
