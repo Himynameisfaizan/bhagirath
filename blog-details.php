@@ -28,6 +28,43 @@ include 'includes/header.php';
 include 'includes/breadcrumb.php';
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title><?= htmlspecialchars($pageTitle); ?></title>
+    <meta name="description" content="<?= htmlspecialchars(strip_tags($blog['meta_desc'])); ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($blog['meta_keywords']); ?>">
+    
+    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/x-icon">
+<!-- Blog Posting Schema Markup (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "<?= htmlspecialchars($blog['title']); ?>",
+  "image": "<?= $site; ?>/admin/assets/img/uploads/blogs/<?= htmlspecialchars($blog['image']); ?>",
+  "author": {
+    "@type": "Person",
+    "name": "<?= htmlspecialchars($blog['author'] ?? 'Admin'); ?>"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Bhagirath Enterprise",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "<?= $site; ?>/assets/images/logo/logo.png"
+    }
+  },
+  "datePublished": "<?= htmlspecialchars($blog['created_at']); ?>",
+  "description": "<?= htmlspecialchars(strip_tags(substr($blog['description'], 0, 150))); ?>"
+}
+</script>
+</head>
+<body>
+    
 <section class="single-blog-section">
     <div class="container">
         <div class="row">

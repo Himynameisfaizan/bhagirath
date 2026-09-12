@@ -35,6 +35,47 @@ if (isset($conn)) {
 include("includes/header.php");
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhagirath Enterprise | Premium Agricultural Exports</title>
+    <meta name="description" content="Bhagirath Enterprise is a trusted global exporter of premium quality dry fruits, whole spices, and authentic Indian agricultural products.">
+    <meta name="keywords" content="Bhagirath Enterprise, agricultural exports, Indian spices, dry fruits exporter, wholesale spices">
+    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
+    <!-- Organization & Local Business Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Bhagirath Enterprise",
+  "url": "<?= $site; ?>",
+  "logo": "<?= $site; ?>
+  /assets/images/logo/logo.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+91-8448211202",
+    "contactType": "customer service",
+    "areaServed": "IN",
+    "availableLanguage": ["en", "hi"]
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Office No-102, 1st Floor, Nitika Tower II, Block C-1, Pocket-4, Azadpur",
+    "addressLocality": "Delhi",
+    "postalCode": "110033",
+    "addressCountry": "IN"
+  },
+  "sameAs": [
+    "https://www.facebook.com",
+    "https://www.linkedin.com"
+  ]
+}
+</script>
+</head>
+<body>
+    
 <!-- Hero Slider Section Start -->
 <div id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-pause="false">
     <div class="carousel-indicators">

@@ -34,7 +34,45 @@ $pageTitle = $product['pro_name'];
 
 include 'includes/header.php';
 include 'includes/breadcrumb.php';
+
+
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($pageTitle); ?> | Bhagirath Enterprise</title>
+    <meta name="description" content="<?php echo htmlspecialchars($product['meta_desc']); ?>">
+    <meta name="keywords" content="<?php echo htmlspecialchars($product['meta_keywords']); ?>">
+    <link rel="icon" href="assets/images/logo/favicon.png" type="image/png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "<?= htmlspecialchars($product['pro_name']); ?>",
+  "image": [
+    "<?= $site; ?>/admin/assets/img/uploads/<?= htmlspecialchars($product['pro_img']); ?>"
+  ],
+  "description": "<?= htmlspecialchars(strip_tags($product['meta_desc'])); ?>",
+  "brand": {
+    "@type": "Brand",
+    "name": "<?= htmlspecialchars($product['brand_name'] ?? 'Bhagirath Enterprise'); ?>"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "<?php echo $site; ?>/product-details.php?slug=<?= htmlspecialchars($product['slug_url'] ?? $product['id']); ?>",
+    "priceCurrency": "INR",
+    "price": "<?= htmlspecialchars($product['selling_price'] ?? '0.00'); ?>",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+}
+</script>
+</head>
+<body>
+    
 
 <section class="pd-section">
     <div class="container">
