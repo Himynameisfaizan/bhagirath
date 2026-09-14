@@ -34,9 +34,9 @@ include 'includes/breadcrumb.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title><?= htmlspecialchars($pageTitle); ?></title>
+    <title><?= htmlspecialchars($blog['meta_title']); ?></title>
     <meta name="description" content="<?= htmlspecialchars(strip_tags($blog['meta_desc'])); ?>">
-    <meta name="keywords" content="<?= htmlspecialchars($blog['meta_keywords']); ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($blog['meta_key']); ?>">
     
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/x-icon">
 <!-- Blog Posting Schema Markup (JSON-LD) -->
