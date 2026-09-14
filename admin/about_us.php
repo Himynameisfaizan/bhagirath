@@ -10,22 +10,18 @@ include "db-conn.php";
 $success_message = '';
 $error_message = '';
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
-        // Handle section updates/inserts
         if (isset($_POST['sections'])) {
             foreach ($_POST['sections'] as $section_id => $section_data) {
                 $title = trim($section_data['title']);
                 $content = trim($section_data['content']);
                 $section_order = intval($section_data['order']);
                 
-                // Validate required fields
                 if (empty($title) || empty($content)) {
                     throw new Exception("Title and content are required for all sections");
                 }
 
-                // Handle file upload for this section
                 $image_path = $section_data['current_image'] ?? '';
                 
                 if (isset($_FILES['sections']['tmp_name'][$section_id]['image'])) {
@@ -181,7 +177,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 </div>
                             <?php endif; ?>
                             
-                            <form method="post" enctype="multipart/form-data" id="sectionsForm">
+                            <form method="post" enctype="multipart/form-data" id="sectionsForm" onsubmit="updateCKEditorInstances()">
                                 <div id="sectionsContainer">
                                     <?php foreach ($sections as $index => $section): ?>
                                         <div class="section-card" data-id="<?= $section['id'] ?>">
@@ -208,7 +204,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                 
                                                 <div class="col-md-12 mb-3">
                                                     <label class="form-label">Content <span class="text-danger">*</span></label>
-                                                    <textarea class="form-control" name="sections[<?= $section['id'] ?>][content]" rows="5" required><?= htmlspecialchars($section['content']) ?></textarea>
+                                                    <!-- Unique ID assigned for CKEditor initialization -->
+                                                    <textarea class="form-control ckeditor-textarea" name="sections[<?= $section['id'] ?>][content]" id="content_<?= $section['id'] ?>" rows="5" required><?= htmlspecialchars($section['content']) ?></textarea>
                                                 </div>
                                                 
                                                 <div class="col-md-6 mb-3">
@@ -284,17 +281,17 @@ while ($row = mysqli_fetch_assoc($result)) {
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <label class="form-label">Title <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="sections[new][title]" required>
+                    <input type="text" class="form-control" name="sections[new_rand_id][title]" required>
                 </div>
                 
                 <div class="col-md-12 mb-3">
                     <label class="form-label">Content <span class="text-danger">*</span></label>
-                    <textarea class="form-control" name="sections[new][content]" rows="5" required></textarea>
+                    <textarea class="form-control ckeditor-new" name="sections[new_rand_id][content]" rows="5" required></textarea>
                 </div>
                 
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Section Order</label>
-                    <input type="number" class="form-control" name="sections[new][order]" value="0">
+                    <input type="number" class="form-control" name="sections[new_rand_id][order]" value="0">
                 </div>
                 
                 <div class="col-md-12 mb-3">
@@ -302,7 +299,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <div class="file-upload mb-3">
                         <label class="file-upload-label">
                             <i class="fas fa-cloud-upload-alt me-2"></i>Choose Image
-                            <input type="file" name="sections[new][image]" class="file-upload-input" accept="image/*">
+                            <input type="file" name="sections[new_rand_id][image]" class="file-upload-input" accept="image/*">
                         </label>
                         <small class="d-block text-muted mt-1">Recommended size: 1200x800px (JPG, PNG, GIF, WEBP)</small>
                     </div>
@@ -312,7 +309,31 @@ while ($row = mysqli_fetch_assoc($result)) {
     </template>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <!-- CKEditor Standard CDN Link -->
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+    
     <script>
+        // Initialize CKEditor on all existing textareas with class 'ckeditor-textarea'
+        function initEditors() {
+            document.querySelectorAll('.ckeditor-textarea').forEach((textarea) => {
+                if (!CKEDITOR.instances[textarea.id]) {
+                    CKEDITOR.replace(textarea.id);
+                }
+            });
+        }
+        
+        // Run on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            initEditors();
+        });
+
+        // Function to sync CKEditor data back to textarea before form submission
+        function updateCKEditorInstances() {
+            for (let instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
+        }
+
         // Initialize sortable for sections
         new Sortable(document.getElementById('sectionsContainer'), {
             handle: '.section-handle',
@@ -341,6 +362,14 @@ while ($row = mysqli_fetch_assoc($result)) {
             const clone = template.content.cloneNode(true);
             const container = document.getElementById('sectionsContainer');
             
+            // Generate unique index/key for new section to avoid form submission conflict
+            const uniqueId = 'new_' + Date.now();
+            
+            // Replace 'new_rand_id' placeholders with uniqueId in names
+            clone.querySelectorAll('[name*="new_rand_id"]').forEach(el => {
+                el.name = el.name.replace('new_rand_id', uniqueId);
+            });
+            
             // Set order number for new section
             const sectionCount = container.querySelectorAll('.section-card').length;
             const orderInput = clone.querySelector('input[name$="[order]"]');
@@ -350,24 +379,37 @@ while ($row = mysqli_fetch_assoc($result)) {
             
             container.appendChild(clone);
             
+            // Find the newly added textarea and give it an ID, then initialize CKEditor
+            const newCard = container.lastElementChild;
+            const newTextArea = newCard.querySelector('.ckeditor-new');
+            if (newTextArea) {
+                newTextArea.id = 'content_' + uniqueId;
+                newTextArea.classList.remove('ckeditor-new');
+                newTextArea.classList.add('ckeditor-textarea');
+                CKEDITOR.replace(newTextArea.id);
+            }
+            
             // Add event listener for remove button
-            const newSection = container.lastElementChild;
-            const removeBtn = newSection.querySelector('.remove-section-btn');
+            const removeBtn = newCard.querySelector('.remove-section-btn');
             if (removeBtn) {
                 removeBtn.addEventListener('click', function() {
-                    newSection.remove();
+                    // Destroy CKEditor instance before removing element to avoid memory leaks
+                    if (CKEDITOR.instances[newTextArea.id]) {
+                        CKEDITOR.instances[newTextArea.id].destroy();
+                    }
+                    newCard.remove();
                 });
             }
             
             // Initialize image preview for new section
-            const fileInput = newSection.querySelector('.file-upload-input');
+            const fileInput = newCard.querySelector('.file-upload-input');
             if (fileInput) {
                 fileInput.addEventListener('change', function(e) {
                     const file = e.target.files[0];
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function(e) {
-                            let preview = newSection.querySelector('.image-preview');
+                            let preview = newCard.querySelector('.image-preview');
                             if (!preview) {
                                 preview = document.createElement('img');
                                 preview.className = 'image-preview';

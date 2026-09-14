@@ -45,7 +45,7 @@ include 'includes/breadcrumb.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle); ?> | Bhagirath Enterprise</title>
     <meta name="description" content="<?php echo htmlspecialchars($product['meta_desc']); ?>">
-    <meta name="keywords" content="<?php echo htmlspecialchars($product['meta_keywords']); ?>">
+    <meta name="keywords" content="<?php echo htmlspecialchars($product['meta_key']); ?>">
     <link rel="icon" href="assets/images/logo/favicon.png" type="image/png">
 <script type="application/ld+json">
 {

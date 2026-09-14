@@ -31,6 +31,16 @@ if (!isset($_SESSION['admin_logged_in'])) {
             <ul>
                 <li><a href="home-items.php">Add Logo</a></li>
                 <li><a href="add-banner.php">Add Banners</a></li>
+                <li><a href="about_us.php">Add About</a></li>
+            </ul>
+        </li>
+
+         <li>
+            <a class="has-arrow" href="#"><i class="fas fa-info-circle" style="color: #d35400;"></i> <span>About Us
+                    Page</span></a>
+            <ul>
+                <!-- <li><a href="about_us.php">Add About</a></li> -->
+                <li><a href="add-about-us-section.php">Add About sections</a></li>
             </ul>
         </li>
 
@@ -78,15 +88,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
             <ul>
                 <li><a href="add-country.php">Add Country</a></li>
                 <li><a href="view-country.php">View Country</a></li>
-            </ul>
-        </li> -->
-
-        <!-- <li>
-            <a class="has-arrow" href="#"><i class="fas fa-info-circle" style="color: #d35400;"></i> <span>About Us
-                    Page</span></a>
-            <ul>
-                <li><a href="about_us.php">Add About</a></li>
-                <li><a href="add-about-us-section.php">Add About sections</a></li>
             </ul>
         </li> -->
 

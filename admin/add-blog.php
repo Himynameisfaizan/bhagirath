@@ -18,6 +18,11 @@ if (isset($_POST['add_blog'])) {
     $description = mysqli_real_escape_string($conn, trim($_POST['description']));
     $status = isset($_POST['status']) ? (int)$_POST['status'] : 1;
     
+    // SEO Fields
+    $meta_title = mysqli_real_escape_string($conn, trim($_POST['meta_title']));
+    $meta_key = mysqli_real_escape_string($conn, trim($_POST['meta_key']));
+    $meta_desc = mysqli_real_escape_string($conn, trim($_POST['meta_desc']));
+    
     $user_slug = trim($_POST['slug']);
     $slug = !empty($user_slug) ? createSlug($user_slug) : createSlug($title);
 
@@ -42,11 +47,10 @@ if (isset($_POST['add_blog'])) {
         }
 
         if (empty($msg)) {
-            $insert_query = "INSERT INTO `blogs` (`title`, `slug`, `author`, `image`, `description`, `status`) 
-                             VALUES ('$title', '$slug', '$author', '$image_name', '$description', '$status')";
+            $insert_query = "INSERT INTO `blogs` (`title`, `slug`, `author`, `image`, `description`, `status`, `meta_title`, `meta_key`, `meta_desc`) 
+                             VALUES ('$title', '$slug', '$author', '$image_name', '$description', '$status', '$meta_title', '$meta_key', '$meta_desc')";
             
             if (mysqli_query($conn, $insert_query)) {
-                // Success: Redirect back to blog list
                 header("Location: blog.php?status=added");
                 exit();
             } else {
@@ -92,7 +96,6 @@ if (isset($_POST['add_blog'])) {
                 <?php endif; ?>
 
                 <div class="row">
-                    <!-- FULL WIDTH Add Blog Form -->
                     <div class="col-xl-12 col-lg-12 mb-4">
                         <div class="white_card custom-card">
                             <div class="card-header bg-white border-0 pt-4 pb-2 d-flex justify-content-between align-items-center">
@@ -128,6 +131,25 @@ if (isset($_POST['add_blog'])) {
                                             </select>
                                         </div>
 
+                                        <!-- SEO Fields Section -->
+                                        <div class="col-md-12"><hr class="my-3"><h5 class="fw-bold text-primary mb-3">SEO Meta Configuration</h5></div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Meta Title</label>
+                                            <input type="text" class="form-control" name="meta_title" placeholder="SEO Title for search engines">
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Meta Keywords</label>
+                                            <input type="text" class="form-control" name="meta_key" placeholder="keyword1, keyword2, keyword3">
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label fw-bold">Meta Description</label>
+                                            <textarea class="form-control" name="meta_desc" rows="2" placeholder="Brief summary for Google search results (150-160 characters)"></textarea>
+                                        </div>
+                                        <div class="col-md-12"><hr class="my-3"></div>
+
                                         <div class="col-md-12 mb-4">
                                             <label class="form-label fw-bold">Featured Image</label>
                                             <input type="file" class="form-control" name="image" id="imageInput" accept="image/*">
@@ -153,23 +175,15 @@ if (isset($_POST['add_blog'])) {
     </section>
 
     <?php include "footer.php"; ?>
-
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('add_blog_content');
-
         function convertToSlug(text) {
             return text.toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');        
         }
-
         document.getElementById('blog_title_add').addEventListener('input', function() {
             document.getElementById('blog_slug_add').value = convertToSlug(this.value);
         });
-        
-        document.getElementById('blog_slug_add').addEventListener('blur', function() {
-            this.value = convertToSlug(this.value);
-        });
-
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const preview = document.getElementById('imagePreview');
             const file = event.target.files[0];

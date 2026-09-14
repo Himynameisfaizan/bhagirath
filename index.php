@@ -22,6 +22,16 @@ if (isset($conn)) {
     $test_res = mysqli_query($conn, "SELECT * FROM testimonials WHERE status = 1 ORDER BY test_id DESC LIMIT 3");
 }
 
+// Fetch About Section Data
+$about_res = false;
+$about_data = [];
+if (isset($conn)) {
+    $about_query = mysqli_query($conn, "SELECT * FROM about_sections ORDER BY section_order ASC LIMIT 1");
+    if ($about_query && mysqli_num_rows($about_query) > 0) {
+        $about_data = mysqli_fetch_assoc($about_query);
+    }
+}
+
 $brands_array = [];
 if (isset($conn)) {
     $brands_res = mysqli_query($conn, "SELECT * FROM brands ORDER BY id DESC");
@@ -29,6 +39,23 @@ if (isset($conn)) {
         while ($brand = mysqli_fetch_assoc($brands_res)) {
             $brands_array[] = $brand;
         }
+    }
+}
+
+// Home page ke liye banners table se latest active banner ka SEO data fetch karna
+$seo_banner_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM banners WHERE status = 0 ORDER BY display_order ASC, id DESC LIMIT 1");
+if ($seo_banner_query && mysqli_num_rows($seo_banner_query) > 0) {
+    $seo_data = mysqli_fetch_assoc($seo_banner_query);
+    
+    // Agar admin ne admin panel se meta fields bhare hain, toh unhe variables mein daal dein
+    if (!empty($seo_data['meta_title'])) {
+        $metaTitle = $seo_data['meta_title'];
+    }
+    if (!empty($seo_data['meta_desc'])) {
+        $meta_description = $seo_data['meta_desc'];
+    }
+    if (!empty($seo_data['meta_key'])) {
+        $meta_keywords = $seo_data['meta_key'];
     }
 }
 
@@ -40,9 +67,9 @@ include("includes/header.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhagirath Enterprise | Premium Agricultural Exports</title>
-    <meta name="description" content="Bhagirath Enterprise is a trusted global exporter of premium quality dry fruits, whole spices, and authentic Indian agricultural products.">
-    <meta name="keywords" content="Bhagirath Enterprise, agricultural exports, Indian spices, dry fruits exporter, wholesale spices">
+    <title><?= htmlspecialchars($metaTitle); ?></title>
+    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
     <!-- Organization & Local Business Schema -->
 <script type="application/ld+json">
@@ -147,13 +174,17 @@ include("includes/header.php");
     </button>
 </div>
 
-<!-- About Us Section (SEO FOCUS: ONE H1 TAG) -->
+<!-- About Us Section (Dynamic from about_sections table) -->
 <section class="section-padding">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
                 <div class="about-img-wrapper">
-                    <img src="assets/images/about.jpg" alt="Bhagirath Enterprise Premium Quality" onerror="this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=800&auto=format&fit=crop'">
+                    <?php 
+                    // Database se image path fetch karna (agar khali ho toh default image dikhegi)
+                    $aboutImg = !empty($about_data['image_url']) ? 'admin/' . $about_data['image_url'] : 'assets/images/about.jpg';
+                    ?>
+                    <img src="<?= htmlspecialchars($aboutImg); ?>" alt="<?= !empty($about_data['title']) ? htmlspecialchars($about_data['title']) : 'Bhagirath Enterprise Premium Quality'; ?>" onerror="this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=800&auto=format&fit=crop'">
                     <div class="about-experience">
                         <h3 class="mb-0">100%</h3>
                         <p class="mb-0 small">Authentic Quality</p>
@@ -162,13 +193,25 @@ include("includes/header.php");
             </div>
             <div class="col-lg-6 ps-lg-5">
                 <span class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Who We Are</span>
-                <h1 class="section-title mb-4 h2">Exporting the Finest Flavors & Agricultural Wealth of India</h1>
-                <p class="text-muted-custom mb-4">At <strong>Bhagirath Enterprise</strong>, we specialize in processing and exporting premium quality whole spices, dry fruits, and authentic Indian agricultural products. Our commitment is to deliver farm-fresh, unadulterated, and richly flavored food products to global markets while maintaining the highest levels of purity.</p>
-                <ul class="list-unstyled mb-4 text-muted-custom">
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Ethically sourced directly from the finest Indian farms.</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Strict compliance with global food safety & hygiene standards.</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Uncompromised purity, natural aroma, and rich taste.</li>
-                </ul>
+                
+                <!-- Dynamic Title from database -->
+                <h1 class="section-title mb-4 h2">
+                    <?= !empty($about_data['title']) ? htmlspecialchars($about_data['title']) : 'Exporting the Finest Flavors & Agricultural Wealth of India'; ?>
+                </h1>
+                
+                <!-- Dynamic Description/Content from database -->
+                <div class="text-muted-custom mb-4">
+                    <?php 
+                    if (!empty($about_data['content'])) {
+                        // Agar admin ne rich text / HTML tags ke sath content save kiya hai toh usko render karega
+                        echo $about_data['content']; 
+                    } else {
+                        // Fallback text agar table khali ho
+                        echo '<p>At <strong>Bhagirath Enterprise</strong>, we specialize in processing and exporting premium quality whole spices, dry fruits, and authentic Indian agricultural products.</p>';
+                    }
+                    ?>
+                </div>
+                
                 <a href="about.php" class="btn btn-quote" style="background-color:#222222; border-color:#222222; color: white; padding: 10px 25px; border-radius: 5px;">Read More About Us</a>
             </div>
         </div>

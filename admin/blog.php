@@ -20,6 +20,11 @@ if (isset($_POST['update_blog'])) {
     $description = mysqli_real_escape_string($conn, trim($_POST['description']));
     $status = isset($_POST['status']) ? (int)$_POST['status'] : 1;
     
+    // SEO Fields
+    $meta_title = mysqli_real_escape_string($conn, trim($_POST['meta_title']));
+    $meta_key = mysqli_real_escape_string($conn, trim($_POST['meta_key']));
+    $meta_desc = mysqli_real_escape_string($conn, trim($_POST['meta_desc']));
+    
     $user_slug = trim($_POST['slug']);
     $slug = !empty($user_slug) ? createSlug($user_slug) : createSlug($title);
 
@@ -44,7 +49,7 @@ if (isset($_POST['update_blog'])) {
         }
     }
 
-    $update_query = "UPDATE `blogs` SET `title` = '$title', `slug` = '$slug', `author` = '$author', `image` = '$image_name', `description` = '$description', `status` = '$status' WHERE `blog_id` = '$blog_id'";
+    $update_query = "UPDATE `blogs` SET `title` = '$title', `slug` = '$slug', `author` = '$author', `image` = '$image_name', `description` = '$description', `status` = '$status', `meta_title` = '$meta_title', `meta_key` = '$meta_key', `meta_desc` = '$meta_desc' WHERE `blog_id` = '$blog_id'";
     
     if (mysqli_query($conn, $update_query)) {
         $msg = "Blog post updated successfully!";
@@ -74,13 +79,11 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-// Check for redirect message from add-blog.php
 if (isset($_GET['status']) && $_GET['status'] == 'added') {
     $msg = "New blog post published successfully!";
     $msg_class = "alert-success";
 }
 
-// --- Blogs Fetch karna ---
 $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC");
 ?>
 <!DOCTYPE html>
@@ -116,7 +119,6 @@ $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC"
                 <?php endif; ?>
 
                 <div class="row">
-                    <!-- FULL WIDTH Blog List View -->
                     <div class="col-xl-12 col-lg-12">
                         <div class="white_card custom-card">
                             <div class="card-header bg-white border-0 pt-4 pb-2 d-flex justify-content-between align-items-center">
@@ -165,6 +167,9 @@ $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC"
                                                                     data-author="<?= htmlspecialchars($blog['author']); ?>"
                                                                     data-status="<?= $blog['status']; ?>"
                                                                     data-desc="<?= htmlspecialchars($blog['description']); ?>"
+                                                                    data-metatitle="<?= htmlspecialchars($blog['meta_title']); ?>"
+                                                                    data-metakey="<?= htmlspecialchars($blog['meta_key']); ?>"
+                                                                    data-metadesc="<?= htmlspecialchars($blog['meta_desc']); ?>"
                                                                     data-img="assets/img/uploads/blogs/<?= $blog['image']; ?>">
                                                                 <i class="fas fa-edit"></i>
                                                             </button>
@@ -224,6 +229,25 @@ $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC"
                                 </select>
                             </div>
                         </div>
+
+                        <!-- SEO Fields Edit Section -->
+                        <div class="col-md-12"><hr class="my-3"><h5 class="fw-bold text-primary mb-3">SEO Meta Configuration</h5></div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Meta Title</label>
+                                <input type="text" class="form-control" name="meta_title" id="edit_meta_title">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Meta Keywords</label>
+                                <input type="text" class="form-control" name="meta_key" id="edit_meta_key">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label fw-bold">Meta Description</label>
+                                <textarea class="form-control" name="meta_desc" id="edit_meta_desc" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12"><hr class="my-3"></div>
+
                         <div class="mb-3">
                             <label class="form-label fw-bold">Change Image <small class="text-muted">(image pixel should be 1536X864)</small></label>
                             <input type="file" class="form-control" name="image" accept="image/*">
@@ -247,9 +271,7 @@ $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC"
     </div>
 
     <?php include "footer.php"; ?>
-
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
-
     <script>
         CKEDITOR.replace('edit_description');
 
@@ -269,6 +291,9 @@ $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC"
                 const author = this.getAttribute('data-author');
                 const status = this.getAttribute('data-status');
                 const desc = this.getAttribute('data-desc');
+                const metaTitle = this.getAttribute('data-metatitle');
+                const metaKey = this.getAttribute('data-metakey');
+                const metaDesc = this.getAttribute('data-metadesc');
                 const img_src = this.getAttribute('data-img');
 
                 document.getElementById('edit_blog_id').value = id;
@@ -276,6 +301,9 @@ $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC"
                 document.getElementById('edit_slug').value = slug;
                 document.getElementById('edit_author').value = author;
                 document.getElementById('edit_status').value = status;
+                document.getElementById('edit_meta_title').value = metaTitle;
+                document.getElementById('edit_meta_key').value = metaKey;
+                document.getElementById('edit_meta_desc').value = metaDesc;
                 document.getElementById('edit_current_img').src = img_src;
 
                 CKEDITOR.instances['edit_description'].setData(desc);
