@@ -175,21 +175,45 @@ if (isset($_POST['add_blog'])) {
     </section>
 
     <?php include "footer.php"; ?>
-    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('add_blog_content');
+        CKEDITOR.replace('add_blog_content', {
+            on: {
+                dialogShow: function(dialogEvent) {
+                    if (dialogEvent.data.name === 'link') {
+                        var dialog = dialogEvent.data;
+                        setTimeout(function() {
+                            var urlInput = dialog.getContentElement('info', 'url');
+                            if (urlInput && urlInput.getInputElement()) {
+                                urlInput.getInputElement().focus();
+                            }
+                        }, 100);
+                    }
+                }
+            }
+        });
+
         function convertToSlug(text) {
             return text.toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');        
         }
+
         document.getElementById('blog_title_add').addEventListener('input', function() {
             document.getElementById('blog_slug_add').value = convertToSlug(this.value);
         });
+        
+        document.getElementById('blog_slug_add').addEventListener('blur', function() {
+            this.value = convertToSlug(this.value);
+        });
+
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const preview = document.getElementById('imagePreview');
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; }
+                reader.onload = function(e) { 
+                    preview.src = e.target.result; 
+                    preview.style.display = 'block'; 
+                }
                 reader.readAsDataURL(file);
             }
         });

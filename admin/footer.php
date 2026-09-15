@@ -175,6 +175,41 @@
 <script src="assets/vendors/chart_am/chart-custom.js"></script>
 <script src="assets/js/dashboard_init.js"></script>
 <script src="assets/js/custom.js"></script>
+<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+<script>
+    // 1. Disable Bootstrap's modal focus restriction entirely for CKEditor
+    $(document).ready(function() {
+        if (typeof $.fn.modal !== 'undefined') {
+            // Overriding Bootstrap 4 modal focus handler to ignore CKEditor windows
+            $(document).on('focusin.bs.modal', function(e) {
+                if ($(e.target).closest('.cke_dialog, .cke_窗口, .cke_browser_webkit, .cke_dialog_contents').length) {
+                    e.stopPropagation();
+                }
+            });
+        }
+    });
+
+    // 2. Force focus onto the URL input when any CKEditor link dialog opens
+    if (typeof CKEDITOR !== 'undefined') {
+        CKEDITOR.on('dialogDefinition', function(ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+
+            if (dialogName === 'link') {
+                dialogDefinition.onShow = function() {
+                    // Slight delay to ensure the DOM elements of the dialog are fully rendered
+                    var dialog = this;
+                    setTimeout(function() {
+                        var urlField = dialog.getContentElement('info', 'url');
+                        if (urlField && urlField.getInputElement()) {
+                            urlField.getInputElement().focus();
+                        }
+                    }, 150);
+                };
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

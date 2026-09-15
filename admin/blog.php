@@ -192,7 +192,7 @@ $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC"
     </section>
 
     <!-- --- EDIT BLOG MODAL --- -->
-    <div class="modal fade" id="editBlogModal" tabindex="-1" aria-labelledby="editBlogModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editBlogModal" aria-labelledby="editBlogModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -271,47 +271,58 @@ $all_blogs = mysqli_query($conn, "SELECT * FROM `blogs` ORDER BY `blog_id` DESC"
     </div>
 
     <?php include "footer.php"; ?>
-    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace('edit_description');
+    
+<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+<script>
+    // --- BOOTSTRAP 4 CKEDITOR FOCUS FIX (Notice the underscore in _enforceFocus) ---
+    if (typeof $.fn.modal !== 'undefined') {
+        $.fn.modal.Constructor.prototype._enforceFocus = function() {
+            // Isko khali chhodne se Bootstrap modal CKEditor ke input ko block nahi karega
+        };
+    }
 
-        function convertToSlug(text) {
-            return text.toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');        
-        }
+    // --- CKEditor Initialization ---
+    CKEDITOR.replace('edit_description');
 
-        document.getElementById('edit_slug').addEventListener('blur', function() {
-            this.value = convertToSlug(this.value);
+    function convertToSlug(text) {
+        return text.toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');        
+    }
+
+    document.getElementById('edit_slug').addEventListener('blur', function() {
+        this.value = convertToSlug(this.value);
+    });
+
+    // --- Modal Data Populate Script ---
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const title = this.getAttribute('data-title');
+            const slug = this.getAttribute('data-slug');
+            const author = this.getAttribute('data-author');
+            const status = this.getAttribute('data-status');
+            const desc = this.getAttribute('data-desc');
+            const metaTitle = this.getAttribute('data-metatitle');
+            const metaKey = this.getAttribute('data-metakey');
+            const metaDesc = this.getAttribute('data-metadesc');
+            const img_src = this.getAttribute('data-img');
+
+            document.getElementById('edit_blog_id').value = id;
+            document.getElementById('edit_title').value = title;
+            document.getElementById('edit_slug').value = slug;
+            document.getElementById('edit_author').value = author;
+            document.getElementById('edit_status').value = status;
+            document.getElementById('edit_meta_title').value = metaTitle;
+            document.getElementById('edit_meta_key').value = metaKey;
+            document.getElementById('edit_meta_desc').value = metaDesc;
+            document.getElementById('edit_current_img').src = img_src;
+
+            // Update CKEditor Data
+            CKEDITOR.instances['edit_description'].setData(desc);
+
+            const editModal = new bootstrap.Modal(document.getElementById('editBlogModal'));
+            editModal.show();
         });
-
-        document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const title = this.getAttribute('data-title');
-                const slug = this.getAttribute('data-slug');
-                const author = this.getAttribute('data-author');
-                const status = this.getAttribute('data-status');
-                const desc = this.getAttribute('data-desc');
-                const metaTitle = this.getAttribute('data-metatitle');
-                const metaKey = this.getAttribute('data-metakey');
-                const metaDesc = this.getAttribute('data-metadesc');
-                const img_src = this.getAttribute('data-img');
-
-                document.getElementById('edit_blog_id').value = id;
-                document.getElementById('edit_title').value = title;
-                document.getElementById('edit_slug').value = slug;
-                document.getElementById('edit_author').value = author;
-                document.getElementById('edit_status').value = status;
-                document.getElementById('edit_meta_title').value = metaTitle;
-                document.getElementById('edit_meta_key').value = metaKey;
-                document.getElementById('edit_meta_desc').value = metaDesc;
-                document.getElementById('edit_current_img').src = img_src;
-
-                CKEDITOR.instances['edit_description'].setData(desc);
-
-                const editModal = new bootstrap.Modal(document.getElementById('editBlogModal'));
-                editModal.show();
-            });
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
