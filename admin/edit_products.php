@@ -26,7 +26,6 @@ $check = mysqli_query($conn, $sql);
 
 // Fetch Subcategories for the selected parent category
 $parent_cate_id = $product['pro_cate'];
-// FIX: In your database, sub_categories table links to categories using 'cate_id', not 'parent_id'
 $sub_cate_query = "SELECT * FROM `sub_categories` WHERE cate_id = '$parent_cate_id' AND status = 1";
 $sub_categories = mysqli_query($conn, $sub_cate_query);
 ?>
@@ -48,10 +47,9 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
     
     <section class="main_content dashboard_part large_header_bg">
         <div class="container-fluid g-0">
-            <!-- Header code hidden for brevity, keep your original header structure here -->
             <div class="row">
                 <div class="col-lg-12 p-0">
-                    <?php include "top_nav.php"; ?> <!-- Use your actual top nav if you have one -->
+                    <?php include "top_nav.php"; ?>
                 </div>
             </div>
         </div>
@@ -71,13 +69,9 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                             <div class="white_card_body">
                                 <br />
                                 <div class="card-body">
-                                    <!-- Action points to update-product.php -->
                                     <form action="update-product.php" method="POST" enctype="multipart/form-data">
                                         
-                                        <!-- Hidden Input for Product ID (Used for updating the row) -->
                                         <input type="hidden" name="pro_id" value="<?= $product['pro_id'] ?>" />
-                                        
-                                        <!-- IMPORTANT: Also send the Primary Key 'id' just in case update-product.php needs it -->
                                         <input type="hidden" name="id" value="<?= $product['id'] ?>" />
 
                                         <div class="row mb-3">
@@ -85,6 +79,15 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label" for="pro_name">Product Name</label>
                                                 <input type="text" class="form-control" name="pro_name" id="pro_name" value="<?= htmlspecialchars($product['pro_name']) ?>" required />
+                                            </div>
+
+                                            <!-- NEW: Custom Slug Field -->
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label" for="slug_url">Custom Slug (SEO URL)</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text" style="background-color: #f1f3f5;">site.com/</span>
+                                                    <input type="text" class="form-control" name="slug_url" id="slug_url" value="<?= htmlspecialchars($product['slug_url'] ?? '') ?>" required />
+                                                </div>
                                             </div>
 
                                             <!-- Brand Name -->
@@ -114,7 +117,6 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                                                     <?php 
                                                     if ($sub_categories && mysqli_num_rows($sub_categories) > 0) {
                                                         while ($sub_cate = mysqli_fetch_assoc($sub_categories)) {
-                                                            // Match using ID or sub_cate_id depending on your schema
                                                             $selected = ($product['pro_sub_cate'] == $sub_cate['id']) ? 'selected' : '';
                                                     ?>
                                                             <option value="<?= $sub_cate['id'] ?>" <?= $selected ?>>
@@ -137,9 +139,7 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label" for="pro_img">Product Image</label>
                                                 <input type="file" class="form-control" name="pro_img" id="pro_img" accept="image/*" />
-                                                
                                                 <input type="hidden" name="old_img" value="<?= $product['pro_img'] ?>">
-                                                
                                                 <?php if(!empty($product['pro_img'])): ?>
                                                 <div class="mt-2">
                                                     <small class="text-muted">Current Image:</small>
@@ -207,15 +207,15 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                                         <div class="row mb-4">
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label" for="meta_title">Meta Title</label>
-                                                <input type="text" class="form-control" name="meta_title" id="meta_title" value="<?= $product['meta_title'] ?>" />
+                                                <input type="text" class="form-control" name="meta_title" id="meta_title" value="<?= htmlspecialchars($product['meta_title'] ?? '') ?>" />
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label" for="meta_key">Meta Keywords</label>
-                                                <input type="text" class="form-control" name="meta_key" id="meta_key" value="<?= $product['meta_key'] ?>" />
+                                                <input type="text" class="form-control" name="meta_key" id="meta_key" value="<?= htmlspecialchars($product['meta_key'] ?? '') ?>" />
                                             </div>
                                             <div class="col-md-12 mb-3">
                                                 <label class="form-label" for="meta_desc">Meta Description</label>
-                                                <input type="text" class="form-control" name="meta_desc" id="meta_desc" value="<?= $product['meta_desc'] ?>" />
+                                                <input type="text" class="form-control" name="meta_desc" id="meta_desc" value="<?= htmlspecialchars($product['meta_desc'] ?? '') ?>" />
                                             </div>
                                         </div>
 
@@ -236,16 +236,23 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
         <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 
         <script>
-            // Replace textareas with CKEditor
             if (document.getElementById('pro_desc')) {
                 CKEDITOR.replace('pro_desc');
             }
             if (document.getElementById('short_desc')) {
                 CKEDITOR.replace('short_desc');
             }
+
+            // Slug Auto-Formatting
+            function convertToSlug(text) {
+                return text.toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+            }
+            
+            document.getElementById('slug_url').addEventListener('blur', function() {
+                this.value = convertToSlug(this.value);
+            });
         </script>
 
-        <!-- AJAX function to dynamically fetch subcategories -->
         <script type="text/javascript">
             function get_subcategory(cate_id) {
                 if (cate_id === '') {
@@ -257,7 +264,7 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                     url: 'functions.php',
                     method: 'POST',
                     data: { 
-                        action: 'get_subcategories', // Good practice to send an action parameter
+                        action: 'get_subcategories', 
                         cate_id: cate_id 
                     },
                     success: function (data) {
