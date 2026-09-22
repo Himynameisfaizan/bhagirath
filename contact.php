@@ -79,7 +79,7 @@ include 'includes/breadcrumb.php';
             <div class="col-lg-5 reveal">
                 <div class="contact-info-wrapper">
                     <span class="sec-subtitle">Get In Touch</span>
-                    <h2 class="sec-title">Let's Discuss Your Export Needs.</h2>
+                    <h2 class="sec-title" style="color: #212529;">Let's Discuss Your Export Needs.</h2>
                     <p class="contact-desc">Have questions about our premium spices, bulk pricing, or international shipping? Our dedicated team is ready to assist you. Reach out to us today!</p>
                     
                     <!-- Location Card -->
