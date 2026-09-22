@@ -41,7 +41,7 @@ $seo_meta_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FR
 if ($seo_meta_query && mysqli_num_rows($seo_meta_query) > 0) {
     $seo_data = mysqli_fetch_assoc($seo_meta_query);
     
-    $pageTitle = $seo_data['meta_title'];
+    $metaTitle = $seo_data['meta_title'];
     $meta_keywords = $seo_data['meta_key'];
     $meta_description = $seo_data['meta_desc'];
 } else {
@@ -60,7 +60,7 @@ include 'includes/breadcrumb.php';
 <head>
  <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle); ?></title>
+    <title><?= htmlspecialchars($metaTitle); ?></title>
     <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
     <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
