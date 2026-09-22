@@ -42,22 +42,20 @@ if (isset($conn)) {
     }
 }
 
+$currentPage = basename($_SERVER['PHP_SELF']);
 
-// Home page ke liye banners table se latest active banner ka SEO data fetch karna
-$seo_banner_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM about_us");
-if ($seo_banner_query && mysqli_num_rows($seo_banner_query) > 0) {
-    $seo_data = mysqli_fetch_assoc($seo_banner_query);
+$seo_meta_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
+
+if ($seo_meta_query && mysqli_num_rows($seo_meta_query) > 0) {
+    $seo_data = mysqli_fetch_assoc($seo_meta_query);
     
-    // Agar admin ne admin panel se meta fields bhare hain, toh unhe variables mein daal dein
-    if (!empty($seo_data['meta_title'])) {
-        $metaTitle = $seo_data['meta_title'];
-    }
-    if (!empty($seo_data['meta_desc'])) {
-        $meta_description = $seo_data['meta_desc'];
-    }
-    if (!empty($seo_data['meta_key'])) {
-        $meta_keywords = $seo_data['meta_key'];
-    }
+    $pageTitle = $seo_data['meta_title'];
+    $meta_keywords = $seo_data['meta_key'];
+    $meta_description = $seo_data['meta_desc'];
+} else {
+    $pageTitle = "Bhagirath Enterprise";
+    $meta_keywords = "export, agricultural products";
+    $meta_description = "Bhagirath Enterprise Export Company.";
 }
 
 include("includes/header.php");
@@ -68,7 +66,7 @@ include("includes/header.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($metaTitle); ?></title>
+    <title><?= htmlspecialchars($pageTitle); ?></title>
     <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
     <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">

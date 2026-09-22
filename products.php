@@ -7,23 +7,18 @@ $contactQuery = mysqli_query($conn, "SELECT phone FROM contacts LIMIT 1");
 $contactInfo = mysqli_fetch_assoc($contactQuery);
 $sitePhone = !empty($contactInfo['phone']) ? $contactInfo['phone'] : '+91-8448211202';
 
-// ==========================================
-// 1. FILTER, SEARCH & SORTING LOGIC
-// ==========================================
 $whereClause = "WHERE status = 1";
 $urlParams = [];
 
 if (isset($_GET['category']) && !empty($_GET['category'])) {
     $cat_input = mysqli_real_escape_string($conn, $_GET['category']);
 
-    // SMART FIX: Check if input is a slug/name or a direct ID/cate_id
     $catCheckQ = mysqli_query($conn, "SELECT cate_id FROM categories WHERE slug_url = '$cat_input' OR cate_id = '$cat_input' OR categories = '$cat_input' LIMIT 1");
     if ($catCheckQ && mysqli_num_rows($catCheckQ) > 0) {
         $catData = mysqli_fetch_assoc($catCheckQ);
         $cat_id = $catData['cate_id'];
         $whereClause .= " AND pro_cate = '$cat_id'";
     } else {
-        // Fallback direct match
         $whereClause .= " AND pro_cate = '$cat_input'";
     }
 
@@ -49,9 +44,6 @@ if (isset($_GET['sort'])) {
     }
 }
 
-// ==========================================
-// 2. PAGINATION LOGIC
-// ==========================================
 $limit = 9;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
@@ -65,9 +57,38 @@ $queryString = !empty($urlParams) ? "&" . implode("&", $urlParams) : "";
 
 $productsQuery = mysqli_query($conn, "SELECT * FROM products $whereClause $orderBy LIMIT $limit OFFSET $offset");
 
+$currentPage = basename($_SERVER['PHP_SELF']);
+
+$seo_meta_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
+
+if ($seo_meta_query && mysqli_num_rows($seo_meta_query) > 0) {
+    $seo_data = mysqli_fetch_assoc($seo_meta_query);
+    
+    $pageTitle = $seo_data['meta_title'];
+    $meta_keywords = $seo_data['meta_key'];
+    $meta_description = $seo_data['meta_desc'];
+} else {
+    $pageTitle = "Bhagirath Enterprise";
+    $meta_keywords = "export, agricultural products";
+    $meta_description = "Bhagirath Enterprise Export Company.";
+}
+
+
 include 'includes/header.php';
 include 'includes/breadcrumb.php';
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($pageTitle); ?></title>
+    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
+    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
+</head>
+<body>
 
 <section class="products-page-section">
     <div class="products-page-container">

@@ -1,10 +1,8 @@
 <?php
-// Database connection include karein
 include ('config/connect.php'); 
 
 $pageTitle = "Contact Us"; 
 
-// 1. Fetch Contact Details from Database (Fixed Query to get the latest record)
 $contactQuery = mysqli_query($conn, "SELECT * FROM contacts ORDER BY id DESC LIMIT 1");
 $contactInfo = mysqli_fetch_assoc($contactQuery);
 
@@ -13,7 +11,6 @@ $sitePhone = !empty($contactInfo['phone']) ? $contactInfo['phone'] : '+91 97171 
 $siteEmail = !empty($contactInfo['email']) ? $contactInfo['email'] : 'info@kisantokitchen.com';
 $siteWorkingHours = !empty($contactInfo['working_hours']) ? $contactInfo['working_hours'] : 'Mon - Sat, 9:00 AM to 6:00 PM IST';
 
-// 2. Form Submission Logic for Inquiries Table
 $msg = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_inquiry'])) {
     $name = mysqli_real_escape_string($conn, $_POST['name']);
@@ -23,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_inquiry'])) {
     $interest = mysqli_real_escape_string($conn, $_POST['interest']);
     $message = mysqli_real_escape_string($conn, $_POST['message']);
     
-    // Append company to message if provided
     if(!empty($company)) {
         $message = "Company: " . $company . "\n\nRequirements:\n" . $message;
     }
@@ -37,10 +33,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_inquiry'])) {
     }
 }
 
-// Include Header & Breadcrumb
+
+$currentPage = basename($_SERVER['PHP_SELF']);
+
+$seo_meta_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
+
+if ($seo_meta_query && mysqli_num_rows($seo_meta_query) > 0) {
+    $seo_data = mysqli_fetch_assoc($seo_meta_query);
+    
+    $pageTitle = $seo_data['meta_title'];
+    $meta_keywords = $seo_data['meta_key'];
+    $meta_description = $seo_data['meta_desc'];
+} else {
+    $pageTitle = "Bhagirath Enterprise";
+    $meta_keywords = "export, agricultural products";
+    $meta_description = "Bhagirath Enterprise Export Company.";
+}
+
+
 include 'includes/header.php'; 
 include 'includes/breadcrumb.php'; 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($pageTitle); ?></title>
+    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
+    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
+</head>
+<body>
+    
 
 <!-- ==============================
      1. CONTACT INFO & FORM SECTION

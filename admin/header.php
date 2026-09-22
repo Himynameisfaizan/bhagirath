@@ -33,6 +33,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                 <li><a href="add-banner.php">Add Banners</a></li>
                 <li><a href="about_us.php">Add About</a></li>
                 <li><a href="add-about-us-section.php"> About sections</a></li>
+                <li><a href="manage-meta.php"> Manage Meta</a></li>
                  <li><a href="add_contact.php"><span>Contact Details</span>
             </a>
         </li>
