@@ -20,7 +20,7 @@ if ($local) {
     $username = 'u799879276_bhagirath_db';
     $password = 'Bhagi@rath1';
     $dbName = 'u799879276_bhagirath_db';
-    $site = 'https://royalblue-gazelle-538620.hostingersite.com/';
+    $site = 'https://bhagirathenterprises.co.in/';
 }
 
 // Make `$site` global
