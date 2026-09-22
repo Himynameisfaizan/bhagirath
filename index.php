@@ -42,6 +42,7 @@ if (isset($conn)) {
     }
 }
 
+
 // Home page ke liye banners table se latest active banner ka SEO data fetch karna
 $seo_banner_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM banners WHERE status = 0 ORDER BY display_order ASC, id DESC LIMIT 1");
 if ($seo_banner_query && mysqli_num_rows($seo_banner_query) > 0) {
@@ -72,34 +73,34 @@ include("includes/header.php");
     <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
     <!-- Organization & Local Business Schema -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Bhagirath Enterprise",
-  "url": "<?= $site; ?>",
-  "logo": "<?= $site; ?>
-  /assets/images/logo/logo.png",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+91-8448211202",
-    "contactType": "customer service",
-    "areaServed": "IN",
-    "availableLanguage": ["en", "hi"]
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Office No-102, 1st Floor, Nitika Tower II, Block C-1, Pocket-4, Azadpur",
-    "addressLocality": "Delhi",
-    "postalCode": "110033",
-    "addressCountry": "IN"
-  },
-  "sameAs": [
-    "https://www.facebook.com",
-    "https://www.linkedin.com"
-  ]
-}
-</script>
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Bhagirath Enterprise",
+        "url": "<?= $site; ?>",
+        "logo": "<?= $site; ?>
+        /assets/images/logo/logo.png",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-8448211202",
+            "contactType": "customer service",
+            "areaServed": "IN",
+            "availableLanguage": ["en", "hi"]
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Office No-102, 1st Floor, Nitika Tower II, Block C-1, Pocket-4, Azadpur",
+            "addressLocality": "Delhi",
+            "postalCode": "110033",
+            "addressCountry": "IN"
+        },
+        "sameAs": [
+            "https://www.facebook.com",
+            "https://www.linkedin.com"
+        ]
+        }
+    </script>
 </head>
 <body>
     
@@ -442,106 +443,7 @@ include("includes/header.php");
     </div>
 </section>
 
-<!-- Premium Inquiry Section -->
-<section class="inquiry-section section-padding position-relative" style="background-color: #711b3c; background-image: linear-gradient(135deg, rgba(113, 27, 60, 0.95) 0%, rgba(40, 10, 20, 0.98) 100%), url('assets/images/contact-bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
-    
-    <div class="container position-relative z-1">
-        <div class="row align-items-center">
-            
-            <!-- Left Side Content -->
-            <div class="col-lg-5 text-white mb-5 mb-lg-0 pe-lg-4">
-                <span class="badge mb-3 px-3 py-2" style="background: rgba(255,255,255,0.15); color: #fff; font-weight: 600; letter-spacing: 1px; border-radius: 30px;">GET IN TOUCH</span>
-                <h2 class="mb-4" style="font-weight: 700; font-size: 2.8rem; line-height: 1.2; color: #ffffff;">Partner with Bhagirath Enterprise.</h2>
-                <p class="mb-5" style="color: rgba(255,255,255,0.85); font-size: 1.05rem; line-height: 1.7;">Ready to experience the finest export-quality agricultural products? Whether you have bulk requirements, need customized packaging, or want to explore our product range, our experts are here to assist you.</p>
-                
-                <ul class="list-unstyled mb-0 contact-info-list">
-                    <!-- Head Office -->
-                    <li class="mb-4 d-flex align-items-center p-3 rounded-4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                        <div class="icon-box me-4 text-center d-flex align-items-center justify-content-center shadow-sm" style="background: #ffffff; width: 55px; height: 55px; border-radius: 50%; flex-shrink: 0;">
-                            <i class="bi bi-geo-alt-fill" style="font-size: 1.5rem; color: #711b3c;"></i>
-                        </div>
-                        <div>
-                            <strong class="d-block mb-1" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">Head Office</strong>
-                            <span style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.4; display: block;">Office No-102, 1st Floor, Nitika Tower II, Block C-1, Pocket-4, Azadpur, Delhi - 110033</span>
-                        </div>
-                    </li>
-                    <!-- Phone -->
-                    <li class="mb-4 d-flex align-items-center p-3 rounded-4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                        <div class="icon-box me-4 text-center d-flex align-items-center justify-content-center shadow-sm" style="background: #ffffff; width: 55px; height: 55px; border-radius: 50%; flex-shrink: 0;">
-                            <i class="bi bi-telephone-fill" style="font-size: 1.5rem; color: #711b3c;"></i>
-                        </div>
-                        <div>
-                            <strong class="d-block mb-1" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">Call Us</strong>
-                            <span style="color: rgba(255,255,255,0.7); font-size: 0.95rem; display: block;">+91-8448211202 (Mr. Anuj)</span>
-                            <span style="color: rgba(255,255,255,0.7); font-size: 0.95rem; display: block;">+91-9870491393 (Vicky)</span>
-                        </div>
-                    </li>
-                    <!-- Email -->
-                    <li class="d-flex align-items-center p-3 rounded-4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                        <div class="icon-box me-4 text-center d-flex align-items-center justify-content-center shadow-sm" style="background: #ffffff; width: 55px; height: 55px; border-radius: 50%; flex-shrink: 0;">
-                            <i class="bi bi-envelope-fill" style="font-size: 1.5rem; color: #711b3c;"></i>
-                        </div>
-                        <div>
-                            <strong class="d-block mb-1" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">Email Us</strong>
-                            <span style="color: rgba(255,255,255,0.7); font-size: 0.95rem; display: block;">bhagirathenterprise7@gmail.com</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            
-            <!-- Right Side Inquiry Form (Floating Labels Design) -->
-            <div class="col-lg-7">
-                <div class="inquiry-form-wrapper bg-white p-4 p-md-5 rounded-4 shadow-lg position-relative" style="border: 1px solid rgba(0,0,0,0.05);">
-                    <div class="text-center mb-4">
-                        <h3 class="text-dark mb-2" style="font-weight: 800; font-size: 2rem;">Request a Free Quote</h3>
-                        <p class="text-muted small">Fill out the form below and our team will get back to you within 24 hours.</p>
-                    </div>
-                    
-                    <form action="inquiry-process.php" method="POST">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" name="name" class="form-control premium-input" id="nameInput" placeholder="Full Name" required>
-                                    <label for="nameInput">Full Name *</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" name="phone" class="form-control premium-input" id="phoneInput" placeholder="Phone Number" required>
-                                    <label for="phoneInput">Phone Number *</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="email" name="email" class="form-control premium-input" id="emailInput" placeholder="Email Address" required>
-                                    <label for="emailInput">Email Address *</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="text" name="subject" class="form-control premium-input" id="subjectInput" placeholder="Product of Interest" required>
-                                    <label for="subjectInput">Product of Interest *</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea name="message" class="form-control premium-input" id="messageInput" placeholder="Your Message" style="height: 120px" required></textarea>
-                                    <label for="messageInput">Your Message / Requirements *</label>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-3">
-                                <button type="submit" class="btn btn-maroon-glow w-100 py-3 text-uppercase fw-bold tracking-wide">
-                                    Send Inquiry Now <i class="bi bi-arrow-right ms-2"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</section>
+<?php include ('includes/inquiry-form.php');?>
 
 <!-- 6. FREQUENTLY ASKED QUESTIONS -->
 <section class="section-padding" style="background-color: #fdfdfd;">

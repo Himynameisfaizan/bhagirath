@@ -47,7 +47,7 @@
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 20px;
-  opacity: 0; 
+  opacity: 0;
 }
 
 .carousel-caption p {
@@ -56,12 +56,12 @@
   color: #e0e0e0;
   margin-bottom: 30px;
   max-width: 600px;
-  opacity: 0; 
+  opacity: 0;
 }
 
 /* Premium Buttons - Fixed to Logo Maroon */
 .btn-primary-custom {
-  background-color: #711b3c; 
+  background-color: #711b3c;
   color: white;
   padding: 12px 30px;
   border-radius: 30px;
@@ -69,7 +69,7 @@
   text-decoration: none;
   border: 2px solid #711b3c;
   transition: all 0.3s ease;
-  opacity: 0; 
+  opacity: 0;
   display: inline-block;
 }
 
@@ -89,7 +89,7 @@
   border: 2px solid white;
   transition: all 0.3s ease;
   margin-left: 15px;
-  opacity: 0; 
+  opacity: 0;
   display: inline-block;
 }
 
@@ -449,14 +449,26 @@
   width: 100%;
   overflow: hidden;
   position: relative;
-  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
 }
 
 .brand-slide-track {
   display: flex;
   align-items: center;
-  width: calc(250px * 14); 
+  width: calc(250px * 14);
   animation: scrollMarquee 30s linear infinite;
 }
 
@@ -493,7 +505,7 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-250px * 7)); 
+    transform: translateX(calc(-250px * 7));
   }
 }
 
@@ -506,7 +518,7 @@
 }
 .transition-up:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
   border-color: rgba(113, 27, 60, 0.2);
 }
 
@@ -535,7 +547,7 @@
   border: 1.5px solid #e0e0e0;
   border-radius: 10px;
   transition: all 0.3s ease;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 .premium-input:focus {
@@ -575,4 +587,69 @@
 
 .tracking-wide {
   letter-spacing: 1px;
+}
+
+.custom-inquiry-section {
+  background-color: #f8f9fa;
+  padding: 80px 0;
+}
+.custom-dark-card {
+  background-color: #0f172a;
+  border-radius: 0 8px 8px 0;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.custom-dark-card::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 50%;
+}
+.custom-dark-input {
+  background-color: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  padding: 12px 15px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.custom-dark-input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+.custom-dark-input:focus {
+  border-color: #d4af37 !important;
+  box-shadow: none !important;
+  outline: none;
+}
+.map-wrapper {
+  height: 100%;
+  min-height: 450px;
+  border-radius: 8px 0 0 8px;
+  overflow: hidden;
+}
+.btn-golden {
+  background-color: #dfb122;
+  color: #111;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border: none;
+  transition: all 0.3s ease;
+}
+.btn-golden:hover {
+  background-color: #c99e1a;
+  color: #000;
+}
+@media (max-width: 991px) {
+  .map-wrapper {
+    border-radius: 8px 8px 0 0;
+    min-height: 350px;
+  }
+  .custom-dark-card {
+    border-radius: 0 0 8px 8px;
+  }
 }

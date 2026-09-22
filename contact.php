@@ -4,8 +4,8 @@ include ('config/connect.php');
 
 $pageTitle = "Contact Us"; 
 
-// 1. Fetch Contact Details from Database
-$contactQuery = mysqli_query($conn, "SELECT * FROM contacts LIMIT 1");
+// 1. Fetch Contact Details from Database (Fixed Query to get the latest record)
+$contactQuery = mysqli_query($conn, "SELECT * FROM contacts ORDER BY id DESC LIMIT 1");
 $contactInfo = mysqli_fetch_assoc($contactQuery);
 
 $siteAddress = !empty($contactInfo['address']) ? $contactInfo['address'] : 'BLOCK- J SF-2 J-39 Sector 12, Pratap Vihar, Ghaziabad - 201001, U.P, India.';
@@ -61,7 +61,7 @@ include 'includes/breadcrumb.php';
                         <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
                         <div class="info-content">
                             <h4>Head Office & Processing Unit</h4>
-                            <p><?php echo $siteAddress; ?></p>
+                            <p><?php echo htmlspecialchars($siteAddress); ?></p>
                         </div>
                     </div>
 
@@ -70,8 +70,8 @@ include 'includes/breadcrumb.php';
                         <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
                         <div class="info-content">
                             <h4>Phone Inquiry</h4>
-                            <a href="tel:<?php echo $sitePhone; ?>"><?php echo $sitePhone; ?></a>
-                            <p style="font-size: 12px; margin-top: 5px;">(Available <?php echo $siteWorkingHours; ?>)</p>
+                            <a href="tel:<?php echo htmlspecialchars($sitePhone); ?>"><?php echo htmlspecialchars($sitePhone); ?></a>
+                            <p style="font-size: 12px; margin-top: 5px;">(Available <?php echo htmlspecialchars($siteWorkingHours); ?>)</p>
                         </div>
                     </div>
 
@@ -80,7 +80,7 @@ include 'includes/breadcrumb.php';
                         <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
                         <div class="info-content">
                             <h4>Email Address</h4>
-                            <a href="mailto:<?php echo $siteEmail; ?>"><?php echo $siteEmail; ?></a>
+                            <a href="mailto:<?php echo htmlspecialchars($siteEmail); ?>"><?php echo htmlspecialchars($siteEmail); ?></a>
                         </div>
                     </div>
 
@@ -117,7 +117,6 @@ include 'includes/breadcrumb.php';
 
                         <div class="form-group">
                             <select class="form-select" name="interest" required>
-                                <!-- URL se product name fetch karne ka logic -->
                                 <?php $selectedProduct = isset($_GET['product']) ? $_GET['product'] : ''; ?>
                                 <option value="" disabled <?php echo ($selectedProduct=='')?'selected':''; ?>>Select Product of Interest</option>
                                 <option value="General Inquiry">General Business Inquiry</option>
@@ -125,13 +124,17 @@ include 'includes/breadcrumb.php';
                                 <!-- Dynamic Products from Database -->
                                 <?php 
                                 $dropdownQuery = mysqli_query($conn, "SELECT pro_name FROM products WHERE status = 1");
-                                while($dropdownItem = mysqli_fetch_assoc($dropdownQuery)):
-                                    $isSelected = ($selectedProduct == $dropdownItem['pro_name']) ? 'selected' : '';
+                                if ($dropdownQuery && mysqli_num_rows($dropdownQuery) > 0) {
+                                    while($dropdownItem = mysqli_fetch_assoc($dropdownQuery)):
+                                        $isSelected = ($selectedProduct == $dropdownItem['pro_name']) ? 'selected' : '';
                                 ?>
-                                <option value="<?php echo $dropdownItem['pro_name']; ?>" <?php echo $isSelected; ?>>
-                                    <?php echo $dropdownItem['pro_name']; ?>
+                                <option value="<?php echo htmlspecialchars($dropdownItem['pro_name']); ?>" <?php echo $isSelected; ?>>
+                                    <?php echo htmlspecialchars($dropdownItem['pro_name']); ?>
                                 </option>
-                                <?php endwhile; ?>
+                                <?php 
+                                    endwhile;
+                                }
+                                ?>
                             </select>
                         </div>
 
@@ -154,11 +157,25 @@ include 'includes/breadcrumb.php';
 <section class="map-section reveal">
     <div class="container">
         <div class="map-container">
-            <!-- Dynamic map URL from database (fallback to ghaziabad map if empty) -->
             <?php 
-                $mapUrl = !empty($contactInfo['map']) ? $contactInfo['map'] : 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112028.98822506727!2d77.35246733221995!3d28.66317765955627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf1bb41c50fdf%3A0xe6f06fd26a7798ba!2sGhaziabad%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin';
+                if (!empty($contactInfo['map'])) {
+                    $mapData = trim($contactInfo['map']);
+                    
+                    // Check if it's a full iframe tag or just a URL
+                    if (strpos($mapData, '<iframe') !== false) {
+                        // Automatically adjust width/height of iframe to fit container
+                        $mapIframe = str_replace(['width="600"', 'width="100%"'], 'width="100%"', $mapData);
+                        $mapIframe = preg_replace('/height="\d+"/', 'height="100%"', $mapIframe);
+                        echo $mapIframe;
+                    } else {
+                        // If it's just a raw URL (like in your database dump)
+                        echo '<iframe src="' . htmlspecialchars($mapData) . '" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+                    }
+                } else {
+                    // Fallback map
+                    echo '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112028.98822506727!2d77.35246733221995!3d28.66317765955627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf1bb41c50fdf%3A0xe6f06fd26a7798ba!2sGhaziabad%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+                }
             ?>
-            <iframe src="<?php echo $mapUrl; ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
 </section>
