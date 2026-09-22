@@ -2,7 +2,7 @@
 include 'config/connect.php';
 
 // SEO Optimized Variables for Bhagirath Enterprise
-$pageTitle = "About Us ";
+$pageTitle = "About Us | Bhagirath Enterprises";
 $meta_description = "Bhagirath Enterprise is a leading global exporter of premium Indian agricultural products, specializing in Dry Fruits, Whole Spices, and authentic farm-fresh goods.";
 $meta_keywords = "Bhagirath Enterprise, agricultural exporter India, premium dry fruits export, Indian whole spices supplier, bulk spices exporter, global agri trade, New Delhi exporters";
 
@@ -21,6 +21,18 @@ if (isset($conn)) {
 
 <?php include 'includes/breadcrumb.php'; ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($pageTitle); ?></title>
+    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
+    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
+</head>
+<body>
+    
 <!-- 1. ABOUT COMPANY SECTION (SEO H1 Tag applied here) -->
 <section class="inner-about section-padding">
     <div class="container">

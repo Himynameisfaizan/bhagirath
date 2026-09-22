@@ -56,10 +56,6 @@ if (isset($conn)) {
 <head>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="eX_sXjETkL7O-emXnSDL6-LirHz1VsbiMIZMyFqgvIw" />
-    <title><?= htmlspecialchars($pageTitle); ?></title>
-    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
-    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
-    
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

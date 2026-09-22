@@ -32,17 +32,20 @@ if (!isset($_SESSION['admin_logged_in'])) {
                 <li><a href="home-items.php">Add Logo</a></li>
                 <li><a href="add-banner.php">Add Banners</a></li>
                 <li><a href="about_us.php">Add About</a></li>
+                <li><a href="add-about-us-section.php"> About sections</a></li>
+                 <li><a href="add_contact.php"><span>Contact Details</span>
+            </a>
+        </li>
             </ul>
         </li>
 
-         <li>
+         <!-- <li>
             <a class="has-arrow" href="#"><i class="fas fa-info-circle" style="color: #d35400;"></i> <span>About Us
                     Page</span></a>
             <ul>
-                <!-- <li><a href="about_us.php">Add About</a></li> -->
-                <li><a href="add-about-us-section.php">Add About sections</a></li>
+                <!-- <li><a href="about_us.php">Add About</a></li> 
             </ul>
-        </li>
+        </li> -->
 
         <li>
             <a class="has-arrow" href="#"><i class="fas fa-layer-group" style="color: #2ecc71;"></i>
@@ -108,12 +111,12 @@ if (!isset($_SESSION['admin_logged_in'])) {
             </a>
         </li> -->
 
-        <li>
+        <!-- <li>
             <a href="add_contact.php">
                 <i class="fa-regular fa-address-book" style="color: #e4d72b;"></i>
                 <span>Contact Details</span>
             </a>
-        </li>
+        </li> -->
 
         <!-- <li>
             <a href="new-leads.php">

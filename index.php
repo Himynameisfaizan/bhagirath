@@ -44,7 +44,7 @@ if (isset($conn)) {
 
 
 // Home page ke liye banners table se latest active banner ka SEO data fetch karna
-$seo_banner_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM banners WHERE status = 0 ORDER BY display_order ASC, id DESC LIMIT 1");
+$seo_banner_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM about_us");
 if ($seo_banner_query && mysqli_num_rows($seo_banner_query) > 0) {
     $seo_data = mysqli_fetch_assoc($seo_banner_query);
     
