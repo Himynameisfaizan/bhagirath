@@ -1,8 +1,6 @@
 <?php
-// Current page ka naam nikalne ke liye taaki active link highlight ho sake
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// --- DYNAMIC SEO HANDLING ---
 if (!isset($pageTitle)) { 
     $pageTitle = "Bhagirath Enterprise | Premium Agricultural Exports"; 
 }
@@ -16,27 +14,23 @@ if (!isset($meta_keywords)) {
 $header_logo = "assets/images/logo/logo.png"; 
 $favicon = "assets/images/logo/favicon.png"; 
 
-// Topbar default variables
 $t_phone = "+91-8448211202";
 $t_email = "bhagirathenterprise7@gmail.com";
 $t_fb = "#"; $t_linkedin = "#"; $t_wp = "#";
 
 if (isset($conn)) {
-    // 1. Fetch Header Logo
     $logo_query = mysqli_query($conn, "SELECT logo_path FROM logos WHERE location = 'header' AND is_active = 1 ORDER BY id DESC LIMIT 1");
     if ($logo_query && mysqli_num_rows($logo_query) > 0) {
         $logo_data = mysqli_fetch_assoc($logo_query);
         $header_logo = 'admin/uploads/' . $logo_data['logo_path'];
     }
 
-    // 2. Fetch Favicon
     $fav_query = mysqli_query($conn, "SELECT logo_path FROM logos WHERE location = 'favicon' AND is_active = 1 ORDER BY id DESC LIMIT 1");
     if ($fav_query && mysqli_num_rows($fav_query) > 0) {
         $fav_data = mysqli_fetch_assoc($fav_query);
         $favicon = 'admin/uploads/' . $fav_data['logo_path'];
     }
 
-    // 3. Fetch Contacts for Topbar
     $contact_query = mysqli_query($conn, "SELECT * FROM contacts ORDER BY id DESC LIMIT 1");
     if ($contact_query && mysqli_num_rows($contact_query) > 0) {
         $c_info = mysqli_fetch_assoc($contact_query);
@@ -47,7 +41,6 @@ if (isset($conn)) {
         $t_wp = !empty($c_info['wp_number']) ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $c_info['wp_number']) : $t_wp;
     }
 
-    // 4. Fetch Categories for Dropdown
     $cats_dropdown_query = mysqli_query($conn, "SELECT * FROM categories WHERE status = 1 ORDER BY categories ASC");
 }
 ?>
@@ -57,10 +50,28 @@ if (isset($conn)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Dynamic SEO Meta Tags -->
     <title><?= htmlspecialchars($pageTitle); ?></title>
     <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
     <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
+    
+    <?php
+    $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $domain = $_SERVER['HTTP_HOST'];
+    $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    
+    $canonical_url = $protocol . $domain . $uri_path;
+
+    if ($current_page == 'index.php') {
+        $canonical_url = $protocol . $domain . "/";
+    }
+    
+    if (($current_page == 'blog-details.php' || $current_page == 'product-details.php') && !empty($_GET['slug'])) {
+        $canonical_url .= "?slug=" . htmlspecialchars($_GET['slug']);
+    } elseif ($current_page == 'products.php' && !empty($_GET['category'])) {
+        $canonical_url .= "?category=" . htmlspecialchars($_GET['category']);
+    }
+    ?>
+    <link rel="canonical" href="<?= $canonical_url; ?>" />
     
     <meta name="google-site-verification" content="eX_sXjETkL7O-emXnSDL6-LirHz1VsbiMIZMyFqgvIw" />
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/x-icon">
@@ -129,8 +140,6 @@ if (isset($conn)) {
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJCRLJB3"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-
-<!-- Topbar Section (Desktop Only) -->
 <div class="topbar d-none d-lg-block shadow-sm">
     <div class="container">
         <div class="row align-items-center py-2">
@@ -149,11 +158,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </div>
 
-<!-- Header / Navbar Section -->
 <nav class="navbar navbar-expand-lg custom-navbar sticky-top">
     <div class="container">
         
-        <!-- Navbar Brand with Mobile Fix -->
         <a class="navbar-brand d-flex align-items-center" href="index.php" style="max-width: 70vw;">
             <img src="<?= htmlspecialchars($header_logo); ?>" alt="Bhagirath Enterprise Logo" class="logo-animate img-fluid" style="max-height: 65px; object-fit: contain;" onerror="this.src='assets/images/logo/logo.png'">
         </a>
@@ -162,7 +169,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="navbar-toggler-icon"></span>
         </button>
         
-        <!-- Nav Links -->
         <div class="collapse navbar-collapse justify-content-end" id="mainNav">
             <ul class="navbar-nav align-items-lg-center">
                 <li class="nav-item">
@@ -172,7 +178,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <a class="nav-link <?= ($current_page == 'about.php') ? 'active' : ''; ?>" href="about.php">About Us</a>
                 </li>
                 
-                <!-- Dynamic Products Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle <?= ($current_page == 'products.php' || $current_page == 'product-details.php') ? 'active' : ''; ?>" href="products.php" id="productsDropdown" data-bs-toggle="dropdown" aria-expanded="false" onclick="window.location.href='products.php';">
                         Products
