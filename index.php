@@ -43,64 +43,18 @@ if (isset($conn)) {
 }
 
 $currentPage = basename($_SERVER['PHP_SELF']);
+$seo_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
 
-$seo_meta_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
-
-if ($seo_meta_query && mysqli_num_rows($seo_meta_query) > 0) {
-    $seo_data = mysqli_fetch_assoc($seo_meta_query);
-    
+if ($seo_query && mysqli_num_rows($seo_query) > 0) {
+    $seo_data = mysqli_fetch_assoc($seo_query);
+    // Ye variables header.php catch kar lega
     $pageTitle = $seo_data['meta_title'];
     $meta_keywords = $seo_data['meta_key'];
     $meta_description = $seo_data['meta_desc'];
-} else {
-    $pageTitle = "Bhagirath Enterprise";
-    $meta_keywords = "export, agricultural products";
-    $meta_description = "Bhagirath Enterprise Export Company.";
 }
-
 include("includes/header.php");
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle); ?></title>
-    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
-    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
-    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
-    <!-- Organization & Local Business Schema -->
-    <script type="application/ld+json">
-        {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Bhagirath Enterprise",
-        "url": "<?= $site; ?>",
-        "logo": "<?= $site; ?>
-        /assets/images/logo/logo.png",
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+91-8448211202",
-            "contactType": "customer service",
-            "areaServed": "IN",
-            "availableLanguage": ["en", "hi"]
-        },
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Office No-102, 1st Floor, Nitika Tower II, Block C-1, Pocket-4, Azadpur",
-            "addressLocality": "Delhi",
-            "postalCode": "110033",
-            "addressCountry": "IN"
-        },
-        "sameAs": [
-            "https://www.facebook.com",
-            "https://www.linkedin.com"
-        ]
-        }
-    </script>
-</head>
-<body>
     
 <!-- Hero Slider Section Start -->
 <div id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-pause="false">

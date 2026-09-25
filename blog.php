@@ -21,70 +21,20 @@ $featuredBlog = mysqli_fetch_assoc($featuredQuery);
 $gridQuery = mysqli_query($conn, "SELECT * FROM blogs WHERE status = 1 ORDER BY created_at DESC");
 
 $currentPage = basename($_SERVER['PHP_SELF']);
+$seo_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
 
-$seo_meta_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
-
-if ($seo_meta_query && mysqli_num_rows($seo_meta_query) > 0) {
-    $seo_data = mysqli_fetch_assoc($seo_meta_query);
-    
+if ($seo_query && mysqli_num_rows($seo_query) > 0) {
+    $seo_data = mysqli_fetch_assoc($seo_query);
+    // Ye variables header.php catch kar lega
     $pageTitle = $seo_data['meta_title'];
     $meta_keywords = $seo_data['meta_key'];
     $meta_description = $seo_data['meta_desc'];
-} else {
-    $pageTitle = "Bhagirath Enterprise";
-    $meta_keywords = "export, agricultural products";
-    $meta_description = "Bhagirath Enterprise Export Company.";
 }
-
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle); ?></title>
-    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
-    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
-    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
-</head>
-<body>
     
 <section class="blog-page-section">
     <div class="container">
-<!--         
-        <?#php if($featuredBlog): 
-            $f_date = date('M d, Y', strtotime($featuredBlog['created_at']));
-            $f_excerpt = mb_substr(strip_tags($featuredBlog['description']), 0, 180) . '...';
-            // Checking if image exists, else fallback
-            $f_img = !empty($featuredBlog['image']) ? 'admin/assets/img/uploads/blogs/' . $featuredBlog['image'] : 'https://images.unsplash.com/photo-1606914501449-5a96b6ce24ca?q=80&w=1200';
-        ?>
-        <div class="row reveal">
-            <div class="col-12">
-                <div class="featured-blog">
-                    <div class="featured-img-wrapper">
-                        <span class="featured-category">Featured</span>
-                        <a href="blog-details.php?slug=<?php echo $featuredBlog['slug']; ?>">
-                            <img src="<?php echo $f_img; ?>" alt="<?php echo $featuredBlog['title']; ?>">
-                        </a>
-                    </div>
-                    <div class="featured-content">
-                        <div class="featured-meta">
-                            <i class="fa-regular fa-calendar-days"></i> <?php echo $f_date; ?>
-                            <i class="fa-regular fa-user"></i> <?php echo $featuredBlog['author']; ?>
-                        </div>
-                        <a href="blog-details.php?slug=<?php echo $featuredBlog['slug']; ?>" class="featured-title">
-                            <?php echo $featuredBlog['title']; ?>
-                        </a>
-                        <p class="featured-excerpt">
-                            <?php echo $f_excerpt; ?>
-                        </p>
-                        <a href="blog-details.php?slug=<?php echo $featuredBlog['slug']; ?>" class="btn-theme" style="background: var(--primary-green); color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; align-self: flex-start; transition: all 0.3s;" onmouseover="this.style.background='var(--accent-orange)'" onmouseout="this.style.background='var(--primary-green)'">Read Full Article <i class="fa-solid fa-arrow-right ms-2"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <#?php endif; ?> -->
 
         <!-- BLOG GRID -->
         <div class="row g-4 mt-2">

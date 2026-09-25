@@ -33,40 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_inquiry'])) {
     }
 }
 
-
 $currentPage = basename($_SERVER['PHP_SELF']);
+$seo_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
 
-$seo_meta_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM meta WHERE page_url = '$currentPage'");
-
-if ($seo_meta_query && mysqli_num_rows($seo_meta_query) > 0) {
-    $seo_data = mysqli_fetch_assoc($seo_meta_query);
-    
-    $metaTitle = $seo_data['meta_title'];
+if ($seo_query && mysqli_num_rows($seo_query) > 0) {
+    $seo_data = mysqli_fetch_assoc($seo_query);
+    // Ye variables header.php catch kar lega
+    $pageTitle = $seo_data['meta_title'];
     $meta_keywords = $seo_data['meta_key'];
     $meta_description = $seo_data['meta_desc'];
-} else {
-    $pageTitle = "Bhagirath Enterprise";
-    $meta_keywords = "export, agricultural products";
-    $meta_description = "Bhagirath Enterprise Export Company.";
 }
-
 
 include 'includes/header.php'; 
 include 'includes/breadcrumb.php'; 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($metaTitle); ?></title>
-    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
-    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
-    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/png">
-</head>
-<body>
-    
 
 <!-- ==============================
      1. CONTACT INFO & FORM SECTION

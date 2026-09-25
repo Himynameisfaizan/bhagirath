@@ -54,7 +54,14 @@ if (isset($conn)) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Dynamic SEO Meta Tags -->
+    <title><?= htmlspecialchars($pageTitle); ?></title>
+    <meta name="description" content="<?= htmlspecialchars($meta_description); ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
+    
     <meta name="google-site-verification" content="eX_sXjETkL7O-emXnSDL6-LirHz1VsbiMIZMyFqgvIw" />
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/x-icon">
 
@@ -62,37 +69,32 @@ if (isset($conn)) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-     <link rel="stylesheet" href="assets/style/include.css?v=<?php echo time() ?>">
+    <link rel="stylesheet" href="assets/style/include.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="assets/style/style.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="assets/style/about.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="assets/style/blog.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="assets/style/contact.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="assets/style/gallery.css?v=<?php echo time() ?>">
     <link rel="stylesheet" href="assets/style/product.css?v=<?php echo time() ?>">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JGVQX47GN"></script>
- <script>
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PJCRLJB3');
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JGVQX47GN"></script>
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-PJCRLJB3');
     </script>
   
-  
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JGVQX47GN"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
       gtag('config', 'G-3JGVQX47GN');
     </script>
     
 </head>
 <body>
-
-
 
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJCRLJB3"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -121,7 +123,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <nav class="navbar navbar-expand-lg custom-navbar sticky-top">
     <div class="container">
         
-        <!-- Navbar Brand with Mobile Fix (max-width prevents pushing button to next line) -->
+        <!-- Navbar Brand with Mobile Fix -->
         <a class="navbar-brand d-flex align-items-center" href="index.php" style="max-width: 70vw;">
             <img src="<?= htmlspecialchars($header_logo); ?>" alt="Bhagirath Enterprise Logo" class="logo-animate img-fluid" style="max-height: 65px; object-fit: contain;" onerror="this.src='assets/images/logo/logo.png'">
         </a>
@@ -140,7 +142,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <a class="nav-link <?= ($current_page == 'about.php') ? 'active' : ''; ?>" href="about.php">About Us</a>
                 </li>
                 
-                <!-- Dynamic Products Dropdown (Hover Enabled in CSS) -->
+                <!-- Dynamic Products Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle <?= ($current_page == 'products.php' || $current_page == 'product-details.php') ? 'active' : ''; ?>" href="products.php" id="productsDropdown" data-bs-toggle="dropdown" aria-expanded="false" onclick="window.location.href='products.php';">
                         Products
