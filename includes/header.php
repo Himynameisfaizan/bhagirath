@@ -92,6 +92,36 @@ if (isset($conn)) {
       gtag('js', new Date());
       gtag('config', 'G-3JGVQX47GN');
     </script>
+
+    <?php if ($current_page == 'index.php' || $current_page == '') { ?>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Bhagirath Enterprise",
+        "url": "https://bhagirathenterprises.co.in/",
+        "logo": "https://bhagirathenterprises.co.in/assets/images/logo/logo.png",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-8448211202",
+            "contactType": "customer service",
+            "areaServed": "IN",
+            "availableLanguage": ["en", "hi"]
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Office No-102, 1st Floor, Nitika Tower II, Block C-1, Pocket-4, Azadpur",
+            "addressLocality": "Delhi",
+            "postalCode": "110033",
+            "addressCountry": "IN"
+        },
+        "sameAs": [
+            "https://www.facebook.com",
+            "https://www.linkedin.com"
+        ]
+    }
+    </script>
+    <?php } ?>
     
 </head>
 <body>
