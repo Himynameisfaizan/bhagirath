@@ -133,6 +133,16 @@ if (isset($conn)) {
     }
     </script>
     <?php } ?>
+
+    <!-- Dynamic Schema Markup from Pages/Blogs -->
+    <?php 
+    if (isset($page_schema) && !empty(trim($page_schema))) {
+        echo $page_schema;
+    } 
+    ?>
+    
+</head>
+<body>
     
 </head>
 <body>
