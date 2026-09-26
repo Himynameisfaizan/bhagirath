@@ -12,12 +12,6 @@ function createSlug($string) {
     return preg_replace('/[^A-Za-z0-9-]+/', '-', strtolower(trim($string)));
 }
 
-// Check if ID is provided
-// if(!isset($_GET['id']) \vert{}\vert{} empty($_GET['id'])) {
-//     header("Location: blog.php");
-//     exit;
-// }
-
 $blog_id = mysqli_real_escape_string($conn,$_GET['id']);
 
 // --- UPDATE LOGIC ---
@@ -27,6 +21,9 @@ if (isset($_POST['update_blog'])) {
     
     $meta_title = mysqli_real_escape_string($conn, trim($_POST['meta_title']));
     $meta_key = mysqli_real_escape_string($conn, trim($_POST['meta_key']));$meta_desc = mysqli_real_escape_string($conn, trim($_POST['meta_desc']));
+    
+    // Schema field capture kiya
+    $schema_markup = mysqli_real_escape_string($conn, trim($_POST['schema_markup']));
     
     $user_slug = trim($_POST['slug']);
     $slug = !empty($user_slug) ? createSlug($user_slug) : createSlug($title);
@@ -52,7 +49,9 @@ if (isset($_POST['update_blog'])) {
         }
     }
 
-    if(empty($msg)) {$update_query = "UPDATE `blogs` SET `title` = '$title', `slug` = '$slug', `author` = '$author', `image` = '$image_name', `description` = '$description', `status` = '$status', `meta_title` = '$meta_title', `meta_key` = '$meta_key', `meta_desc` = '$meta_desc' WHERE `blog_id` = '$blog_id'";
+    if(empty($msg)) {
+        // Query mein schema_markup update lagaya
+        $update_query = "UPDATE `blogs` SET `title` = '$title', `slug` = '$slug', `author` = '$author', `image` = '$image_name', `description` = '$description', `status` = '$status', `meta_title` = '$meta_title', `meta_key` = '$meta_key', `meta_desc` = '$meta_desc', `schema_markup` = '$schema_markup' WHERE `blog_id` = '$blog_id'";
         
         if (mysqli_query($conn,$update_query)) {
             header("Location: blog.php?status=updated");
@@ -153,6 +152,14 @@ $blog_data = mysqli_fetch_assoc($fetch_query);
                                             <label class="form-label fw-bold">Meta Description</label>
                                             <textarea class="form-control" name="meta_desc" rows="2"><?= htmlspecialchars($blog_data['meta_desc']); ?></textarea>
                                         </div>
+                                        
+                                        <!-- Schema Markup Field fetch kiya gaya -->
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label fw-bold">SEO Schema Markup (JSON-LD)</label>
+                                            <textarea class="form-control" name="schema_markup" rows="6"><?= htmlspecialchars($blog_data['schema_markup'] ?? ''); ?></textarea>
+                                            <small class="text-muted">SEO expert yahan blog ka custom schema paste kar sakte hain.</small>
+                                        </div>
+                                        
                                         <div class="col-md-12"><hr class="my-3"></div>
 
                                         <div class="col-md-12 mb-4">
@@ -189,7 +196,6 @@ $blog_data = mysqli_fetch_assoc($fetch_query);
     <?php include "footer.php"; ?>
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
     <script>
-        // Normal initialization, no modal tricks needed anymore!
         CKEDITOR.replace('add_blog_content');
 
         function convertToSlug(text) {
@@ -213,7 +219,7 @@ $blog_data = mysqli_fetch_assoc($fetch_query);
                 reader.onload = function(e) { 
                     preview.src = e.target.result; 
                     preview.style.display = 'block'; 
-                    if(current) current.style.display = 'none'; // Hide old image when new is selected
+                    if(current) current.style.display = 'none'; 
                 }
                 reader.readAsDataURL(file);
             }

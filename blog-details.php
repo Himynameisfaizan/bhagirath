@@ -15,56 +15,58 @@ if (!$blog) {
     exit;
 }
 
-// Dynamic Variables Setup
-$pageTitle = $blog['title'];
+// 1. Content ke liye variables
 $publishDate = date('F d, Y', strtotime($blog['created_at']));
 $authorName = !empty($blog['author']) ? $blog['author'] : 'Admin Team';
 $mainImage = !empty($blog['image']) ? 'admin/assets/img/uploads/blogs/' . $blog['image'] : 'https://images.unsplash.com/photo-1606914501449-5a96b6ce24ca?q=80&w=1200';
+$currentURL = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-// Current Page URL for Social Sharing
-$currentURL = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+// 2. SEO (Header) ke liye variables
+$pageTitle = !empty($blog['meta_title']) ? $blog['meta_title'] : $blog['title'];
+$meta_description = !empty($blog['meta_desc']) ? $blog['meta_desc'] : strip_tags(substr($blog['description'], 0, 160));
+$meta_keywords = $blog['meta_key'];
 
+// 3. BlogPosting Schema (Automatic for this blog)
+$auto_blog_schema = '
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "' . htmlspecialchars($blog['title'], ENT_QUOTES) . '",
+    "image": "' . $site . 'admin/assets/img/uploads/blogs/' . htmlspecialchars($blog['image'], ENT_QUOTES) . '",
+    "author": {
+        "@type": "Person",
+        "name": "' . htmlspecialchars($authorName, ENT_QUOTES) . '"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Bhagirath Enterprise",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "' . $site . 'assets/images/logo/logo.png"
+        }
+    },
+    "datePublished": "' . htmlspecialchars($blog['created_at']) . '",
+    "description": "' . htmlspecialchars(strip_tags(substr($blog['description'], 0, 150)), ENT_QUOTES) . '"
+}
+</script>';
+
+// 4. Admin Panel wala Custom Schema fetch karna
+$admin_custom_schema = $blog['schema_markup'];
+
+// Dono schemas ko jod kar $page_schema variable mein dalna (taaki header.php isko catch kar le)
+$page_schema = $auto_blog_schema . "\n" . $admin_custom_schema;
+
+
+// ==========================================
+// AB HEADER KO INCLUDE KAREIN
 include 'includes/header.php';
 include 'includes/breadcrumb.php';
+// ==========================================
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title><?= htmlspecialchars($blog['meta_title']); ?></title>
-    <meta name="description" content="<?= htmlspecialchars(strip_tags($blog['meta_desc'])); ?>">
-    <meta name="keywords" content="<?= htmlspecialchars($blog['meta_key']); ?>">
-    
-    <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/x-icon">
-    <!-- Blog Posting Schema Markup (JSON-LD) -->
-    <script type="application/ld+json">
-        {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "<?= htmlspecialchars($blog['title']); ?>",
-        "image": "<?= $site; ?>/admin/assets/img/uploads/blogs/<?= htmlspecialchars($blog['image']); ?>",
-        "author": {
-            "@type": "Person",
-            "name": "<?= htmlspecialchars($blog['author'] ?? 'Admin'); ?>"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Bhagirath Enterprise",
-            "logo": {
-            "@type": "ImageObject",
-            "url": "<?= $site; ?>/assets/images/logo/logo.png"
-            }
-        },
-        "datePublished": "<?= htmlspecialchars($blog['created_at']); ?>",
-        "description": "<?= htmlspecialchars(strip_tags(substr($blog['description'], 0, 150))); ?>"
-        }
-    </script>
-</head>
-<body>
-    
+<!-- Yahan se bina DOCTYPE, html ya head tag ke seedha content shuru hoga -->
+
 <section class="single-blog-section">
     <div class="container">
         <div class="row">
@@ -73,15 +75,15 @@ include 'includes/breadcrumb.php';
             <div class="col-lg-8 pe-lg-5">
                 <div class="blog-details-content">
 
-                    <img src="<?php echo $mainImage; ?>" alt="<?php echo $blog['title']; ?>">
+                    <img src="<?php echo $mainImage; ?>" alt="<?php echo htmlspecialchars($blog['title']); ?>">
 
                     <div class="blog-meta-top">
                         <span><i class="fa-regular fa-calendar-days"></i> <?php echo $publishDate; ?></span>
-                        <span><i class="fa-regular fa-user"></i> By <?php echo $authorName; ?></span>
+                        <span><i class="fa-regular fa-user"></i> By <?php echo htmlspecialchars($authorName); ?></span>
                         <span><i class="fa-regular fa-folder-open"></i> News & Insights</span>
                     </div>
 
-                    <h1><?php echo $blog['title']; ?></h1>
+                    <h1><?php echo htmlspecialchars($blog['title']); ?></h1>
 
                     <div class="blog-description py-4">
                         <?php echo $blog['description']; ?>
@@ -138,9 +140,9 @@ include 'includes/breadcrumb.php';
                                 $r_img = !empty($recentBlog['image']) ? 'admin/assets/img/uploads/blogs/' . $recentBlog['image'] : 'https://images.unsplash.com/photo-1615486171448-4228965f7c32?q=80&w=200';
                         ?>
                                 <div class="recent-post-item">
-                                    <img src="<?php echo $r_img; ?>" alt="<?php echo $recentBlog['title']; ?>">
+                                    <img src="<?php echo $r_img; ?>" alt="<?php echo htmlspecialchars($recentBlog['title']); ?>">
                                     <div class="recent-post-info">
-                                        <h4><a href="blog-details.php?slug=<?php echo $recentBlog['slug']; ?>"><?php echo $recentBlog['title']; ?></a></h4>
+                                        <h4><a href="blog-details.php?slug=<?php echo $recentBlog['slug']; ?>"><?php echo htmlspecialchars($recentBlog['title']); ?></a></h4>
                                         <span><?php echo $r_date; ?></span>
                                     </div>
                                 </div>

@@ -12,34 +12,30 @@ function createSlug($string) {
     return preg_replace('/[^A-Za-z0-9-]+/', '-', strtolower(trim($string)));
 }
 
-if (isset($_POST['add_blog'])) {
-    $title = mysqli_real_escape_string($conn, trim($_POST['title']));
-    $author = mysqli_real_escape_string($conn, trim($_POST['author']));
-    $description = mysqli_real_escape_string($conn, trim($_POST['description']));
-    $status = isset($_POST['status']) ? (int)$_POST['status'] : 1;
-    
-    // SEO Fields
+if (isset($_POST['add_blog'])) {$title = mysqli_real_escape_string($conn, trim($_POST['title']));
+    $author = mysqli_real_escape_string($conn, trim($_POST['author']));$description = mysqli_real_escape_string($conn, trim($_POST['description']));
+    $status = isset($_POST['status']) ? (int)$_POST['status'] : 1;          // SEO Fields
     $meta_title = mysqli_real_escape_string($conn, trim($_POST['meta_title']));
-    $meta_key = mysqli_real_escape_string($conn, trim($_POST['meta_key']));
-    $meta_desc = mysqli_real_escape_string($conn, trim($_POST['meta_desc']));
+    $meta_key = mysqli_real_escape_string($conn, trim($_POST['meta_key']));$meta_desc = mysqli_real_escape_string($conn, trim($_POST['meta_desc']));
+    
+    // Naya Schema Field add kiya gaya
+    $schema_markup = mysqli_real_escape_string($conn, trim($_POST['schema_markup']));
     
     $user_slug = trim($_POST['slug']);
     $slug = !empty($user_slug) ? createSlug($user_slug) : createSlug($title);
 
-    if (!empty($title) && !empty($description)) {
-        $image_name = "";
-        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-            $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp'];
+    if (!empty($title) && !empty($description)) {$image_name = "";
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {$allowed_extensions = ['jpg', 'jpeg', 'png', 'webp'];
             $file_extension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
             
-            if (in_array($file_extension, $allowed_extensions)) {
+            if (in_array($file_extension,$allowed_extensions)) {
                 $image_name = 'blog_' . time() . '_' . rand(1000, 9999) . '.' . $file_extension;
                 $upload_path = "assets/img/uploads/blogs/";
                 
                 if (!is_dir($upload_path)) {
                     mkdir($upload_path, 0777, true);
                 }
-                move_uploaded_file($_FILES['image']['tmp_name'], $upload_path . $image_name);
+                move_uploaded_file($_FILES['image']['tmp_name'], $upload_path .$image_name);
             } else {
                 $msg = "Invalid image format! Only JPG, JPEG, PNG, and WEBP are allowed.";
                 $msg_class = "alert-danger";
@@ -47,15 +43,15 @@ if (isset($_POST['add_blog'])) {
         }
 
         if (empty($msg)) {
-            $insert_query = "INSERT INTO `blogs` (`title`, `slug`, `author`, `image`, `description`, `status`, `meta_title`, `meta_key`, `meta_desc`) 
-                             VALUES ('$title', '$slug', '$author', '$image_name', '$description', '$status', '$meta_title', '$meta_key', '$meta_desc')";
+            // Query mein schema_markup add kiya gaya
+            $insert_query = "INSERT INTO `blogs` (`title`, `slug`, `author`, `image`, `description`, `status`, `meta_title`, `meta_key`, `meta_desc`, `schema_markup`) 
+                             VALUES ('$title', '$slug', '$author', '$image_name', '$description', '$status', '$meta_title', '$meta_key', '$meta_desc', '$schema_markup')";
             
-            if (mysqli_query($conn, $insert_query)) {
+            if (mysqli_query($conn,$insert_query)) {
                 header("Location: blog.php?status=added");
                 exit();
             } else {
-                $msg = "Database Error: " . mysqli_error($conn);
-                $msg_class = "alert-danger";
+                $msg = "Database Error: " . mysqli_error($conn);$msg_class = "alert-danger";
             }
         }
     } else {
@@ -148,6 +144,14 @@ if (isset($_POST['add_blog'])) {
                                             <label class="form-label fw-bold">Meta Description</label>
                                             <textarea class="form-control" name="meta_desc" rows="2" placeholder="Brief summary for Google search results (150-160 characters)"></textarea>
                                         </div>
+                                        
+                                        <!-- Schema Markup Textarea -->
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label fw-bold">SEO Schema Markup (JSON-LD)</label>
+                                            <textarea class="form-control" name="schema_markup" rows="6" placeholder="Yahan pura <script type='application/ld+json'>...</script> code paste karein"></textarea>
+                                            <small class="text-muted">SEO expert yahan blog ka custom schema paste kar sakte hain.</small>
+                                        </div>
+                                        
                                         <div class="col-md-12"><hr class="my-3"></div>
 
                                         <div class="col-md-12 mb-4">
