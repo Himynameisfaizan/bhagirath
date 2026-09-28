@@ -90,13 +90,10 @@ include 'includes/breadcrumb.php';
 ?>
 
 <section class="pd-section" style="padding: 40px 0; background: #fdfdfd;">
-    <div class="container">
+    <div class="container-ng">
 
-        <!-- TOP SECTION: Product Image & Overview -->
         <div class="row bg-white p-3 p-md-4 rounded shadow-sm border border-light">
             
-            <!-- Left Column: Image Gallery -->
-            <!-- FIXED: Added mb-5 for extra mobile spacing and forced height:auto -->
             <div class="col-lg-5 mb-5 mb-lg-0 reveal" style="height: auto !important;">
                 <div class="pd-image-gallery position-relative" style="height: auto !important;">
                     
@@ -352,6 +349,8 @@ include 'includes/breadcrumb.php';
 </script>
 
 <style>
+    .pd-section .container-ng{ padding: 0 20px;}
+
     .reviews-list::-webkit-scrollbar { width: 5px; }
     .reviews-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
     .reviews-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
@@ -363,6 +362,10 @@ include 'includes/breadcrumb.php';
     
     .full-description-content table { width: 100% !important; max-width: 100%; margin-bottom: 1rem; }
     .full-description-content img { max-width: 100%; height: auto; }
+    @media (max-width: 768px) {
+    .pd-section .container-ng{ padding: 0 5px;}
+
+            }
 </style>
 
 <?php include 'includes/footer.php'; ?>
