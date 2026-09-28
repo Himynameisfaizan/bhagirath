@@ -108,14 +108,20 @@ $schema_data = mysqli_query($conn, "SELECT * FROM page_schemas ORDER BY id ASC")
         </div>
     </section>
 
-    <!-- EDIT SCHEMA MODAL -->
+   <!-- EDIT SCHEMA MODAL -->
     <div class="modal fade" id="editSchemaModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
+                
+                <!-- Modal Header -->
                 <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title text-white">Update Schema for: <span id="display_page_name" class="text-warning"></span></h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- FIX: Yahan data-dismiss="modal" add kiya gaya hai aur purana close icon fallback diya hai -->
+                    <button type="button" class="btn-close btn-close-white close text-white" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                
                 <form action="" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="schema_id" id="edit_schema_id">
@@ -126,11 +132,15 @@ $schema_data = mysqli_query($conn, "SELECT * FROM page_schemas ORDER BY id ASC")
                             <small class="text-muted mt-2 d-block">Note: Please include the <code>&lt;script&gt;</code> tags when pasting the schema.</small>
                         </div>
                     </div>
+                    
+                    <!-- Modal Footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <!-- FIX: Yahan bhi data-dismiss="modal" add kiya gaya hai -->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" name="update_schema" class="btn btn-primary">Save Schema</button>
                     </div>
                 </form>
+                
             </div>
         </div>
     </div>

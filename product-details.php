@@ -134,9 +134,14 @@ include 'includes/breadcrumb.php';
             <div class="col-lg-7 ps-lg-4 mt-4 mt-lg-0 reveal" style="clear: both; position: relative; z-index: 2;">
                 <span class="pd-category text-muted fw-bold text-uppercase" style="letter-spacing: 1px; font-size: 13px; display: inline-block; padding-top: 10px;"><?php echo htmlspecialchars($product['brand_name']); ?></span>
                 
-                <h1 class="pd-title fw-bolder mt-1 mb-3" style="color: #222; font-size: 2.2rem; line-height: 1.2;"><?php echo htmlspecialchars($product['pro_name']); ?></h1>
+                <!-- <h1 class="pd-title fw-bolder mt-1 mb-3" style="color: #222; font-size: 2.2rem; line-height: 1.2;"><?php echo htmlspecialchars($product['pro_name']); ?></h1> -->
                 
-                <!-- Rating Stars Summary -->
+                <!-- Short Description -->
+                <div class="pd-overview mb-4" style="color: #444; line-height: 1.7; font-size: 1.05rem;">
+                    <?php echo $product['short_desc']; ?>
+                </div>
+
+                 <!-- Rating Stars Summary -->
                 <div class="d-flex align-items-center mb-4">
                     <div class="text-warning me-2" style="font-size: 1.1rem;">
                         <?php 
@@ -147,11 +152,6 @@ include 'includes/breadcrumb.php';
                         ?>
                     </div>
                     <span class="text-muted fw-bold">(<?php echo $avg_rating; ?>/5) based on <?php echo $total_reviews; ?> Reviews</span>
-                </div>
-
-                <!-- Short Description -->
-                <div class="pd-overview mb-4" style="color: #444; line-height: 1.7; font-size: 1.05rem;">
-                    <?php echo $product['short_desc']; ?>
                 </div>
                 
                 <!-- Trust Badges Line -->

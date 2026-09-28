@@ -13,7 +13,7 @@ if (isset($_POST['update_meta'])) {
     $meta_desc = mysqli_real_escape_string($conn, trim($_POST['meta_desc']));
 
     $update_query = "UPDATE meta SET meta_title='$meta_title', meta_key='$meta_key', meta_desc='$meta_desc' WHERE id='$id'";
-    
+
     if (mysqli_query($conn, $update_query)) {
         $msg = "SEO Meta details updated successfully!";
         $msg_class = "alert-success";
@@ -29,6 +29,7 @@ $meta_data = mysqli_query($conn, "SELECT * FROM meta ORDER BY id ASC");
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -42,12 +43,14 @@ $meta_data = mysqli_query($conn, "SELECT * FROM meta ORDER BY id ASC");
 
     <section class="main_content dashboard_part">
         <div class="container-fluid g-0">
-            <div class="row"><div class="col-lg-12 p-0"><?php include "top_nav.php"; ?></div></div>
+            <div class="row">
+                <div class="col-lg-12 p-0"><?php include "top_nav.php"; ?></div>
+            </div>
         </div>
 
         <div class="main_content_iner">
             <div class="container-fluid p-3">
-                
+
                 <?php if (!empty($msg)): ?>
                     <div class="alert <?= $msg_class ?> alert-dismissible fade show" role="alert">
                         <?= $msg ?>
@@ -78,26 +81,26 @@ $meta_data = mysqli_query($conn, "SELECT * FROM meta ORDER BY id ASC");
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php 
+                                            <?php
                                             $i = 1;
-                                            while($row = mysqli_fetch_assoc($meta_data)): 
+                                            while ($row = mysqli_fetch_assoc($meta_data)):
                                             ?>
-                                            <tr>
-                                                <td><?= $i++; ?></td>
-                                                <td><strong><?= htmlspecialchars($row['page_name']); ?></strong></td>
-                                                <td><span class="badge bg-primary"><?= htmlspecialchars($row['page_url']); ?></span></td>
-                                                <td><?= htmlspecialchars($row['meta_title']); ?></td>
-                                                <td class="text-end">
-                                                    <button type="button" class="btn btn-sm btn-success edit-meta-btn"
-                                                        data-id="<?= $row['id']; ?>"
-                                                        data-name="<?= htmlspecialchars($row['page_name']); ?>"
-                                                        data-title="<?= htmlspecialchars($row['meta_title']); ?>"
-                                                        data-key="<?= htmlspecialchars($row['meta_key']); ?>"
-                                                        data-desc="<?= htmlspecialchars($row['meta_desc']); ?>">
-                                                        <i class="fas fa-edit"></i> Edit SEO
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td><?= $i++; ?></td>
+                                                    <td><strong><?= htmlspecialchars($row['page_name']); ?></strong></td>
+                                                    <td><span class="badge bg-primary"><?= htmlspecialchars($row['page_url']); ?></span></td>
+                                                    <td><?= htmlspecialchars($row['meta_title']); ?></td>
+                                                    <td class="text-end">
+                                                        <button type="button" class="btn btn-sm btn-success edit-meta-btn"
+                                                            data-id="<?= $row['id']; ?>"
+                                                            data-name="<?= htmlspecialchars($row['page_name']); ?>"
+                                                            data-title="<?= htmlspecialchars($row['meta_title']); ?>"
+                                                            data-key="<?= htmlspecialchars($row['meta_key']); ?>"
+                                                            data-desc="<?= htmlspecialchars($row['meta_desc']); ?>">
+                                                            <i class="fas fa-edit"></i> Edit SEO
+                                                        </button>
+                                                    </td>
+                                                </tr>
                                             <?php endwhile; ?>
                                         </tbody>
                                     </table>
@@ -116,23 +119,25 @@ $meta_data = mysqli_query($conn, "SELECT * FROM meta ORDER BY id ASC");
             <div class="modal-content">
                 <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title text-white">Update SEO for: <span id="display_page_name" class="text-warning"></span></h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white close text-white" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <form action="" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="meta_id" id="edit_meta_id">
-                        
+
                         <div class="mb-3">
                             <label class="form-label fw-bold">Meta Title</label>
                             <input type="text" class="form-control" name="meta_title" id="edit_meta_title" required>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label fw-bold">Meta Keywords</label>
                             <input type="text" class="form-control" name="meta_key" id="edit_meta_key">
                             <small class="text-muted">Separate keywords with commas (e.g. keyword1, keyword2)</small>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label fw-bold">Meta Description</label>
                             <textarea class="form-control" name="meta_desc" id="edit_meta_desc" rows="4"></textarea>
@@ -140,7 +145,7 @@ $meta_data = mysqli_query($conn, "SELECT * FROM meta ORDER BY id ASC");
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" name="update_meta" class="btn btn-primary">Save SEO Changes</button>
                     </div>
                 </form>
@@ -174,4 +179,5 @@ $meta_data = mysqli_query($conn, "SELECT * FROM meta ORDER BY id ASC");
         });
     </script>
 </body>
+
 </html>
