@@ -22,6 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-product'])) {
     $meta_title = mysqli_real_escape_string($conn, $_POST['meta_title'] ?? '');
     $meta_desc = mysqli_real_escape_string($conn, $_POST['meta_desc'] ?? '');
     $meta_key = mysqli_real_escape_string($conn, $_POST['meta_key'] ?? '');
+    
+    // ---> Naya Schema Variable Yahan Catch Kiya Hai <---
+    $schema_markup = mysqli_real_escape_string($conn, trim($_POST['schema_markup'] ?? ''));
+    
     $status = intval($_POST['status'] ?? 0);
     $slug_url = mysqli_real_escape_string($conn, $_POST['slug_url'] ?? '');
 
@@ -75,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-product'])) {
     $all_images = array_merge($current_images, $new_images);
     $pro_img = !empty($all_images) ? implode(',', $all_images) : '';
 
-    // Update query
+    // Update query (Schema Column add kar diya gaya hai)
     $query = "UPDATE products SET 
                 pro_name = '$pro_name',
                 brand_name = '$brand_name',
@@ -94,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-product'])) {
                 meta_title = '$meta_title',
                 meta_desc = '$meta_desc',
                 meta_key = '$meta_key',
+                schema_markup = '$schema_markup',
                 status = '$status',
                 slug_url = '$slug_url'
               WHERE pro_id = '$pro_id'";

@@ -155,9 +155,16 @@ $check = mysqli_query($conn,$sql);
                                                                 <label class="form-label" for="meta_key">Meta Keyword</label>
                                                                 <input type="text" class="form-control" name="meta_key" id="meta_key" placeholder="Meta Keyword"  />
                                                             </div>
-                                                            <div class="col-md-6 mb-3">
+                                                            <div class="col-md-12 mb-3">
                                                                 <label class="form-label" for="meta_desc">Meta Description</label>
                                                                 <input type="text" class="form-control" name="meta_desc" id="meta_desc" placeholder="Meta Description" />
+                                                            </div>
+                                                            
+                                                            <!-- Schema Markup Box -->
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label fw-bold" for="schema_markup">SEO Schema Markup (JSON-LD)</label>
+                                                                <textarea class="form-control" name="schema_markup" id="schema_markup" rows="6" placeholder="Paste full <script type='application/ld+json'>...</script> here..."></textarea>
+                                                                <small class="text-muted">SEO expert yahan product ka custom schema (jaise Product, Price, Rating) paste kar sakte hain.</small>
                                                             </div>
 
                                                             <div class="col-md-6">

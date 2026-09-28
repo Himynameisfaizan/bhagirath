@@ -27,7 +27,7 @@ $check = mysqli_query($conn, $sql);
 // Fetch Subcategories for the selected parent category
 $parent_cate_id = $product['pro_cate'];
 $sub_cate_query = "SELECT * FROM `sub_categories` WHERE cate_id = '$parent_cate_id' AND status = 1";
-$sub_categories = mysqli_query($conn, $sub_cate_query);
+$sub_categories = mysqli_query($conn,$sub_cate_query);
 ?>
 
 <!DOCTYPE html>
@@ -101,8 +101,8 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                                                 <label class="form-label" for="pro_cate">Parent Category</label>
                                                 <select class="form-control" name="pro_cate" id="pro_cate" required onchange="get_subcategory(this.value)">
                                                     <option value="">--Select Category--</option>
-                                                    <?php foreach ($check as $val) { ?>
-                                                        <option value="<?= $val['cate_id'] ?>" <?= ($product['pro_cate'] == $val['cate_id']) ? 'selected' : '' ?>>
+                                                    <?php foreach ($check as$val) { ?>
+                                                        <option value="<?= $val['cate_id'] ?>" <?= ($product['pro_cate'] ==$val['cate_id']) ? 'selected' : '' ?>>
                                                             <?= ucwords(htmlspecialchars($val['categories'])) ?>
                                                         </option>
                                                     <?php } ?>
@@ -116,8 +116,7 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                                                     <option value="0">--Select Subcategory--</option>
                                                     <?php 
                                                     if ($sub_categories && mysqli_num_rows($sub_categories) > 0) {
-                                                        while ($sub_cate = mysqli_fetch_assoc($sub_categories)) {
-                                                            $selected = ($product['pro_sub_cate'] == $sub_cate['id']) ? 'selected' : '';
+                                                        while ($sub_cate = mysqli_fetch_assoc($sub_categories)) {$selected = ($product['pro_sub_cate'] ==$sub_cate['id']) ? 'selected' : '';
                                                     ?>
                                                             <option value="<?= $sub_cate['id'] ?>" <?= $selected ?>>
                                                                 <?= ucwords(htmlspecialchars($sub_cate['categories'])) ?>
@@ -216,6 +215,13 @@ $sub_categories = mysqli_query($conn, $sub_cate_query);
                                             <div class="col-md-12 mb-3">
                                                 <label class="form-label" for="meta_desc">Meta Description</label>
                                                 <input type="text" class="form-control" name="meta_desc" id="meta_desc" value="<?= htmlspecialchars($product['meta_desc'] ?? '') ?>" />
+                                            </div>
+                                            
+                                            <!-- Schema Markup Box -->
+                                            <div class="col-md-12 mb-3">
+                                                <label class="form-label fw-bold" for="schema_markup">SEO Schema Markup (JSON-LD)</label>
+                                                <textarea class="form-control" name="schema_markup" id="schema_markup" rows="6"><?= htmlspecialchars($product['schema_markup'] ?? '') ?></textarea>
+                                                <small class="text-muted">SEO expert yahan product ka custom schema (jaise Product, Price, Rating) paste kar sakte hain.</small>
                                             </div>
                                         </div>
 

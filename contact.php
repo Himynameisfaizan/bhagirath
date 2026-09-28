@@ -38,10 +38,15 @@ $seo_query = mysqli_query($conn, "SELECT meta_title, meta_key, meta_desc FROM me
 
 if ($seo_query && mysqli_num_rows($seo_query) > 0) {
     $seo_data = mysqli_fetch_assoc($seo_query);
-    // Ye variables header.php catch kar lega
     $pageTitle = $seo_data['meta_title'];
     $meta_keywords = $seo_data['meta_key'];
     $meta_description = $seo_data['meta_desc'];
+}
+
+$schema_query = mysqli_query($conn, "SELECT schema_markup FROM page_schemas WHERE page_url = '$currentPage'");
+if ($schema_query && mysqli_num_rows($schema_query) > 0) {
+    $schema_row = mysqli_fetch_assoc($schema_query);
+    $page_schema = $schema_row['schema_markup']; 
 }
 
 include 'includes/header.php'; 

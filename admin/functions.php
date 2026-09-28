@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 include "db-conn.php";
 
 if (isset($_POST["add-categories"])) {
-    
+
     if (isset($_FILES['imageUpload']) && $_FILES['imageUpload']['error'] === UPLOAD_ERR_OK) {
         // File details
         $fileTmpPath = $_FILES['imageUpload']['tmp_name'];
@@ -75,9 +75,9 @@ if (isset($_POST["add-sub-categories"])) {
         // File details
         $fileTmpPath = $_FILES['imageUpload']['tmp_name'];
         $fileName = $_FILES['imageUpload']['name'];
-        // $fileSize and $fileType are retrieved but not used
-        // $fileSize = $_FILES['imageUpload']['size'];
-        // $fileType = $_FILES['imageUpload']['type'];
+        // $fileSize and$fileType are retrieved but not used
+        // $fileSize =$_FILES['imageUpload']['size'];
+        // $fileType =$_FILES['imageUpload']['type'];
 
         // Get file extension
         $fileNameCmps = explode(".", $fileName);
@@ -136,12 +136,12 @@ if (isset($_POST["add-sub-categories"])) {
 
     $check = mysqli_query($conn, $sql);
     if ($check) {
-        ?>
+?>
         <script type="text/javascript">
             alert('Inserted Successfully!');
             window.location.href = "view-sub-categories.php";
         </script>
-        <?php
+    <?php
     } else {
         echo "Error inserting record: " . mysqli_error($conn);
     }
@@ -162,143 +162,109 @@ function get_Category()
         <td>" . $result['slug_url'] . "</td>
         <td>" . $result['status'] . "</td>
         <td><a href='delete-category.php?id=" . $result['cate_id'] . "' onclick='return confirm(\"Are you sure you want to delete this category?\")'><i class='fa-solid fa-trash text-danger fs-4'></i></a></td>
-        <td><a href='edit_category.php?id=" . $result['cate_id']."'><i class='fa-solid fa-file-pen fs-4'></i></a></td>
+        <td><a href='edit_category.php?id=" . $result['cate_id'] . "'><i class='fa-solid fa-file-pen fs-4'></i></a></td>
         <td>" . $result['added_on'] . "</td>
         </tr>";
     }
 }
 
-// if(isset($_POST["add-product"])){
-//     $pro_id = mt_rand(11111, 99999);
-//     $pro_name = $_POST['pro_name'];
-//     $pro_cate = $_POST['pro_cate'];
-//     $pro_sub_cate = $_POST['pro_sub_cate'];
-//     $description = $_POST['pro_desc'];
-//     $new_arrival = $_POST['new_arrival'];
-//     $mrp = $_POST['mrp'];
-//     $selling_price = $_POST['selling_price'];
-//     $stock = $_POST['stock'];
-//     $status = $_POST['status'];
+if (isset($_POST["add-product"])) {
+    $pro_id = mt_rand(11111, 99999);
+    $pro_name       = mysqli_real_escape_string($conn, $_POST['pro_name']);
+    $brand_name       = mysqli_real_escape_string($conn, $_POST['brand_name']);
+    $pro_cate       = mysqli_real_escape_string($conn, $_POST['pro_cate']);
+    $pro_sub_cate   = mysqli_real_escape_string($conn, $_POST['pro_sub_cate']);
+    $short_description    = mysqli_real_escape_string($conn, $_POST['short_desc']);
+    $description    = mysqli_real_escape_string($conn, $_POST['pro_desc']);
+    $new_arrival    = mysqli_real_escape_string($conn, $_POST['new_arrival']);
+    $trending    = mysqli_real_escape_string($conn, $_POST['trending']);
+    $whole_sale_selling_price  = isset($_POST['whole_selling_price']) ? mysqli_real_escape_string($conn, $_POST['whole_selling_price']) : '';
+    $qty            = isset($_POST['qty']) ? mysqli_real_escape_string($conn, $_POST['qty']) : '';
+    $mrp            = mysqli_real_escape_string($conn, $_POST['mrp']);
+    $selling_price  = mysqli_real_escape_string($conn, $_POST['selling_price']);
+    $stock          = mysqli_real_escape_string($conn, $_POST['stock']);
+    $status         = mysqli_real_escape_string($conn, $_POST['status']);
 
-//     $filename = $_FILES['pro_img']['name'];
-//     $tmepname = $_FILES['pro_img']['tmp_name'];
-//     $destination = 'assests/img/uploads/'.$filename;
-//     move_uploaded_file($tmepname,$destination);
+    // Ensure the folder exists and is writable
+    $folder = 'assets/img/uploads/';
+    if (!is_dir($folder)) {
+        mkdir($folder, 0755, true);
+    }
 
-//     $meta_title = $_POST["meta_title"];
-//     $meta_key = $_POST["meta_key"];
-//     $meta_desc = $_POST["meta_desc"];
-//     $added_on = date('M d, Y');
-//     $slug_url = SlugUrl($pro_name); 
+    // Loop through each uploaded file
+    foreach ($_FILES['pro_img']['tmp_name'] as $key => $tempname) {
+        // Get the original file name for the current image
+        $filename = $_FILES['pro_img']['name'][$key];
+        $destination = $folder . $filename;
 
-
-//     $sql ="INSERT INTO `products`(`pro_id`, `pro_name`, `pro_cate`, `pro_sub_cate`, `short_desc`, `description`,`new_arrival`, `mrp`, `selling_price`, `stock`, `pro_img`, `status`,`slug_url`, `meta_title`, `meta_desc`, `meta_key`, `added_on`) VALUES ('$pro_id','$pro_name','$pro_cate','$pro_sub_cate','$description','$new_arrival','$mrp','$selling_price','$stock','$status','$slug_url','$filename','$meta_title','$meta_key','$meta_desc','$added_on','$added_on')";
-
-//     $check = mysqli_query($conn, $sql);
-//     if($check){
-//         
-
-
-    if (isset($_POST["add-product"])) {
-        $pro_id = mt_rand(11111, 99999);
-        $pro_name       = mysqli_real_escape_string($conn, $_POST['pro_name']);
-        $brand_name       = mysqli_real_escape_string($conn, $_POST['brand_name']);
-        $pro_cate       = mysqli_real_escape_string($conn, $_POST['pro_cate']);
-        $pro_sub_cate   = mysqli_real_escape_string($conn, $_POST['pro_sub_cate']);
-        $short_description    = mysqli_real_escape_string($conn, $_POST['short_desc']);
-        $description    = mysqli_real_escape_string($conn, $_POST['pro_desc']);
-        $new_arrival    = mysqli_real_escape_string($conn, $_POST['new_arrival']);
-        $trending    = mysqli_real_escape_string($conn, $_POST['trending']);
-        $whole_sale_selling_price  = mysqli_real_escape_string($conn, $_POST['whole_selling_price']);
-        $qty            = mysqli_real_escape_string($conn, $_POST['qty']);
-        $mrp            = mysqli_real_escape_string($conn, $_POST['mrp']);
-        $selling_price  = mysqli_real_escape_string($conn, $_POST['selling_price']);
-        $stock          = mysqli_real_escape_string($conn, $_POST['stock']);
-        $status         = mysqli_real_escape_string($conn, $_POST['status']);
-
-            // Ensure the folder exists and is writable
-        $folder = 'assets/img/uploads/';
-        if (!is_dir($folder)) {
-            mkdir($folder, 0755, true);
+        // Move the uploaded file to the target directory
+        if (move_uploaded_file($tempname, $destination)) {
+            echo "Image uploaded successfully: " . $filename . "<br>";
+        } else {
+            echo "Failed to upload image: " . $filename . "<br>";
         }
+    }
 
-        // Loop through each uploaded file
-        foreach ($_FILES['pro_img']['tmp_name'] as $key => $tempname) {
-            // Get the original file name for the current image
-            $filename = $_FILES['pro_img']['name'][$key];
-            $destination = $folder . $filename;
+    $meta_title = mysqli_real_escape_string($conn, $_POST['meta_title']);
+    $meta_key = mysqli_real_escape_string($conn, $_POST["meta_key"]);
+    $meta_desc = mysqli_real_escape_string($conn, $_POST["meta_desc"]);
 
-            // Move the uploaded file to the target directory
-            if (move_uploaded_file($tempname, $destination)) {
-                echo "Image uploaded successfully: " . $filename . "<br>";
-            } else {
-                echo "Failed to upload image: " . $filename . "<br>";
-            }
-        }
+    // --- Naya Schema variable fetch kiya ---
+    $schema_markup = mysqli_real_escape_string($conn, trim($_POST['schema_markup']));
+    $added_on = date('M d, Y');
+    $slug_url = strtolower(str_replace(" ", "-", $pro_name));
+    // $slug_url = SlugUrl($pro_name); 
+    // Assuming this function generates a valid slug
 
+    // Corrected SQL query (Schema column and value added)
+    $sql = "INSERT INTO `products`(`pro_id`, `pro_name`,`brand_name` , `pro_cate`, `pro_sub_cate`, `short_desc`, `description`, `new_arrival`,`trending`, `qty`, `mrp`, `selling_price`, `whole_sale_selling_price`, `stock`, `pro_img`, `status`, `slug_url`, `meta_title`, `meta_desc`, `meta_key`, `schema_markup`, `added_on`) 
+VALUES ('$pro_id', '$pro_name', '$brand_name','$pro_cate', '$pro_sub_cate', '$short_description', '$description', '$new_arrival', '$trending', '$qty','$mrp', '$selling_price', '$whole_sale_selling_price', '$stock', '$filename', '$status', '$slug_url', '$meta_title', '$meta_desc', '$meta_key', '$schema_markup', '$added_on')";
 
-
-        $meta_title = mysqli_real_escape_string($conn, $_POST['meta_title']);
-        $meta_key = mysqli_real_escape_string($conn, $_POST["meta_key"]);
-        $meta_desc = mysqli_real_escape_string($conn, $_POST["meta_desc"]);
-        $added_on = date('M d, Y');
-        $slug_url = strtolower(str_replace(" ", "-", $pro_name));
-        // $slug_url = SlugUrl($pro_name); 
-        // Assuming this function generates a valid slug
-
-        // Corrected SQL query
-        $sql = $sql = "INSERT INTO `products`(`pro_id`, `pro_name`,`brand_name` , `pro_cate`, `pro_sub_cate`, `short_desc`, `description`, `new_arrival`,`trending`, `qty`, `mrp`, `selling_price`, `whole_sale_selling_price`, `stock`, `pro_img`, `status`, `slug_url`, `meta_title`, `meta_desc`, `meta_key`, `added_on`) 
-VALUES ('$pro_id', '$pro_name', '$brand_name','$pro_cate', '$pro_sub_cate', '$short_description', '$description', '$new_arrival', '$trending', '$qty','$mrp', '$selling_price', '$whole_sale_selling_price', '$stock', '$filename', '$status', '$slug_url', '$meta_title', '$meta_desc', '$meta_key', '$added_on')";
-
-
-        // Execute the query
-        $check = mysqli_query($conn, $sql);
-        if ($check) {
+    // Execute the query
+    $check = mysqli_query($conn, $sql);
+    if ($check) {
     ?>
         <script type="text/javascript">
             alert('Inserted Successfully!');
             window.location.href = "add-products.php";
         </script>
     <?php
-        } else {
-            echo "Error: " . mysqli_error($conn);  // Optional: Display any error message from MySQL
-        }
+    } else {
+        echo "Error: " . mysqli_error($conn);  // Optional: Display any error message from MySQL
+    }
+}
+
+
+function get_Sub_Category()
+{
+    include "db-conn.php";
+
+    $searchQuery = "";
+    if (isset($_GET['search']) && !empty($_GET['search'])) {
+        $search = mysqli_real_escape_string($conn, $_GET['search']);
+        $searchQuery = " WHERE `categories` LIKE '%$search%' OR `slug_url` LIKE '%$search%' ";
     }
 
+    $sql = "SELECT * FROM `sub_categories` $searchQuery ORDER BY id DESC";
+    $check = mysqli_query($conn, $sql);
+    $sno = 1;
 
+    if ($check && mysqli_num_rows($check) > 0) {
+        while ($result = mysqli_fetch_assoc($check)) {
+            $parent_id = $result['parent_id'];
 
+            // Fetch parent category
+            $sql2 = "SELECT `categories` FROM `categories` WHERE `cate_id` = $parent_id";
+            $check2 = mysqli_query($conn, $sql2);
+            $parent_cate = ""; // Default empty if not found
 
+            if ($check2 && mysqli_num_rows($check2) > 0) {
+                $parent = mysqli_fetch_assoc($check2);
+                $parent_cate = $parent['categories'];
+            }
 
-    function get_Sub_Category()
-    {
-        include "db-conn.php";
-    
-        $searchQuery = "";
-        if (isset($_GET['search']) && !empty($_GET['search'])) {
-            $search = mysqli_real_escape_string($conn, $_GET['search']);
-            $searchQuery = " WHERE `categories` LIKE '%$search%' OR `slug_url` LIKE '%$search%' ";
-        }
-    
-        $sql = "SELECT * FROM `sub_categories` $searchQuery ORDER BY id DESC";
-        $check = mysqli_query($conn, $sql);
-        $sno = 1;
-    
-        if ($check && mysqli_num_rows($check) > 0) {
-            while ($result = mysqli_fetch_assoc($check)) {
-                $parent_id = $result['parent_id'];
-    
-                // Fetch parent category
-                $sql2 = "SELECT `categories` FROM `categories` WHERE `cate_id` = $parent_id";
-                $check2 = mysqli_query($conn, $sql2);
-                $parent_cate = ""; // Default empty if not found
-    
-                if ($check2 && mysqli_num_rows($check2) > 0) {
-                    $parent = mysqli_fetch_assoc($check2);
-                    $parent_cate = $parent['categories'];
-                }
-    
-                // Output row
-                echo "<tr>
+            // Output row
+            echo "<tr>
                     <td>" . $sno++ . "</td>
                     <td>" . htmlspecialchars($result['cate_id']) . "</td>
                     <td>" . htmlspecialchars(ucwords($result['categories'])) . "</td>
@@ -310,41 +276,42 @@ VALUES ('$pro_id', '$pro_name', '$brand_name','$pro_cate', '$pro_sub_cate', '$sh
                             onclick='return confirm(\"Are you sure you want to delete this sub-category?\")' 
                             class='btn btn-danger'>Delete</a>
                     </td>
-                    <td><a href='edit_sub_category.php?id=" . $result['cate_id']."'><i class='fa-solid fa-file-pen fs-4'></i></a></td>
+                    <td><a href='edit_sub_category.php?id=" . $result['cate_id'] . "'><i class='fa-solid fa-file-pen fs-4'></i></a></td>
                     <td>" . htmlspecialchars($result['added_on']) . "</td>
                 </tr>";
-            }
-        } else {
-            echo "<tr><td colspan='9' class='text-center'>No subcategories found</td></tr>";
         }
+    } else {
+        echo "<tr><td colspan='9' class='text-center'>No subcategories found</td></tr>";
     }
-    
+}
 
 
-    if (isset($_POST['cate_id'])) {
-        $p_id = $_POST['cate_id'];
-        $sql = "SELECT * FROM `sub_categories` where `parent_id` = '$p_id' ORDER BY id DESC";
-        $check = mysqli_query($conn, $sql);
+
+if (isset($_POST['cate_id'])) {
+    $p_id = $_POST['cate_id'];
+    $sql = "SELECT * FROM `sub_categories` where `parent_id` = '$p_id' ORDER BY id DESC";
+    $check = mysqli_query($conn, $sql);
     ?>
     <option value="">Select</option>
 <?php
-        while ($result = mysqli_fetch_assoc($check)) {
-            echo "<option value=" . $result['cate_id'] . ">" . $result['categories'] . "</option>";
-        }
+    while ($result = mysqli_fetch_assoc($check)) {
+        echo "<option value=" . $result['cate_id'] . ">" . $result['categories'] . "</option>";
     }
+}
 
-    function SlugUrl($string)
-    {
-        $slug = preg_replace('/[^a-zA-Z0-9 -]/', '', $string);
-        $slug = str_replace('', '-', $slug);
-        $slug = strtolower($slug);
-        return ($slug);
-    }
+function SlugUrl($string)
+{
+    $slug = preg_replace('/[^a-zA-Z0-9 -]/', '', $string);
+    $slug = str_replace('', '-', $slug);
+    $slug = strtolower($slug);
+    return ($slug);
+}
 
 
 
 // Get a single category by ID
-function get_category_by_id($cat_id) {
+function get_category_by_id($cat_id)
+{
     global $conn;
     $cat_id = mysqli_real_escape_string($conn, $cat_id);
     $sql = "SELECT * FROM `categories` WHERE cate_id = '$cat_id' LIMIT 1";
@@ -356,15 +323,13 @@ function get_category_by_id($cat_id) {
 
 
 
-function get_sub_category_by_id($cat_id) {
+function get_sub_category_by_id($cat_id)
+{
     global $conn;
     $cat_id = mysqli_real_escape_string($conn, $cat_id);
     $sql = "SELECT * FROM `sub_categories` WHERE cate_id = '$cat_id' LIMIT 1";
     $result = mysqli_query($conn, $sql);
     return mysqli_fetch_assoc($result);
 }
-
-
-
 
 ?>
