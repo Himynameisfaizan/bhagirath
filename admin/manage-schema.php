@@ -112,7 +112,7 @@ $schema_data = mysqli_query($conn, "SELECT * FROM page_schemas ORDER BY id ASC")
     <div class="modal fade" id="editSchemaModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                
+
                 <!-- Modal Header -->
                 <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title text-white">Update Schema for: <span id="display_page_name" class="text-warning"></span></h5>

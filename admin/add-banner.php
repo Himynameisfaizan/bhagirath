@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     (banner_path, title, description, link_url, status, display_order, uploaded_at, start_date, end_date, meta_title, meta_key, meta_desc) 
                     VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)");
                 
-                $stmt->bind_param("ssssiissSSS", 
+                $stmt->bind_param("sssssssssss", 
                     $target_file, 
                     $title, 
                     $description, 
@@ -321,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                         </div>
 
                                         <!-- SEO Fields Section Added -->
-                                        <div class="row mt-3 border-top pt-3">
+                                        <!-- <div class="row mt-3 border-top pt-3">
                                             <div class="col-12">
                                                 <h5 class="text-primary mb-3">SEO Meta Configuration</h5>
                                             </div>
@@ -341,7 +341,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                                                     <textarea class="form-control" id="meta_desc" name="meta_desc" rows="4" placeholder="Brief summary for Google search results (150-160 characters)"></textarea>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         
                                         <div class="upload-area" id="uploadArea">
                                             <i class="fas fa-cloud-upload-alt"></i>
