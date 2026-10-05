@@ -1,11 +1,18 @@
 <?php
-include "functions.php";
+session_start();
+include "db-conn.php";
 
 // Get testimonial id from URL
 if (isset($_GET['edit']) && !empty($_GET['edit'])) {
-    $testimonial_id = $_GET['edit'];
-    // Fetch testimonial details from the database
-    $testimonial = get_testimonial_by_id($testimonial_id);
+    $testimonial_id = intval($_GET['edit']);
+    
+    // Fetch testimonial details directly
+    $stmt = $conn->prepare("SELECT * FROM testimonials WHERE test_id = ?");
+    $stmt->bind_param("i", $testimonial_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $testimonial = $result->fetch_assoc();
+    
     if (!$testimonial) {
         echo "Testimonial not found.";
         exit;
@@ -18,25 +25,25 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
 // Process form submission for updating the testimonial
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve updated values from POST
-    $client_name = $_POST['client_name'] ?? '';
-    $client_title = $_POST['client_title'] ?? '';
-    $client_company = $_POST['client_company'] ?? '';
-    $testimonial_text = $_POST['testimonial_text'] ?? '';
-    $rating = $_POST['rating'] ?? 0;
-    $project_name = $_POST['project_name'] ?? '';
-    $project_date = $_POST['project_date'] ?? '';
+    $client_name = mysqli_real_escape_string($conn, $_POST['client_name'] ?? '');
+    $client_title = mysqli_real_escape_string($conn, $_POST['client_title'] ?? '');
+    $client_company = mysqli_real_escape_string($conn, $_POST['client_company'] ?? '');
+    $testimonial_text = mysqli_real_escape_string($conn, $_POST['testimonial_text'] ?? '');
+    $rating = intval($_POST['rating'] ?? 0);
+    $project_name = mysqli_real_escape_string($conn, $_POST['project_name'] ?? '');
+    $project_date = mysqli_real_escape_string($conn, $_POST['project_date'] ?? '');
     $featured = isset($_POST['featured']) ? 1 : 0;
-    $display_order = $_POST['display_order'] ?? 0;
+    $display_order = intval($_POST['display_order'] ?? 0);
     
     // Handle file upload
-    $client_photo = $testimonial['client_photo']; // Keep existing photo by default
+    $client_photo = $testimonial['image']; // Keep existing photo by default
     
     if (!empty($_FILES['client_photo']['name'])) {
         $upload_dir = "uploads/testimonials/";
         
         // Create directory if it doesn't exist
         if (!file_exists($upload_dir)) {
-            mkdir($upload_dir, 0755, true); // Create with read/write permissions
+            mkdir($upload_dir, 0755, true); 
         }
         
         $file_name = basename($_FILES['client_photo']['name']);
@@ -50,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (move_uploaded_file($_FILES['client_photo']['tmp_name'], $target_path)) {
                 $client_photo = $file_name;
                 // Delete old photo if it exists and is different
-                if (!empty($testimonial['client_photo']) && $testimonial['client_photo'] != $file_name) {
-                    @unlink($upload_dir . $testimonial['client_photo']);
+                if (!empty($testimonial['image']) && $testimonial['image'] != $file_name) {
+                    @unlink($upload_dir . $testimonial['image']);
                 }
             } else {
                 $_SESSION['error'] = "Error uploading file.";
@@ -61,15 +68,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     
-    // Update testimonial
-    if (update_testimonial($testimonial_id, $client_name, $client_title, $client_company, 
-                         $client_photo, $testimonial_text, $rating, $project_name, 
-                         $project_date, $featured, $display_order)) {
+    // Update testimonial directly using correct column names
+    $update_sql = "UPDATE testimonials SET 
+                    name = '$client_name', 
+                    designation = '$client_title', 
+                    client_company = '$client_company', 
+                    image = '$client_photo', 
+                    message = '$testimonial_text', 
+                    rating = '$rating', 
+                    project_name = '$project_name', 
+                    project_date = '$project_date', 
+                    featured = '$featured', 
+                    display_order = '$display_order' 
+                   WHERE test_id = '$testimonial_id'";
+                   
+    if (mysqli_query($conn, $update_sql)) {
         $_SESSION['success'] = "Testimonial updated successfully!";
-        header("Location: view-testimonials.php"); // redirect back after update
+        header("Location: view-testimonials.php"); 
         exit;
     } else {
-        $_SESSION['error'] = "Error updating testimonial.";
+        $_SESSION['error'] = "Error updating testimonial: " . mysqli_error($conn);
     }
 }
 ?>
@@ -147,18 +165,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                     <div class="QA_table mb_30">
                                         <form action="" method="post" enctype="multipart/form-data">
-                                            <input type="hidden" name="testimonial_id" value="<?= htmlspecialchars($testimonial['id']) ?>">
+                                            <input type="hidden" name="testimonial_id" value="<?= htmlspecialchars($testimonial['test_id']) ?>">
                                             
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label">Client Name *</label>
                                                     <input type="text" name="client_name" class="form-control" 
-                                                           value="<?= htmlspecialchars($testimonial['client_name']) ?>" required>
+                                                           value="<?= htmlspecialchars($testimonial['name']) ?>" required>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">Client Title</label>
                                                     <input type="text" name="client_title" class="form-control" 
-                                                           value="<?= htmlspecialchars($testimonial['client_title']) ?>">
+                                                           value="<?= htmlspecialchars($testimonial['designation']) ?>">
                                                 </div>
                                             </div>
                                             
@@ -202,14 +220,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="mb-3">
                                                 <label class="form-label">Testimonial Text *</label>
                                                 <textarea name="testimonial_text" class="form-control" rows="5" required><?= 
-                                                    htmlspecialchars($testimonial['testimonial_text']) ?></textarea>
+                                                    htmlspecialchars($testimonial['message']) ?></textarea>
                                             </div>
                                             
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label">Client Photo</label>
-                                                    <?php if (!empty($testimonial['client_photo'])): ?>
-                                                        <img src="uploads/testimonials/<?= htmlspecialchars($testimonial['client_photo']) ?>" 
+                                                    <?php if (!empty($testimonial['image'])): ?>
+                                                        <img src="uploads/testimonials/<?= htmlspecialchars($testimonial['image']) ?>" 
                                                              class="preview-image d-block mb-2">
                                                     <?php endif; ?>
                                                     <input type="file" name="client_photo" class="form-control" accept="image/*">

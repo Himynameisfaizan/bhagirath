@@ -13,21 +13,21 @@ if (isset($_GET['deleteId'])) {
     $delete_id = intval($_GET['deleteId']);
     
     // First get the photo path to delete the file
-    $stmt = $conn->prepare("SELECT client_photo FROM testimonials WHERE id = ?");
+    $stmt = $conn->prepare("SELECT image FROM testimonials WHERE test_id = ?");
     $stmt->bind_param("i", $delete_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $testimonial = $result->fetch_assoc();
     
-    if ($testimonial && !empty($testimonial['client_photo'])) {
-        $photo_path = "../uploads/testimonials/" . $testimonial['client_photo'];
+    if ($testimonial && !empty($testimonial['image'])) {
+        $photo_path = "../uploads/testimonials/" . $testimonial['image'];
         if (file_exists($photo_path)) {
             unlink($photo_path);
         }
     }
     
     // Now delete the record
-    $stmt = $conn->prepare("DELETE FROM testimonials WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM testimonials WHERE test_id = ?");
     $stmt->bind_param("i", $delete_id);
     $stmt->execute();
     $stmt->close();
@@ -38,7 +38,7 @@ if (isset($_GET['deleteId'])) {
 }
 
 // Fetch all testimonials
-$result = $conn->query("SELECT * FROM testimonials ORDER BY display_order ASC, created_at DESC");
+$result = $conn->query("SELECT * FROM testimonials");
 
 ?>
 
@@ -170,14 +170,44 @@ $result = $conn->query("SELECT * FROM testimonials ORDER BY display_order ASC, c
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php while ($testimonial = $result->fetch_assoc()): ?>
+                                            <?php 
+                                            // Variable to store all modal HTML properly outside the table
+                                            $all_modals = ''; 
+                                            
+                                            while ($testimonial = $result->fetch_assoc()): 
+                                            
+                                                // Concatenate Modal HTML to variable
+                                                $all_modals .= '
+                                                <div class="modal fade" id="deleteModal' . $testimonial['test_id'] . '" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-dark text-white">
+                                                                <h5 class="modal-title text-white">Confirm Deletion</h5>
+                                                                <button type="button" class="btn-close close text-white" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-wrap">
+                                                                Are you sure you want to delete the testimonial from 
+                                                                <strong>' . htmlspecialchars($testimonial['name']) . '</strong>?
+                                                                <br><br>
+                                                                <strong class="text-danger">This action cannot be undone.</strong>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Cancel</button>
+                                                                <a href="?deleteId=' . $testimonial['test_id'] . '" class="btn btn-danger">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+                                            ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($testimonial['id']); ?></td>
+                                                    <td><?= htmlspecialchars($testimonial['test_id']); ?></td>
                                                     <td>
                                                         <div class="d-flex align-items-center">
-                                                            <?php if (!empty($testimonial['client_photo'])): ?>
-                                                                <img src="uploads/testimonials/<?= htmlspecialchars($testimonial['client_photo']); ?>" 
-                                                                     alt="<?= htmlspecialchars($testimonial['client_name']); ?>" 
+                                                            <?php if (!empty($testimonial['image'])): ?>
+                                                                <img src="uploads/testimonials/<?= htmlspecialchars($testimonial['image']); ?>" 
+                                                                     alt="<?= htmlspecialchars($testimonial['image']); ?>" 
                                                                      class="testimonial-img me-3">
                                                             <?php else: ?>
                                                                 <div class="testimonial-img bg-light d-flex align-items-center justify-content-center me-3">
@@ -185,9 +215,9 @@ $result = $conn->query("SELECT * FROM testimonials ORDER BY display_order ASC, c
                                                                 </div>
                                                             <?php endif; ?>
                                                             <div>
-                                                                <strong><?= htmlspecialchars($testimonial['client_name']); ?></strong><br>
+                                                                <strong><?= htmlspecialchars($testimonial['name']); ?></strong><br>
                                                                 <small class="text-muted">
-                                                                    <?= htmlspecialchars($testimonial['client_title']); ?>
+                                                                    <?= htmlspecialchars($testimonial['designation']); ?>
                                                                     <?php if (!empty($testimonial['client_company'])): ?>
                                                                         at <?= htmlspecialchars($testimonial['client_company']); ?>
                                                                     <?php endif; ?>
@@ -197,7 +227,7 @@ $result = $conn->query("SELECT * FROM testimonials ORDER BY display_order ASC, c
                                                     </td>
                                                     <td>
                                                         <div class="text-truncate" style="max-width: 250px;">
-                                                            <?= htmlspecialchars($testimonial['testimonial_text']); ?>
+                                                            <?= htmlspecialchars($testimonial['message']); ?>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -229,41 +259,16 @@ $result = $conn->query("SELECT * FROM testimonials ORDER BY display_order ASC, c
                                                         </span>
                                                     </td>
                                                     <td class="action-btns">
-                                                        <a href="edit-testimonial.php?edit=<?= $testimonial['id']; ?>" 
+                                                        <a href="edit-testimonial.php?edit=<?= $testimonial['test_id']; ?>" 
                                                            class="btn btn-sm btn-outline-primary" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <button class="btn btn-sm btn-outline-danger" 
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#deleteModal<?= $testimonial['id']; ?>"
+                                                                data-toggle="modal" data-bs-toggle="modal" 
+                                                                data-target="#deleteModal<?= $testimonial['test_id']; ?>" data-bs-target="#deleteModal<?= $testimonial['test_id']; ?>"
                                                                 title="Delete">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                        
-                                                        <!-- Delete Confirmation Modal -->
-                                                        <div class="modal fade" id="deleteModal<?= $testimonial['id']; ?>" tabindex="-1"
-                                                            aria-labelledby="deleteModalLabel<?= $testimonial['id']; ?>" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="deleteModalLabel<?= $testimonial['id']; ?>">
-                                                                            Confirm Deletion
-                                                                        </h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Are you sure you want to delete the testimonial from 
-                                                                        <strong><?= htmlspecialchars($testimonial['client_name']); ?></strong>?
-                                                                        <br><br>
-                                                                        <strong>This action cannot be undone.</strong>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                        <a href="?deleteId=<?= $testimonial['id']; ?>" class="btn btn-danger">Delete</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             <?php endwhile; ?>
@@ -276,6 +281,9 @@ $result = $conn->query("SELECT * FROM testimonials ORDER BY display_order ASC, c
                 </div>
             </div>
         </div>
+
+        <!-- Yahan par sabhi Delete Modals table ke completely bahar print honge -->
+        <?= $all_modals; ?>
 
         <?php include "footer.php"; ?>
     </section>

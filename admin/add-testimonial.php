@@ -2,10 +2,10 @@
 include "db-conn.php";
 
 // Check admin authentication
-// session_start();
+session_start();
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    // header("Location: login.php");
-    // exit();
+    header("Location: login.php");
+    exit();
 }
 ?>
 
@@ -248,8 +248,8 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                     <form id="testimonialForm" action="functions.php" method="post" enctype="multipart/form-data">
                                         
                                         <?php if (isset($_GET['edit'])):
-                                            $testimonial_id = $_GET['edit'];
-                                            $stmt = $conn->prepare("SELECT * FROM testimonials WHERE id = ?");
+                                            $testimonial_id = intval($_GET['edit']);
+                                            $stmt = $conn->prepare("SELECT * FROM testimonials WHERE test_id = ?");
                                             $stmt->bind_param("i", $testimonial_id);
                                             $stmt->execute();
                                             $result = $stmt->get_result();
@@ -263,14 +263,14 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                                 <label class="form-label" for="client_name">Client Name*</label>
                                                 <input type="text" class="form-control" name="client_name" id="client_name"
                                                     placeholder="Enter client name"
-                                                    value="<?php echo isset($testimonial) ? htmlspecialchars($testimonial['client_name']) : ''; ?>"
+                                                    value="<?php echo isset($testimonial) ? htmlspecialchars($testimonial['name']) : ''; ?>"
                                                     required />
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label" for="client_title">Client Title*</label>
                                                 <input type="text" class="form-control" name="client_title" id="client_title"
                                                     placeholder="Enter client title/position"
-                                                    value="<?php echo isset($testimonial) ? htmlspecialchars($testimonial['client_title']) : ''; ?>"
+                                                    value="<?php echo isset($testimonial) ? htmlspecialchars($testimonial['designation']) : ''; ?>"
                                                     required />
                                             </div>
                                         </div>
@@ -314,7 +314,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                             <div class="col-md-12 mb-3">
                                                 <label class="form-label" for="testimonial_text">Testimonial Text*</label>
                                                 <textarea class="form-control" name="testimonial_text" id="testimonial_text"
-                                                    rows="4" placeholder="Enter the testimonial content" required><?php echo isset($testimonial) ? htmlspecialchars($testimonial['testimonial_text']) : ''; ?></textarea>
+                                                    rows="4" placeholder="Enter the testimonial content" required><?php echo isset($testimonial) ? htmlspecialchars($testimonial['message']) : ''; ?></textarea>
                                             </div>
                                         </div>
 
@@ -350,10 +350,8 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                                         id="clientPhoto" accept="image/*" onchange="previewImage(this)" />
                                                 </div>
                                                 <div class="image-preview-container" id="imagePreviewContainer">
-                                                    
-                                                    <!-- Corrected Image Path Here -->
-                                                    <?php if (isset($testimonial) && !empty($testimonial['client_photo'])): ?>
-                                                        <img id="imagePreview" class="image-preview" src="assets/img/uploads/<?php echo htmlspecialchars($testimonial['client_photo']); ?>" />
+                                                    <?php if (isset($testimonial) && !empty($testimonial['image'])): ?>
+                                                        <img id="imagePreview" class="image-preview" src="assets/img/uploads/<?php echo htmlspecialchars($testimonial['image']); ?>" />
                                                     <?php else: ?>
                                                         <img id="imagePreview" class="image-preview" />
                                                     <?php endif; ?>
@@ -370,8 +368,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                             <button type="reset" class="btn btn-outline-secondary me-3">
                                                 <i class="fas fa-undo me-1"></i> Reset
                                             </button>
-                                            
-                                            <!-- Button Name check -->
                                             <button type="submit" class="btn btn-submit" name="<?php echo isset($_GET['edit']) ? 'update-testimonial' : 'add-testimonial'; ?>">
                                                 <i class="fas fa-save me-1"></i> <?php echo isset($_GET['edit']) ? 'Update' : 'Save'; ?> Testimonial
                                             </button>
@@ -389,17 +385,14 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         <?php include "footer.php"; ?>
 
         <script>
-            // Initialize rating stars
             document.addEventListener('DOMContentLoaded', function() {
                 const ratingValue = document.getElementById('ratingValue').value;
                 const stars = document.querySelectorAll('#ratingStars i');
 
-                // Set initial rating if editing
                 if (ratingValue) {
                     highlightStars(ratingValue);
                 }
 
-                // Add click event to stars
                 stars.forEach(star => {
                     star.addEventListener('click', function() {
                         const value = this.getAttribute('data-value');
@@ -408,13 +401,11 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     });
                 });
 
-                // Show existing image preview if editing
-                <?php if (isset($testimonial) && !empty($testimonial['client_photo'])): ?>
+                <?php if (isset($testimonial) && !empty($testimonial['image'])): ?>
                     document.getElementById('imagePreviewContainer').style.display = 'block';
                 <?php endif; ?>
             });
 
-            // Highlight stars based on rating
             function highlightStars(value) {
                 const stars = document.querySelectorAll('#ratingStars i');
                 stars.forEach(star => {
@@ -426,7 +417,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 });
             }
 
-            // Image preview functionality
             function previewImage(input) {
                 const previewContainer = document.getElementById('imagePreviewContainer');
                 const preview = document.getElementById('imagePreview');
@@ -441,14 +431,12 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 }
             }
 
-            // Remove image selection
             function removeImage() {
                 document.getElementById('clientPhoto').value = '';
                 document.getElementById('imagePreviewContainer').style.display = 'none';
                 document.getElementById('imagePreview').src = '';
             }
 
-            // Drag and drop functionality
             const uploadLabel = document.querySelector('.file-upload-label');
 
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -498,14 +486,12 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerHTML;
 
-                // Explicitly send action for PHP script (The Big Fix)
                 if (form.querySelector('[name="update-testimonial"]')) {
                     formData.append('action', 'update-testimonial');
                 } else {
                     formData.append('action', 'add-testimonial');
                 }
 
-                // Show loading state
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Processing...';
 
@@ -521,14 +507,13 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         if (data.status === 'success') {
                             alert(data.message);
 
-                            // Redirect or refresh if needed
                             if (formData.get('action') === 'update-testimonial') {
                                 window.location.href = 'view-testimonials.php';
                             } else {
                                 form.reset();
                                 document.getElementById('imagePreview').src = '';
                                 document.getElementById('imagePreviewContainer').style.display = 'none';
-                                highlightStars(5); // Reset stars
+                                highlightStars(5);
                             }
                         } else {
                             alert('Error: ' + data.message);
