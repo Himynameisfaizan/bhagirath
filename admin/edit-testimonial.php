@@ -24,24 +24,22 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
 
 // Process form submission for updating the testimonial
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Retrieve updated values from POST
     $client_name = mysqli_real_escape_string($conn, $_POST['client_name'] ?? '');
     $client_title = mysqli_real_escape_string($conn, $_POST['client_title'] ?? '');
     $client_company = mysqli_real_escape_string($conn, $_POST['client_company'] ?? '');
     $testimonial_text = mysqli_real_escape_string($conn, $_POST['testimonial_text'] ?? '');
-    $rating = intval($_POST['rating'] ?? 0);
+    $rating = intval($_POST['rating'] ?? 5);
     $project_name = mysqli_real_escape_string($conn, $_POST['project_name'] ?? '');
     $project_date = mysqli_real_escape_string($conn, $_POST['project_date'] ?? '');
     $featured = isset($_POST['featured']) ? 1 : 0;
     $display_order = intval($_POST['display_order'] ?? 0);
     
     // Handle file upload
-    $client_photo = $testimonial['image']; // Keep existing photo by default
+    $client_photo = $testimonial['image']; 
     
     if (!empty($_FILES['client_photo']['name'])) {
         $upload_dir = "uploads/testimonials/";
         
-        // Create directory if it doesn't exist
         if (!file_exists($upload_dir)) {
             mkdir($upload_dir, 0755, true); 
         }
@@ -49,14 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $file_name = basename($_FILES['client_photo']['name']);
         $target_path = $upload_dir . $file_name;
         
-        // Check if file is an image
         $imageFileType = strtolower(pathinfo($target_path, PATHINFO_EXTENSION));
-        $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
         
         if (in_array($imageFileType, $allowed_types)) {
             if (move_uploaded_file($_FILES['client_photo']['tmp_name'], $target_path)) {
                 $client_photo = $file_name;
-                // Delete old photo if it exists and is different
                 if (!empty($testimonial['image']) && $testimonial['image'] != $file_name) {
                     @unlink($upload_dir . $testimonial['image']);
                 }
@@ -64,11 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['error'] = "Error uploading file.";
             }
         } else {
-            $_SESSION['error'] = "Invalid file type. Only JPG, JPEG, PNG & GIF files are allowed.";
+            $_SESSION['error'] = "Invalid file type. Only JPG, JPEG, PNG, GIF & WEBP files are allowed.";
         }
     }
     
-    // Update testimonial directly using correct column names
     $update_sql = "UPDATE testimonials SET 
                     name = '$client_name', 
                     designation = '$client_title', 
@@ -77,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     message = '$testimonial_text', 
                     rating = '$rating', 
                     project_name = '$project_name', 
-                    project_date = '$project_date', 
+                    project_date = " . ($project_date ? "'$project_date'" : "NULL") . ", 
                     featured = '$featured', 
                     display_order = '$display_order' 
                    WHERE test_id = '$testimonial_id'";
@@ -101,17 +96,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="icon" href="assets/img/logo.png" type="image/png">
     <?php include "links.php"; ?>
     <style>
-        .star-rating {
-            font-size: 24px;
-            color: #ffc107;
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
         }
-        .star-rating i {
+        .rating-stars i {
+            font-size: 24px;
+            color: #ddd;
             cursor: pointer;
+            transition: color 0.2s;
+        }
+        .rating-stars i.active {
+            color: #ffc107;
         }
         .preview-image {
             max-width: 150px;
             max-height: 150px;
             margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 3px;
         }
     </style>
 </head>
@@ -159,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="white_box_tittle list_header">
                                         <div class="box_right d-flex lms_block">
                                             <div class="add_button ms-2">
-                                                <a href="view-testimonials.php" class="btn_1">Back to Testimonials</a>
+                                                <a href="view-testimonials.php" class="btn_1">Back To Testimonials</a>
                                             </div>
                                         </div>
                                     </div>
@@ -208,12 +213,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             
                                             <div class="mb-3">
                                                 <label class="form-label">Rating *</label>
-                                                <div class="star-rating">
-                                                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                                                        <i class="fas fa-star<?= ($i > $testimonial['rating']) ? '-empty' : '' ?>" 
-                                                           data-rating="<?= $i ?>"></i>
-                                                    <?php endfor; ?>
-                                                    <input type="hidden" name="rating" id="rating" value="<?= $testimonial['rating'] ?>">
+                                                <!-- Hidden input to store rating value -->
+                                                <input type="hidden" name="rating" id="ratingValue" value="<?= htmlspecialchars($testimonial['rating']) ?>" required>
+                                                <div class="rating-stars" id="ratingStars">
+                                                    <i class="fas fa-star" data-value="1"></i>
+                                                    <i class="fas fa-star" data-value="2"></i>
+                                                    <i class="fas fa-star" data-value="3"></i>
+                                                    <i class="fas fa-star" data-value="4"></i>
+                                                    <i class="fas fa-star" data-value="5"></i>
                                                 </div>
                                             </div>
                                             
@@ -257,24 +264,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </section>
 
     <script>
-        // Star rating functionality
-        document.querySelectorAll('.star-rating i').forEach(star => {
-            star.addEventListener('click', function() {
-                const rating = this.getAttribute('data-rating');
-                document.getElementById('rating').value = rating;
-                
-                // Update star display
-                document.querySelectorAll('.star-rating i').forEach((s, index) => {
-                    if (index < rating) {
-                        s.classList.remove('fa-star-empty');
-                        s.classList.add('fa-star');
-                    } else {
-                        s.classList.remove('fa-star');
-                        s.classList.add('fa-star-empty');
-                    }
+        document.addEventListener('DOMContentLoaded', function() {
+            const ratingValue = document.getElementById('ratingValue').value;
+            const stars = document.querySelectorAll('#ratingStars i');
+
+            // Highlight initial rating loaded from DB
+            if (ratingValue) {
+                highlightStars(ratingValue);
+            }
+
+            // Click event to change rating
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    document.getElementById('ratingValue').value = value;
+                    highlightStars(value);
                 });
             });
         });
+
+        function highlightStars(value) {
+            const stars = document.querySelectorAll('#ratingStars i');
+            stars.forEach(star => {
+                if (star.getAttribute('data-value') <= value) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
         
         // Image preview
         document.querySelector('input[name="client_photo"]').addEventListener('change', function(e) {

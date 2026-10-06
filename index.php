@@ -343,8 +343,17 @@ include("includes/header.php");
                             </div>
                         </div>
                         <div class="stars mb-2" style="color: #FFD700; font-size: 0.9rem;">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                        </div>
+    <?php 
+    $rating = intval($test['rating']);
+    for ($i = 1; $i <= 5; $i++) {
+        if ($i <= $rating) {
+            echo '<i class="bi bi-star-fill"></i>';
+        } else {
+            echo '<i class="bi bi-star"></i>';
+        }
+    }
+    ?>
+</div>
                         <p class="text-muted-custom small mb-0" style="font-style: italic; line-height: 1.6;">
                             "<?= htmlspecialchars($test['message']) ?>"
                         </p>
