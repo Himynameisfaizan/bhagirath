@@ -235,6 +235,13 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                             </div>
                                         </div>
 
+                                        <!-- Schema Markup Box (Add category form ke andar SEO section ke niche add karein) -->
+<div class="col-md-12 mb-3">
+    <label class="form-label fw-bold" for="schema_markup">SEO Schema Markup (JSON-LD)</label>
+    <textarea class="form-control" name="schema_markup" id="schema_markup" rows="6" placeholder="Paste full <script type='application/ld+json'>...</script> here..."></textarea>
+    <small class="text-muted">Enter custom schema markup for this category.</small>
+</div>
+
                                         <div class="row mb-4">
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label" for="status">Status</label>
