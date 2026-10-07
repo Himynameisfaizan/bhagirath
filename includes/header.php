@@ -189,22 +189,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </li>
                 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle <?= ($current_page == 'products.php' || $current_page == 'product-details.php') ? 'active' : ''; ?>" href="products.php" id="productsDropdown" data-bs-toggle="dropdown" aria-expanded="false" onclick="window.location.href='products.php';">
-                        Products
-                    </a>
-                    <ul class="dropdown-menu border-0 shadow-lg" aria-labelledby="productsDropdown">
-                        <?php 
-                        if (isset($cats_dropdown_query) && mysqli_num_rows($cats_dropdown_query) > 0) {
-                            while($cat = mysqli_fetch_assoc($cats_dropdown_query)) {
-                                $isActiveCat = (isset($_GET['category']) && $_GET['category'] == $cat['slug_url']) ? 'active-dropdown-item' : '';
-                        ?>
-                            <li><a class="dropdown-item <?= $isActiveCat; ?>" href="products.php?category=<?= $cat['slug_url']; ?>"><?= htmlspecialchars($cat['categories']); ?></a></li>
-                        <?php 
-                            }
-                        } 
-                        ?>
-                    </ul>
-                </li>
+    <a class="nav-link dropdown-toggle <?= ($current_page == 'category.php') ? 'active' : ''; ?>" href="#" id="categoriesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Categories
+    </a>
+    <ul class="dropdown-menu border-0 shadow-lg" aria-labelledby="categoriesDropdown">
+        <?php 
+        $cats_dropdown_query = mysqli_query($conn, "SELECT * FROM categories WHERE status = 1");
+        if (isset($cats_dropdown_query) && mysqli_num_rows($cats_dropdown_query) > 0) {
+            while($cat = mysqli_fetch_assoc($cats_dropdown_query)) {
+                $isActiveCat = (isset($_GET['slug']) && $_GET['slug'] == $cat['slug_url']) ? 'active-dropdown-item' : '';
+        ?>
+            <li><a class="dropdown-item <?= $isActiveCat; ?>" href="category.php?slug=<?= $cat['slug_url']; ?>"><?= htmlspecialchars($cat['categories']); ?></a></li>
+        <?php 
+            }
+        } 
+        ?>
+    </ul>
+</li>
                 
                 <li class="nav-item">
                     <a class="nav-link <?= ($current_page == 'blog.php' || $current_page == 'blog-details.php') ? 'active' : ''; ?>" href="blog.php">Blog</a>
