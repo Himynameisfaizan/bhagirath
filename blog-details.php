@@ -15,6 +15,11 @@ if (!$blog) {
     exit;
 }
 
+
+$cate_id = $category['cate_id'] ?? '';
+$cat_primary_id = $category['id'] ?? ''; 
+$categoryName = $category['categories'] ?? '';
+
 // 1. Content ke liye variables
 $publishDate = date('F d, Y', strtotime($blog['created_at']));
 $authorName = !empty($blog['author']) ? $blog['author'] : 'Admin Team';
@@ -51,8 +56,18 @@ $auto_blog_schema = '
 }
 </script>';
 
-// 4. Admin Panel wala Custom Schema fetch karna
-$admin_custom_schema = $blog['schema_markup'];
+// 4. Admin Panel wala Custom Schema fetch karna (With Smart Logic)
+$raw_admin_schema = trim($blog['schema_markup'] ?? '');
+$admin_custom_schema = '';
+
+if (!empty($raw_admin_schema)) {
+    // Check karega ki <script> tag maujood hai ya nahi
+    if (stripos($raw_admin_schema, '<script') === false) {
+        $admin_custom_schema = "<script type=\"application/ld+json\">\n" . $raw_admin_schema . "\n</script>";
+    } else {
+        $admin_custom_schema = $raw_admin_schema;
+    }
+}
 
 // Dono schemas ko jod kar $page_schema variable mein dalna (taaki header.php isko catch kar le)
 $page_schema = $auto_blog_schema . "\n" . $admin_custom_schema;
@@ -115,14 +130,20 @@ include 'includes/breadcrumb.php';
                     </div>
 
                     <!-- Categories Widget -->
-                    <div class="sidebar-widget">
-                        <h4 class="sidebar-title">Categories</h4>
-                        <ul class="sidebar-cats">
-                            <li><a href="blog.php">Export Trends <span>(12)</span></a></li>
-                            <li><a href="blog.php">Farming Practices <span>(08)</span></a></li>
-                            <li><a href="blog.php">Health Benefits <span>(15)</span></a></li>
-                            <li><a href="blog.php">Quality & Testing <span>(05)</span></a></li>
-                            <li><a href="blog.php">Company News <span>(03)</span></a></li>
+                    <div class="widget-box bg-white p-4 rounded shadow-sm border mb-4">
+                        <h5 class="fw-bold mb-3 border-bottom pb-2" style="font-size: 1.1rem; color: #222;">Categories</h5>
+                        <ul class="list-unstyled mb-0 category-list">
+                            <?php
+                            $sideCatQuery = mysqli_query($conn, "SELECT * FROM categories WHERE status = 1 ORDER BY id DESC");
+                            while($sideCat = mysqli_fetch_assoc($sideCatQuery)):
+                                $isActive = ($sideCat['cate_id'] == $cate_id || $sideCat['slug_url'] == $slug) ? 'fw-bold active-cat' : 'text-muted';
+                            ?>
+                            <li class="mb-2 pb-2 border-bottom" style="border-color: #f8f9fa !important;">
+                                <a href="category.php?slug=<?= htmlspecialchars($sideCat['slug_url']) ?>" class="text-decoration-none d-flex justify-content-between align-items-center category-link <?= $isActive ?>" style="font-size: 0.95rem;">
+                                    <span><i class="fa-solid fa-angle-right me-2" style="font-size: 0.75rem;"></i> <?= htmlspecialchars($sideCat['categories']) ?></span>
+                                </a>
+                            </li>
+                            <?php endwhile; ?>
                         </ul>
                     </div>
 

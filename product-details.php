@@ -89,6 +89,9 @@ include 'includes/header.php';
 include 'includes/breadcrumb.php';
 ?>
 
+<!-- Add Swiper CSS for Smooth Slider -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
 <section class="pd-section" style="padding: 40px 0; background: #fdfdfd;">
     <div class="container-ng">
 
@@ -105,7 +108,6 @@ include 'includes/breadcrumb.php';
                         <?php endif; ?>
                     </div>
 
-                    <!-- FIXED: Enforced inline auto height and clear float properties -->
                     <div class="pd-main-img border rounded bg-white d-flex align-items-center justify-content-center p-3 mb-3" style="height: auto !important; min-height: 250px; overflow: hidden; width: 100%;">
                         <img id="mainImage" src="admin/assets/img/uploads/<?php echo $product['pro_img']; ?>" alt="<?php echo htmlspecialchars($product['pro_name']); ?>" class="img-fluid" style="max-height: 400px; width: 100%; height: auto; object-fit: contain; display: block;">
                     </div>
@@ -130,13 +132,9 @@ include 'includes/breadcrumb.php';
             </div>
 
             <!-- Right Column: Product Overview -->
-            <!-- FIXED: Added mt-4 and clear:both to push text securely below image on mobile -->
             <div class="col-lg-7 ps-lg-4 mt-4 mt-lg-0 reveal" style="clear: both; position: relative; z-index: 2;">
                 <span class="pd-category text-muted fw-bold text-uppercase" style="letter-spacing: 1px; font-size: 13px; display: inline-block; padding-top: 10px;"><?php echo htmlspecialchars($product['brand_name']); ?></span>
                 
-                <!-- <h1 class="pd-title fw-bolder mt-1 mb-3" style="color: #222; font-size: 2.2rem; line-height: 1.2;"><?php echo htmlspecialchars($product['pro_name']); ?></h1> -->
-                
-                <!-- Short Description -->
                 <div class="pd-overview mb-4" style="color: #444; line-height: 1.7; font-size: 1.05rem;">
                     <?php echo $product['short_desc']; ?>
                 </div>
@@ -178,7 +176,6 @@ include 'includes/breadcrumb.php';
                 </div>
             </div>
         </div>
-
 
         <!-- BOTTOM SECTION: Description (Left) & Reviews (Right) -->
         <div class="row mt-4">
@@ -262,7 +259,7 @@ include 'includes/breadcrumb.php';
     </div>
 </section>
 
-<!-- RELATED PRODUCTS SECTION -->
+<!-- RELATED PRODUCTS SECTION WITH SWIPER SLIDER -->
 <section class="related-products" style="padding: 50px 0 80px 0; background-color: #ffffff;">
     <div class="container">
         <!-- Section Title -->
@@ -271,53 +268,100 @@ include 'includes/breadcrumb.php';
             <div style="width: 60px; height: 3px; background: var(--primary-green); margin: 15px auto;"></div>
         </div>
 
-        <div class="row g-4 reveal">
-            <?php
-            $relatedQuery = mysqli_query($conn, "SELECT * FROM products WHERE status = 1 AND id != '$product_id' ORDER BY RAND() LIMIT 4");
-            while ($related = mysqli_fetch_assoc($relatedQuery)):
-                $shortDesc = !empty($related['short_desc']) ? $related['short_desc'] : (!empty($related['meta_desc']) && $related['meta_desc'] != $related['pro_name'] ? $related['meta_desc'] : 'Premium quality agricultural export product sourced directly from Indian farms.');
-            ?>
-                <div class="col-lg-3 col-md-6">
-                    <div class="product-card h-100 d-flex flex-column" style="border: 1px solid #f0f0f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); background: #ffffff;">
+        <!-- Swiper Container -->
+        <div class="swiper relatedProductsSwiper reveal px-3 py-2">
+            <div class="swiper-wrapper">
+                <?php
+                // Fetch up to 10 random related products to populate the slider
+                $relatedQuery = mysqli_query($conn, "SELECT * FROM products WHERE status = 1 AND id != '$product_id' ORDER BY RAND() LIMIT 10");
+                while ($related = mysqli_fetch_assoc($relatedQuery)):
+                    $shortDesc = !empty($related['short_desc']) ? $related['short_desc'] : (!empty($related['meta_desc']) && $related['meta_desc'] != $related['pro_name'] ? $related['meta_desc'] : 'Premium quality agricultural export product sourced directly from Indian farms.');
+                ?>
+                    <div class="swiper-slide">
+                        <div class="product-card h-100 d-flex flex-column" style="border: 1px solid #f0f0f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); background: #ffffff;">
 
-                        <!-- Product Image -->
-                        <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="text-decoration:none;">
-                            <div style="height: 180px; overflow: hidden; background: #fff; padding: 15px; text-align: center;">
-                                <img src="admin/assets/img/uploads/<?php echo $related['pro_img']; ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="<?php echo htmlspecialchars($related['pro_name']); ?>" onerror="this.src='assets/images/black.png'">
-                            </div>
-                        </a>
+                            <!-- Product Image -->
+                            <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="text-decoration:none;">
+                                <div style="height: 180px; overflow: hidden; background: #fff; padding: 15px; text-align: center;">
+                                    <img src="admin/assets/img/uploads/<?php echo $related['pro_img']; ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="<?php echo htmlspecialchars($related['pro_name']); ?>" onerror="this.src='assets/images/black.png'">
+                                </div>
+                            </a>
 
-                        <!-- Product Content -->
-                        <div style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1; border-top: 1px solid #f9f9f9;">
-                            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;">
-                                <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="color: #222; text-decoration: none;">
-                                    <?php echo htmlspecialchars($related['pro_name']); ?>
-                                </a>
-                            </h3>
+                            <!-- Product Content -->
+                            <div style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1; border-top: 1px solid #f9f9f9;">
+                                <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;">
+                                    <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="color: #222; text-decoration: none;">
+                                        <?php echo htmlspecialchars($related['pro_name']); ?>
+                                    </a>
+                                </h3>
 
-                            <p class="text-muted mb-3" style="font-size: 0.85rem; line-height: 1.4; display: -webkit-box; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8em;">
-                                <?php echo htmlspecialchars(strip_tags($shortDesc)); ?>
-                            </p>
+                                <p class="text-muted mb-3" style="font-size: 0.85rem; line-height: 1.4; display: -webkit-box; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8em;">
+                                    <?php echo htmlspecialchars(strip_tags($shortDesc)); ?>
+                                </p>
 
-                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 12px; margin-top: auto;">
-                                <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="color: var(--primary-green); text-decoration: none; font-weight: 600; font-size: 13px;">
-                                    View Details <i class="bi bi-arrow-right ms-1"></i>
-                                </a>
-                                <a href="contact.php?product=<?php echo urlencode($related['pro_name']); ?>" style="background-color: var(--accent-orange); color: white; padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 12px; text-decoration: none;">
-                                    Request Quote
-                                </a>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 12px; margin-top: auto;">
+                                    <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>" style="color: var(--primary-green); text-decoration: none; font-weight: 600; font-size: 13px;">
+                                        View Details <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                    <a href="contact.php?product=<?php echo urlencode($related['pro_name']); ?>" style="background-color: var(--accent-orange); color: white; padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 12px; text-decoration: none;">
+                                        Request Quote
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php endwhile; ?>
+                <?php endwhile; ?>
+            </div>
+            
+            <!-- Swiper Navigation Buttons -->
+            <div class="swiper-button-next" style="color: var(--primary-green);"></div>
+            <div class="swiper-button-prev" style="color: var(--primary-green);"></div>
+            <!-- Swiper Pagination -->
+            <div class="swiper-pagination"></div>
         </div>
     </div>
 </section>
 
 <?php include ('includes/inquiry-form.php'); ?>
 
+<!-- Swiper JS Script -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
 <script>
+    // Initialize Swiper for Related Products
+    var swiper = new Swiper(".relatedProductsSwiper", {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 25,
+            },
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 30,
+            },
+        },
+    });
+
+    // Image Change Function
     function changeImage(element, imageSrc) {
         document.getElementById('mainImage').src = imageSrc;
 
@@ -331,6 +375,7 @@ include 'includes/breadcrumb.php';
         element.style.borderColor = 'var(--primary-green)';
     }
 
+    // Scroll Reveal Animation
     document.addEventListener("DOMContentLoaded", function() {
         const reveals = document.querySelectorAll(".reveal");
         const revealOnScroll = new IntersectionObserver((entries, observer) => {
@@ -362,10 +407,16 @@ include 'includes/breadcrumb.php';
     
     .full-description-content table { width: 100% !important; max-width: 100%; margin-bottom: 1rem; }
     .full-description-content img { max-width: 100%; height: auto; }
-    @media (max-width: 768px) {
-    .pd-section .container-ng{ padding: 0 5px;}
+    
+    /* Swiper custom styles */
+    .swiper-button-next:after, .swiper-button-prev:after { font-size: 20px !important; font-weight: bold; }
+    .swiper-button-next, .swiper-button-prev { background: white; width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .swiper-pagination-bullet-active { background: var(--primary-green) !important; }
+    .relatedProductsSwiper { padding-bottom: 50px !important; }
 
-            }
+    @media (max-width: 768px) {
+        .pd-section .container-ng{ padding: 0 5px;}
+    }
 </style>
 
 <?php include 'includes/footer.php'; ?>
