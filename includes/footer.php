@@ -1,5 +1,4 @@
 <?php
-// 1. ERROR FIX: Variable ko default path ke sath initialize karna zaroori hai
 $footer_logo = "assets/images/logo/logo.png";
 
 $c_address = "Office No-102, 1st Floor, Nitika Tower II, Block C-1, Pocket-4, Azadpur, Delhi - 110033, India";
@@ -8,13 +7,13 @@ $c_email = "bhagirathenterprise7@gmail.com";
 $c_fb = "#";
 $c_linkedin = "#";
 $c_wp = "#";
-$footer_about_text = "Bhagirath Enterprise is a leading exporter of premium agricultural products, specializing in farm-fresh spices and dry fruits."; // Fallback text
+$footer_about_text = "Bhagirath Enterprise is a leading exporter of premium agricultural products, specializing in farm-fresh spices and dry fruits."; // Fallback text[cite: 15]
 
 if (isset($conn)) {
-    // 2. ERROR FIX: Pehli query mein 'footer' location search karni hai
+    // 2. ERROR FIX: Pehli query mein 'footer' location search karni hai[cite: 15]
     $f_logo_query = mysqli_query($conn, "SELECT logo_path FROM logos WHERE location = 'footer' AND is_active = 1 ORDER BY id DESC LIMIT 1");
 
-    // Fallback: Agar footer logo nahi mila, tab 'header' logo check karega
+    // Fallback: Agar footer logo nahi mila, tab 'header' logo check karega[cite: 15]
     if (!$f_logo_query || mysqli_num_rows($f_logo_query) == 0) {
         $f_logo_query = mysqli_query($conn, "SELECT logo_path FROM logos WHERE location = 'header' AND is_active = 1 ORDER BY id DESC LIMIT 1");
     }
@@ -48,6 +47,9 @@ if (isset($conn)) {
     }
 
     $footer_products = mysqli_query($conn, "SELECT id, pro_name, slug_url FROM products WHERE status = 1 ORDER BY id DESC LIMIT 5");
+    
+    // Fetch Dynamic Custom SEO Pages for Footer Links
+    $footer_custom_pages = mysqli_query($conn, "SELECT page_title, breadcrumb_title, slug_url FROM custom_pages WHERE status = 1 ORDER BY id DESC");
 }
 ?>
 
@@ -72,7 +74,7 @@ if (isset($conn)) {
                 </span>
             </div>
 
-            <!-- Column 2: Information Links -->
+            <!-- Column 2: Information & Custom Pages Links -->
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <h4 class="footer-heading">Information</h4>
                 <ul class="footer-links list-unstyled">
@@ -83,6 +85,18 @@ if (isset($conn)) {
                     <li><a href="privacy-policy.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i> Privacy Policy</a></li>
                     <li><a href="shipping-return.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i> Shipping & Returns</a></li>
                     <li><a href="refund-policy.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i> Refund & Cancellation</a></li>
+                    
+                    <!-- Dynamic Custom SEO Pages Links -->
+                    <?php
+                    if (isset($footer_custom_pages) && mysqli_num_rows($footer_custom_pages) > 0) {
+                        while ($custom_p = mysqli_fetch_assoc($footer_custom_pages)) {
+                            $p_title = !empty($custom_p['breadcrumb_title']) ? $custom_p['breadcrumb_title'] : $custom_p['page_title'];
+                    ?>
+                        <li><a href="page.php?slug=<?= htmlspecialchars($custom_p['slug_url']); ?>"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i> <?= htmlspecialchars($p_title); ?></a></li>
+                    <?php
+                        }
+                    }
+                    ?>
                 </ul>
             </div>
 
@@ -93,10 +107,10 @@ if (isset($conn)) {
                     <?php
                     if (isset($footer_products) && mysqli_num_rows($footer_products) > 0) {
                         while ($f_prod = mysqli_fetch_assoc($footer_products)) {
-                            $prod_slug = !empty($f_prod['id']) ? $f_prod['id'] : $f_prod['id'];
+                            $prod_slug = !empty($f_prod['slug_url']) ? $f_prod['slug_url'] : $f_prod['id'];
                     ?>
                             <li>
-                                <a href="product-details.php?id=<?= htmlspecialchars($prod_slug); ?>">
+                                <a href="product-details.php?slug=<?= htmlspecialchars($prod_slug); ?>">
                                     <i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i> <?= htmlspecialchars($f_prod['pro_name']); ?>
                                 </a>
                             </li>
@@ -153,7 +167,7 @@ if (isset($conn)) {
                         </a>
                     <?php endif; ?>
 
-                    <?php if ($c_instagram != '#'): ?>
+                    <?php if (isset($c_instagram) && $c_instagram != '#'): ?>
                         <a href="<?= htmlspecialchars($c_instagram); ?>" target="_blank" style="background-color: #e1306c;">
                             <i class="bi bi-instagram"></i>
                         </a>
@@ -193,7 +207,6 @@ if (isset($conn)) {
 
 <!-- Floating Contact Buttons -->
 <div class="floating-contact">
-
     <!-- Phone Call Floating Button -->
     <?php if (!empty($c_phone) && $c_phone != '#'): ?>
         <a href="tel:<?= htmlspecialchars(preg_replace('/[^0-9+]/', '', $c_phone)); ?>" class="float-btn float-phone shadow-lg" title="Call Us">
@@ -201,11 +214,9 @@ if (isset($conn)) {
         </a>
     <?php endif; ?>
     <!-- WhatsApp Floating Button -->
-
     <?php if (!empty($c_wp) && $c_wp != '#'): ?>
         <a href="<?= htmlspecialchars($c_wp); ?>" target="_blank" class="float-btn float-whatsapp shadow-lg" title="Chat on WhatsApp">
             <i class="bi bi-whatsapp"></i>
         </a>
     <?php endif; ?>
-
 </div>
