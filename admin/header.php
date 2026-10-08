@@ -129,6 +129,14 @@ if (!isset($_SESSION['admin_logged_in'])) {
             </a>
         </li> -->
 
+         <li>
+            <a class="has-arrow" href="#"><i class="fas fa-award" style="color: #1abc9c;"></i> <span>Custom Page</span></a>
+            <ul>
+                <li><a href="add-page.php">Add Page</a></li>
+                <li><a href="view-pages.php">View Pages</a></li>
+            </ul>
+        </li>
+
         <li>
             <a href="add-gallery.php">
                 <i class="fas fa-images" style="color: #8e44ad;"></i>
