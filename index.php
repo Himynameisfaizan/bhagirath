@@ -19,7 +19,7 @@ if (isset($conn)) {
 // Fetch Testimonials
 $test_res = false;
 if (isset($conn)) {
-    $test_res = mysqli_query($conn, "SELECT * FROM testimonials WHERE status = 1 ORDER BY test_id DESC LIMIT 3");
+    $test_res = mysqli_query($conn, "SELECT * FROM testimonials WHERE status = 1 ORDER BY test_id DESC LIMIT 6");
 }
 
 // Fetch About Section Data
@@ -55,7 +55,7 @@ if ($seo_query && mysqli_num_rows($seo_query) > 0) {
 include("includes/header.php");
 ?>
 
-    
+
 <!-- Hero Slider Section Start -->
 <div id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-pause="false">
     <div class="carousel-indicators">
@@ -133,7 +133,7 @@ include("includes/header.php");
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
                 <div class="about-img-wrapper">
-                    <?php 
+                    <?php
                     // Database se image path fetch karna (agar khali ho toh default image dikhegi)
                     $aboutImg = !empty($about_data['image_url']) ? 'admin/' . $about_data['image_url'] : 'assets/images/about.jpg';
                     ?>
@@ -146,25 +146,25 @@ include("includes/header.php");
             </div>
             <div class="col-lg-6 ps-lg-5">
                 <span class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Who We Are</span>
-                
+
                 <!-- Dynamic Title from database -->
                 <h1 class="section-title mb-4 h2">
                     <?= !empty($about_data['title']) ? htmlspecialchars($about_data['title']) : 'Exporting the Finest Flavors & Agricultural Wealth of India'; ?>
                 </h1>
-                
+
                 <!-- Dynamic Description/Content from database -->
                 <div class="text-muted-custom mb-4">
-                    <?php 
+                    <?php
                     if (!empty($about_data['content'])) {
                         // Agar admin ne rich text / HTML tags ke sath content save kiya hai toh usko render karega
-                        echo $about_data['content']; 
+                        echo $about_data['content'];
                     } else {
                         // Fallback text agar table khali ho
                         echo '<p>At <strong>Bhagirath Enterprise</strong>, we specialize in processing and exporting premium quality whole spices, dry fruits, and authentic Indian agricultural products.</p>';
                     }
                     ?>
                 </div>
-                
+
                 <a href="about.php" class="btn btn-quote" style="background-color:#222222; border-color:#222222; color: white; padding: 10px 25px; border-radius: 5px;">Read More About Us</a>
             </div>
         </div>
@@ -270,7 +270,7 @@ include("includes/header.php");
             if ($products_res && mysqli_num_rows($products_res) > 0):
                 while ($prod = mysqli_fetch_assoc($products_res)):
                     $proImg = !empty($prod['pro_img']) ? 'admin/assets/img/uploads/' . $prod['pro_img'] : 'assets/images/black.png';
-                    
+
                     // Slug check: Agar slug_url database mein khali hai toh fallback ke liye id use karega
                     $productSlug = !empty($prod['slug_url']) ? $prod['slug_url'] : $prod['id'];
             ?>
@@ -279,14 +279,14 @@ include("includes/header.php");
                             <span class="product-badge">Export Grade</span>
                             <div class="product-img-wrapper" style="height: 200px; overflow: hidden;">
                                 <a href="product-details.php?slug=<?php echo urlencode($productSlug); ?>">
-                                <img src="<?= htmlspecialchars($proImg) ?>" alt="<?= htmlspecialchars($prod['pro_name']) ?>" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='assets/images/black.png'">
+                                    <img src="<?= htmlspecialchars($proImg) ?>" alt="<?= htmlspecialchars($prod['pro_name']) ?>" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='assets/images/black.png'">
                                 </a>
                             </div>
                             <div class="p-4">
-                                <a href="product-details.php?slug=<?php echo urlencode($productSlug); ?>" style="text-decoration:none;"> 
-                                <h3 class="product-title" style="font-size: 1.05rem; font-weight: 700; height: 48px; overflow: hidden;">
-                                    <?= htmlspecialchars($prod['pro_name']) ?>
-                                </h3>
+                                <a href="product-details.php?slug=<?php echo urlencode($productSlug); ?>" style="text-decoration:none;">
+                                    <h3 class="product-title" style="font-size: 1.05rem; font-weight: 700; height: 48px; overflow: hidden;">
+                                        <?= htmlspecialchars($prod['pro_name']) ?>
+                                    </h3>
                                 </a>
                                 <div class="mb-3">
                                     <a href="product-details.php?slug=<?php echo urlencode($productSlug); ?>" class="view-details-link">View Details <i class="bi bi-chevron-right" style="font-size: 0.8rem;"></i></a>
@@ -321,49 +321,49 @@ include("includes/header.php");
             <span class="text-uppercase" style="color: #711b3c; font-size: 14px; font-weight: 600; letter-spacing: 1px;">Client Feedback</span>
             <h2 class="section-title mx-auto">What Our Trusted Partners Say</h2>
         </div>
-        
+
         <div class="row g-4 justify-content-center">
-            <?php 
-            if ($test_res && mysqli_num_rows($test_res) > 0): 
-                while($test = mysqli_fetch_assoc($test_res)):
+            <?php
+            if ($test_res && mysqli_num_rows($test_res) > 0):
+                while ($test = mysqli_fetch_assoc($test_res)):
                     $testImg = !empty($test['image']) ? 'admin/uploads/testimonials/' . $test['image'] : 'assets/images/clove.png';
             ?>
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card p-4 bg-white shadow-sm rounded-4 h-100 position-relative transition-up">
-                    <i class="bi bi-quote position-absolute" style="font-size: 5rem; color: rgba(113, 27, 60, 0.05); top: -10px; right: 20px; z-index: 0;"></i>
-                    
-                    <div class="position-relative z-1">
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="test-img-wrap rounded-circle overflow-hidden me-3 shadow-sm" style="width: 65px; height: 65px; border: 3px solid #f8f9fa;">
-                                <img src="<?= htmlspecialchars($testImg) ?>" alt="<?= htmlspecialchars($test['name']) ?>" class="w-100 h-100" style="object-fit: cover;" onerror="this.src='assets/images/default-avatar.png'">
-                            </div>
-                            <div>
-                                <h4 class="mb-0" style="color: #222222; font-weight: 700; font-size: 1.1rem;"><?= htmlspecialchars($test['name']) ?></h4>
-                                <span class="text-muted small fw-semibold" style="color: #711b3c !important;"><?= htmlspecialchars($test['designation']) ?></span>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="testimonial-card p-4 bg-white shadow-sm rounded-4 h-100 position-relative transition-up">
+                            <i class="bi bi-quote position-absolute" style="font-size: 5rem; color: rgba(113, 27, 60, 0.05); top: -10px; right: 20px; z-index: 0;"></i>
+
+                            <div class="position-relative z-1">
+                                <div class="d-flex align-items-center mb-4">
+                                    <div class="test-img-wrap rounded-circle overflow-hidden me-3 shadow-sm" style="width: 65px; height: 65px; border: 3px solid #f8f9fa;">
+                                        <img src="<?= htmlspecialchars($testImg) ?>" alt="<?= htmlspecialchars($test['name']) ?>" class="w-100 h-100" style="object-fit: cover;" onerror="this.src='assets/images/default-avatar.png'">
+                                    </div>
+                                    <div>
+                                        <h4 class="mb-0" style="color: #222222; font-weight: 700; font-size: 1.1rem;"><?= htmlspecialchars($test['name']) ?></h4>
+                                        <span class="text-muted small fw-semibold" style="color: #711b3c !important;"><?= htmlspecialchars($test['designation']) ?></span>
+                                    </div>
+                                </div>
+                                <div class="stars mb-2" style="color: #FFD700; font-size: 0.9rem;">
+                                    <?php
+                                    $rating = intval($test['rating']);
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $rating) {
+                                            echo '<i class="bi bi-star-fill"></i>';
+                                        } else {
+                                            echo '<i class="bi bi-star"></i>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                                <p class="text-muted-custom small mb-0" style="font-style: italic; line-height: 1.6;">
+                                    "<?= htmlspecialchars($test['message']) ?>"
+                                </p>
                             </div>
                         </div>
-                        <div class="stars mb-2" style="color: #FFD700; font-size: 0.9rem;">
-    <?php 
-    $rating = intval($test['rating']);
-    for ($i = 1; $i <= 5; $i++) {
-        if ($i <= $rating) {
-            echo '<i class="bi bi-star-fill"></i>';
-        } else {
-            echo '<i class="bi bi-star"></i>';
-        }
-    }
-    ?>
-</div>
-                        <p class="text-muted-custom small mb-0" style="font-style: italic; line-height: 1.6;">
-                            "<?= htmlspecialchars($test['message']) ?>"
-                        </p>
                     </div>
-                </div>
-            </div>
-            <?php 
+                <?php
                 endwhile;
             else:
-            ?>
+                ?>
                 <div class="col-12 text-center text-muted">Client reviews will be updated shortly.</div>
             <?php endif; ?>
         </div>
@@ -374,37 +374,43 @@ include("includes/header.php");
 <section class="brands-slider-section py-5" style="background-color: #f8f9fa; border-top: 1px solid #eaeaea;">
     <div class="container">
         <h2 class="text-center mb-5" style="color: #222222; font-weight: 700; font-size: 1.5rem; letter-spacing: 1px;">OUR TRUSTED CLIENTS & PARTNERS</h2>
-        
+
         <div class="brand-slider-container">
             <div class="brand-slide-track">
-                <?php if(!empty($brands_array)): ?>
-                    <?php 
-                    for($loop = 0; $loop < 2; $loop++):
-                        foreach($brands_array as $brand):
+                <?php if (!empty($brands_array)): ?>
+                    <?php
+                    for ($loop = 0; $loop < 2; $loop++):
+                        foreach ($brands_array as $brand):
                             $brandLogo = !empty($brand['logo_path']) ? $brand['logo_path'] : '';
                     ?>
-                    <div class="brand-slide">
-                        <?php if(!empty($brandLogo)): ?>
-                            <img src="admin/<?= htmlspecialchars($brandLogo) ?>" alt="<?= htmlspecialchars($brand['brand_name']) ?>" title="<?= htmlspecialchars($brand['brand_name']) ?>">
-                        <?php else: ?>
-                            <span class="fw-bold text-dark"><?= htmlspecialchars($brand['brand_name']) ?></span>
-                        <?php endif; ?>
-                    </div>
-                    <?php 
-                        endforeach; 
-                    endfor; 
+                            <div class="brand-slide">
+                                <?php if (!empty($brandLogo)): ?>
+                                    <img src="admin/<?= htmlspecialchars($brandLogo) ?>" alt="<?= htmlspecialchars($brand['brand_name']) ?>" title="<?= htmlspecialchars($brand['brand_name']) ?>">
+                                <?php else: ?>
+                                    <span class="fw-bold text-dark"><?= htmlspecialchars($brand['brand_name']) ?></span>
+                                <?php endif; ?>
+                            </div>
+                    <?php
+                        endforeach;
+                    endfor;
                     ?>
                 <?php else: ?>
-                    <div class="brand-slide"><h4 class="brand-logo">FSSAI</h4></div>
-                    <div class="brand-slide"><h4 class="brand-logo">APEDA</h4></div>
-                    <div class="brand-slide"><h4 class="brand-logo">SPICES BOARD</h4></div>
+                    <div class="brand-slide">
+                        <h4 class="brand-logo">FSSAI</h4>
+                    </div>
+                    <div class="brand-slide">
+                        <h4 class="brand-logo">APEDA</h4>
+                    </div>
+                    <div class="brand-slide">
+                        <h4 class="brand-logo">SPICES BOARD</h4>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 </section>
 
-<?php include ('includes/inquiry-form.php');?>
+<?php include('includes/inquiry-form.php'); ?>
 
 <!-- 6. FREQUENTLY ASKED QUESTIONS -->
 <section class="section-padding" style="background-color: #fdfdfd;">
