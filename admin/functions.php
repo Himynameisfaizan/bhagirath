@@ -14,11 +14,9 @@ if (isset($_POST["add-categories"])) {
         $fileSize = $_FILES['imageUpload']['size'];
         $fileType = $_FILES['imageUpload']['type'];
 
-        // Get file extension
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
 
-        // Allowed file extensions
         $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'webp');
 
         // Check if file type is allowed
