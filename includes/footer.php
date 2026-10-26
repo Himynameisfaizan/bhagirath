@@ -79,7 +79,7 @@ if (isset($conn)) {
             </div>
 
             <!-- Column 2: Information & Custom Pages Links -->
-            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+            <div class="col-lg-3 col-md-4 mb-4 mb-lg-0">
                 <h4 class="footer-heading">Information</h4>
                 <ul class="footer-links list-unstyled">
                     <li><a href="index.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
@@ -96,33 +96,16 @@ if (isset($conn)) {
                                 style="color: #711b3c;"></i> Shipping & Returns</a></li>
                     <li><a href="refund-policy.php"><i class="bi bi-chevron-right small me-2"
                                 style="color: #711b3c;"></i> Refund & Cancellation</a></li>
+                    <li><a href="location.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                            Location</a></li>
 
                     <!-- Dynamic Custom SEO Pages Links -->
 
-                </ul>
-            </div>
-            <!-- Column 2: Information & Custom Pages Links -->
-            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                <h4 class="footer-heading">Location</h4>
-                <ul class="footer-links list-unstyled">
-                    <!-- Dynamic Custom SEO Pages Links -->
-                    <?php
-                    if (isset($footer_custom_pages) && mysqli_num_rows($footer_custom_pages) > 0) {
-                        while ($custom_p = mysqli_fetch_assoc($footer_custom_pages)) {
-                            $p_title = !empty($custom_p['breadcrumb_title']) ? $custom_p['breadcrumb_title'] : $custom_p['page_title'];
-                    ?>
-                    <li><a href="page.php?slug=<?= htmlspecialchars($custom_p['slug_url']); ?>"><i
-                                class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
-                            <?= htmlspecialchars($p_title); ?></a></li>
-                    <?php
-                        }
-                    }
-                    ?>
                 </ul>
             </div>
 
             <!-- Column 3: Dynamic Products -->
-            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+            <div class="col-lg-3 col-md-4 mb-4 mb-lg-0">
                 <h4 class="footer-heading">Our Products</h4>
                 <ul class="footer-links list-unstyled">
                     <?php
