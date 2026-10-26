@@ -255,11 +255,21 @@
     font-size: 0.95rem;
   }
 }
-
 .custom-footer {
-  background-color: #151515;
-  color: #e0e0e0;
-  font-family: "Inter", sans-serif;
+    background-color: #151515;
+    color: #e0e0e0;
+    font-family: "Inter", sans-serif;
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+.custom-footer > .container-wide {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 .footer-heading {

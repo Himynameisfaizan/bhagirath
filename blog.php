@@ -37,7 +37,7 @@ if ($schema_query && mysqli_num_rows($schema_query) > 0) {
 }
 ?>
 
-    
+
 <section class="blog-page-section">
     <div class="container">
 
@@ -53,7 +53,8 @@ if ($schema_query && mysqli_num_rows($schema_query) > 0) {
             <div class="col-lg-4 col-md-6 reveal">
                 <div class="blog-card">
                     <div class="blog-img-wrapper">
-                        <span class="featured-category" style="top: 15px; left: 15px; font-size: 10px; padding: 4px 12px;">News</span>
+                        <span class="featured-category"
+                            style="top: 15px; left: 15px; font-size: 10px; padding: 4px 12px;">News</span>
                         <a href="blog-details.php?slug=<?php echo $blog['slug']; ?>">
                             <img src="<?php echo $img; ?>" alt="<?php echo $blog['title']; ?>">
                         </a>
@@ -63,9 +64,12 @@ if ($schema_query && mysqli_num_rows($schema_query) > 0) {
                             <i class="fa-regular fa-calendar-days"></i> <?php echo $date; ?>
                             <i class="fa-regular fa-user"></i> <?php echo $blog['author']; ?>
                         </div>
-                        <a href="blog-details.php?slug=<?php echo $blog['slug']; ?>" class="blog-title"><?php echo $blog['title']; ?></a>
-                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;"><?php echo $excerpt; ?></p>
-                        <a href="blog-details.php?slug=<?php echo $blog['slug']; ?>" class="read-more-btn">Read More <i class="fa-solid fa-arrow-right-long"></i></a>
+                        <a href="blog-details.php?slug=<?php echo $blog['slug']; ?>"
+                            class="blog-title"><?php echo $blog['title']; ?></a>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                            <?php echo $excerpt; ?></p>
+                        <a href="blog-details.php?slug=<?php echo $blog['slug']; ?>" class="read-more-btn">Read More <i
+                                class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
             </div>
@@ -87,19 +91,21 @@ if ($schema_query && mysqli_num_rows($schema_query) > 0) {
                 <ul class="k2k-pagination">
                     <!-- Prev Button -->
                     <?php if($page > 1): ?>
-                        <li class="prev"><a href="?page=<?php echo ($page-1); ?>"><i class="fa-solid fa-arrow-left me-2"></i> Prev</a></li>
+                    <li class="prev"><a href="?page=<?php echo ($page-1); ?>"><i
+                                class="fa-solid fa-arrow-left me-2"></i> Prev</a></li>
                     <?php endif; ?>
 
                     <!-- Page Numbers -->
                     <?php for($i = 1; $i <= $total_pages; $i++): ?>
-                        <li class="<?php echo ($page == $i) ? 'active' : ''; ?>">
-                            <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                        </li>
+                    <li class="<?php echo ($page == $i) ? 'active' : ''; ?>">
+                        <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
                     <?php endfor; ?>
 
                     <!-- Next Button -->
                     <?php if($page < $total_pages): ?>
-                        <li class="next"><a href="?page=<?php echo ($page+1); ?>">Next <i class="fa-solid fa-arrow-right ms-2"></i></a></li>
+                    <li class="next"><a href="?page=<?php echo ($page+1); ?>">Next <i
+                                class="fa-solid fa-arrow-right ms-2"></i></a></li>
                     <?php endif; ?>
                 </ul>
             </div>
@@ -111,18 +117,20 @@ if ($schema_query && mysqli_num_rows($schema_query) > 0) {
 
 <!-- Scroll Animation Script -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const reveals = document.querySelectorAll(".reveal");
-        const revealOnScroll = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("active");
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        reveals.forEach(reveal => revealOnScroll.observe(reveal));
+document.addEventListener("DOMContentLoaded", function() {
+    const reveals = document.querySelectorAll(".reveal");
+    const revealOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1
     });
+    reveals.forEach(reveal => revealOnScroll.observe(reveal));
+});
 </script>
 
 <!-- Include Footer -->
