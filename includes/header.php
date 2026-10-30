@@ -64,23 +64,49 @@ if (isset($conn)) {
     <meta name="keywords" content="<?= htmlspecialchars($meta_keywords); ?>">
 
     <?php
-    $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-    $domain = $_SERVER['HTTP_HOST'];
-    $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    
-    $canonical_url = $protocol . $domain . $uri_path;
+$is_https = (
+    !empty($_SERVER['HTTPS']) &&
+    strtolower((string) $_SERVER['HTTPS']) !== 'off'
+) || (
+    isset($_SERVER['SERVER_PORT']) &&
+    (int) $_SERVER['SERVER_PORT'] === 443
+);
 
-    if ($current_page == 'index.php') {
-        $canonical_url = $protocol . $domain . "/";
-    }
-    
-    if (($current_page == 'blog-details.php' || $current_page == 'product-details.php') && !empty($_GET['slug'])) {
-        $canonical_url .= "?slug=" . htmlspecialchars($_GET['slug']);
-    } elseif ($current_page == 'products.php' && !empty($_GET['category'])) {
-        $canonical_url .= "?category=" . htmlspecialchars($_GET['category']);
-    }
-    ?>
-    <link rel="canonical" href="<?= $canonical_url; ?>" />
+$protocol = $is_https ? 'https://' : 'http://';
+$domain = $_SERVER['HTTP_HOST'] ?? 'bhagirathenterprises.co.in';
+
+$uri_path = parse_url(
+    $_SERVER['REQUEST_URI'] ?? '/',
+    PHP_URL_PATH
+) ?: '/';
+
+$canonical_url = $protocol . $domain . $uri_path;
+
+if ($current_page === 'index.php' || $current_page === '') {
+    $canonical_url = $protocol . $domain . '/';
+}
+
+if (
+    in_array(
+        $current_page,
+        ['blog-details.php', 'product-details.php', 'page.php'],
+        true
+    ) &&
+    isset($_GET['slug']) &&
+    $_GET['slug'] !== ''
+) {
+    $canonical_url .= '?slug=' . rawurlencode((string) $_GET['slug']);
+
+} elseif (
+    $current_page === 'products.php' &&
+    isset($_GET['category']) &&
+    $_GET['category'] !== ''
+) {
+    $canonical_url .= '?category=' . rawurlencode((string) $_GET['category']);
+}
+?>
+
+    <link rel="canonical" href="<?= htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
 
     <meta name="google-site-verification" content="eX_sXjETkL7O-emXnSDL6-LirHz1VsbiMIZMyFqgvIw" />
     <link rel="icon" href="<?= htmlspecialchars($favicon); ?>" type="image/x-icon">
