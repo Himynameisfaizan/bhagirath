@@ -11,7 +11,7 @@ $blog = mysqli_fetch_assoc($blogQuery);
 
 // Agar blog nahi milta (invalid slug) toh wapas blog page par bhej dein
 if (!$blog) {
-    echo "<script>window.location.href='blog.php';</script>";
+    echo "<script>window.location.href='404.php';</script>";
     exit;
 }
 
@@ -107,10 +107,14 @@ include 'includes/breadcrumb.php';
                     <!-- Share Options -->
                     <div class="share-box">
                         <span>Share this article:</span>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($currentURL); ?>" target="_blank" class="share-btn bg-fb"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode($currentURL); ?>&text=<?php echo urlencode($blog['title']); ?>" target="_blank" class="share-btn bg-tw"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode($currentURL); ?>" target="_blank" class="share-btn bg-in"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="https://api.whatsapp.com/send?text=<?php echo urlencode($blog['title'] . " " . $currentURL); ?>" target="_blank" class="share-btn bg-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($currentURL); ?>"
+                            target="_blank" class="share-btn bg-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode($currentURL); ?>&text=<?php echo urlencode($blog['title']); ?>"
+                            target="_blank" class="share-btn bg-tw"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode($currentURL); ?>"
+                            target="_blank" class="share-btn bg-in"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://api.whatsapp.com/send?text=<?php echo urlencode($blog['title'] . " " . $currentURL); ?>"
+                            target="_blank" class="share-btn bg-wa"><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
 
                 </div>
@@ -131,7 +135,8 @@ include 'includes/breadcrumb.php';
 
                     <!-- Categories Widget -->
                     <div class="widget-box bg-white p-4 rounded shadow-sm border mb-4">
-                        <h5 class="fw-bold mb-3 border-bottom pb-2" style="font-size: 1.1rem; color: #222;">Categories</h5>
+                        <h5 class="fw-bold mb-3 border-bottom pb-2" style="font-size: 1.1rem; color: #222;">Categories
+                        </h5>
                         <ul class="list-unstyled mb-0 category-list">
                             <?php
                             $sideCatQuery = mysqli_query($conn, "SELECT * FROM categories WHERE status = 1 ORDER BY id DESC");
@@ -139,8 +144,11 @@ include 'includes/breadcrumb.php';
                                 $isActive = ($sideCat['cate_id'] == $cate_id || $sideCat['slug_url'] == $slug) ? 'fw-bold active-cat' : 'text-muted';
                             ?>
                             <li class="mb-2 pb-2 border-bottom" style="border-color: #f8f9fa !important;">
-                                <a href="category.php?slug=<?= htmlspecialchars($sideCat['slug_url']) ?>" class="text-decoration-none d-flex justify-content-between align-items-center category-link <?= $isActive ?>" style="font-size: 0.95rem;">
-                                    <span><i class="fa-solid fa-angle-right me-2" style="font-size: 0.75rem;"></i> <?= htmlspecialchars($sideCat['categories']) ?></span>
+                                <a href="category.php?slug=<?= htmlspecialchars($sideCat['slug_url']) ?>"
+                                    class="text-decoration-none d-flex justify-content-between align-items-center category-link <?= $isActive ?>"
+                                    style="font-size: 0.95rem;">
+                                    <span><i class="fa-solid fa-angle-right me-2" style="font-size: 0.75rem;"></i>
+                                        <?= htmlspecialchars($sideCat['categories']) ?></span>
                                 </a>
                             </li>
                             <?php endwhile; ?>
@@ -160,13 +168,16 @@ include 'includes/breadcrumb.php';
                                 $r_date = date('M d, Y', strtotime($recentBlog['created_at']));
                                 $r_img = !empty($recentBlog['image']) ? 'admin/assets/img/uploads/blogs/' . $recentBlog['image'] : 'https://images.unsplash.com/photo-1615486171448-4228965f7c32?q=80&w=200';
                         ?>
-                                <div class="recent-post-item">
-                                    <img src="<?php echo $r_img; ?>" alt="<?php echo htmlspecialchars($recentBlog['title']); ?>">
-                                    <div class="recent-post-info">
-                                        <h4><a href="blog-details.php?slug=<?php echo $recentBlog['slug']; ?>"><?php echo htmlspecialchars($recentBlog['title']); ?></a></h4>
-                                        <span><?php echo $r_date; ?></span>
-                                    </div>
-                                </div>
+                        <div class="recent-post-item">
+                            <img src="<?php echo $r_img; ?>"
+                                alt="<?php echo htmlspecialchars($recentBlog['title']); ?>">
+                            <div class="recent-post-info">
+                                <h4><a
+                                        href="blog-details.php?slug=<?php echo $recentBlog['slug']; ?>"><?php echo htmlspecialchars($recentBlog['title']); ?></a>
+                                </h4>
+                                <span><?php echo $r_date; ?></span>
+                            </div>
+                        </div>
                         <?php
                             endwhile;
                         } else {
@@ -177,10 +188,14 @@ include 'includes/breadcrumb.php';
 
                     <!-- CTA Widget -->
                     <div class="sidebar-widget text-center" style="background: var(--primary-green); color: white;">
-                        <i class="fa-solid fa-box-open" style="font-size: 40px; color: var(--accent-orange); margin-bottom: 15px;"></i>
+                        <i class="fa-solid fa-box-open"
+                            style="font-size: 40px; color: var(--accent-orange); margin-bottom: 15px;"></i>
                         <h4 style="font-weight: 800; margin-bottom: 15px;">Looking for Bulk Spices?</h4>
-                        <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 20px;">Get a free quotation for your international export requirements today.</p>
-                        <a href="contact.php" class="btn-theme" style="background: var(--accent-orange); color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; display: inline-block;">Request Quote</a>
+                        <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 20px;">Get a free quotation for your
+                            international export requirements today.</p>
+                        <a href="contact.php" class="btn-theme"
+                            style="background: var(--accent-orange); color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; display: inline-block;">Request
+                            Quote</a>
                     </div>
 
                 </div>

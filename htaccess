@@ -2,15 +2,20 @@ RewriteEngine On
 RewriteBase /projects/bhagirath/
 
 # Sitemap
-RewriteRule ^sitemap\.xml$ sitemap.php [END]
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
 # Custom page clean URL
-RewriteRule ^location/page/([A-Za-z0-9_-]+)/?$ /projects/bhagirath/page.php?slug=$1 [END,QSA,NC]
+RewriteRule ^location/page/([A-Za-z0-9_-]+)/?$ page.php?slug=$1 [L,QSA,NC]
 
 # Location listing page
-RewriteRule ^location\.php$ - [END,NC]
+RewriteRule ^location\.php$ - [L,NC]
 
-# Non-existing PHP URLs -> blog details
+# Agar URL mein .php hai aur file exist nahi karti, toh blog-details par bhejein
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([A-Za-z0-9_-]+)\.php$ /projects/bhagirath/blog-details.php?slug=$1 [R=302,L,QSA,NC]
+RewriteRule ^([A-Za-z0-9_-]+)\.php$ blog-details.php?slug=$1 [R=302,L,QSA,NC]
+
+# CATCH-ALL: Agar koi bhi dusra galat URL/file/folder hai (jaise aboutsdf), toh usko 404.php par bhejein
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ 404.php [L]

@@ -16,7 +16,7 @@ $product = ($productQuery) ? mysqli_fetch_assoc($productQuery) : null;
 
 // Agar product nahi mila, toh products page par redirect kar do
 if (!$product) {
-    echo "<script>window.location.href='products.php';</script>";
+    echo "<script>window.location.href='404.php';</script>";
     exit;
 }
 

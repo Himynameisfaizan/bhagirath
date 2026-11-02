@@ -10,7 +10,7 @@ $category = mysqli_fetch_assoc($catQuery);
 
 // Agar category nahi milti toh products page par redirect kar dein
 if (!$category) {
-    echo "<script>window.location.href='products.php';</script>";
+    echo "<script>window.location.href='404.php';</script>";
     exit;
 }
 
