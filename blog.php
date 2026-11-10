@@ -55,7 +55,7 @@ if ($schema_query && mysqli_num_rows($schema_query) > 0) {
                     <div class="blog-img-wrapper">
                         <span class="featured-category"
                             style="top: 15px; left: 15px; font-size: 10px; padding: 4px 12px;">News</span>
-                        <a href="blog-details.php?slug=<?php echo $blog['slug']; ?>">
+                        <a href="blog/<?php echo $blog['slug']; ?>">
                             <img src="<?php echo $img; ?>" alt="<?php echo $blog['title']; ?>">
                         </a>
                     </div>
@@ -64,11 +64,10 @@ if ($schema_query && mysqli_num_rows($schema_query) > 0) {
                             <i class="fa-regular fa-calendar-days"></i> <?php echo $date; ?>
                             <i class="fa-regular fa-user"></i> <?php echo $blog['author']; ?>
                         </div>
-                        <a href="blog-details.php?slug=<?php echo $blog['slug']; ?>"
-                            class="blog-title"><?php echo $blog['title']; ?></a>
+                        <a href="blog/<?php echo $blog['slug']; ?>" class="blog-title"><?php echo $blog['title']; ?></a>
                         <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
                             <?php echo $excerpt; ?></p>
-                        <a href="blog-details.php?slug=<?php echo $blog['slug']; ?>" class="read-more-btn">Read More <i
+                        <a href="blog/<?php echo $blog['slug']; ?>" class="read-more-btn">Read More <i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>

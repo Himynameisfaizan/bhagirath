@@ -82,21 +82,21 @@ if (isset($conn)) {
             <div class="col-lg-3 col-md-4 mb-4 mb-lg-0">
                 <h4 class="footer-heading">Information</h4>
                 <ul class="footer-links list-unstyled">
-                    <li><a href="index.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                    <li><a href="./"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
                             Home</a></li>
-                    <li><a href="about.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                    <li><a href="about"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
                             Company Profile</a></li>
-                    <li><a href="contact.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                    <li><a href="contact"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
                             Contact Us</a></li>
-                    <li><a href="terms-condition.php"><i class="bi bi-chevron-right small me-2"
-                                style="color: #711b3c;"></i> Terms & Conditions</a></li>
-                    <li><a href="privacy-policy.php"><i class="bi bi-chevron-right small me-2"
-                                style="color: #711b3c;"></i> Privacy Policy</a></li>
-                    <li><a href="shipping-return.php"><i class="bi bi-chevron-right small me-2"
-                                style="color: #711b3c;"></i> Shipping & Returns</a></li>
-                    <li><a href="refund-policy.php"><i class="bi bi-chevron-right small me-2"
-                                style="color: #711b3c;"></i> Refund & Cancellation</a></li>
-                    <li><a href="location.php"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                    <li><a href="terms-condition"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                            Terms & Conditions</a></li>
+                    <li><a href="privacy-policy"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                            Privacy Policy</a></li>
+                    <li><a href="shipping-return"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                            Shipping & Returns</a></li>
+                    <li><a href="refund-policy"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
+                            Refund & Cancellation</a></li>
+                    <li><a href="location"><i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
                             Location</a></li>
 
                     <!-- Dynamic Custom SEO Pages Links -->
@@ -114,7 +114,7 @@ if (isset($conn)) {
                             $prod_slug = !empty($f_prod['slug_url']) ? $f_prod['slug_url'] : $f_prod['id'];
                     ?>
                     <li>
-                        <a href="product-details.php?slug=<?= htmlspecialchars($prod_slug); ?>">
+                        <a href="product/<?= htmlspecialchars($prod_slug); ?>">
                             <i class="bi bi-chevron-right small me-2" style="color: #711b3c;"></i>
                             <?= htmlspecialchars($f_prod['pro_name']); ?>
                         </a>

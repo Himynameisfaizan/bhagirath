@@ -144,7 +144,7 @@ include 'includes/breadcrumb.php';
                                 $isActive = ($sideCat['cate_id'] == $cate_id || $sideCat['slug_url'] == $slug) ? 'fw-bold active-cat' : 'text-muted';
                             ?>
                             <li class="mb-2 pb-2 border-bottom" style="border-color: #f8f9fa !important;">
-                                <a href="category.php?slug=<?= htmlspecialchars($sideCat['slug_url']) ?>"
+                                <a href="category/<?= htmlspecialchars($sideCat['slug_url']) ?>"
                                     class="text-decoration-none d-flex justify-content-between align-items-center category-link <?= $isActive ?>"
                                     style="font-size: 0.95rem;">
                                     <span><i class="fa-solid fa-angle-right me-2" style="font-size: 0.75rem;"></i>
@@ -173,7 +173,7 @@ include 'includes/breadcrumb.php';
                                 alt="<?php echo htmlspecialchars($recentBlog['title']); ?>">
                             <div class="recent-post-info">
                                 <h4><a
-                                        href="blog-details.php?slug=<?php echo $recentBlog['slug']; ?>"><?php echo htmlspecialchars($recentBlog['title']); ?></a>
+                                        href="blog/<?php echo $recentBlog['slug']; ?>"><?php echo htmlspecialchars($recentBlog['title']); ?></a>
                                 </h4>
                                 <span><?php echo $r_date; ?></span>
                             </div>
@@ -193,7 +193,7 @@ include 'includes/breadcrumb.php';
                         <h4 style="font-weight: 800; margin-bottom: 15px;">Looking for Bulk Spices?</h4>
                         <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 20px;">Get a free quotation for your
                             international export requirements today.</p>
-                        <a href="contact.php" class="btn-theme"
+                        <a href="contact" class="btn-theme"
                             style="background: var(--accent-orange); color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; display: inline-block;">Request
                             Quote</a>
                     </div>
