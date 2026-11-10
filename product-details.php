@@ -308,8 +308,7 @@ include 'includes/breadcrumb.php';
                         style="border: 1px solid #f0f0f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); background: #ffffff;">
 
                         <!-- Product Image -->
-                        <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>"
-                            style="text-decoration:none;">
+                        <a href="product/<?php echo $related['slug_url']; ?>" style="text-decoration:none;">
                             <div
                                 style="height: 180px; overflow: hidden; background: #fff; padding: 15px; text-align: center;">
                                 <img src="admin/assets/img/uploads/<?php echo $related['pro_img']; ?>"
@@ -323,7 +322,7 @@ include 'includes/breadcrumb.php';
                         <div
                             style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1; border-top: 1px solid #f9f9f9;">
                             <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;">
-                                <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>"
+                                <a href="product/<?php echo $related['slug_url']; ?>"
                                     style="color: #222; text-decoration: none;">
                                     <?php echo htmlspecialchars($related['pro_name']); ?>
                                 </a>
@@ -336,7 +335,7 @@ include 'includes/breadcrumb.php';
 
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 12px; margin-top: auto;">
-                                <a href="product-details.php?slug=<?php echo $related['slug_url']; ?>"
+                                <a href="product/<?php echo $related['slug_url']; ?>"
                                     style="color: var(--primary-green); text-decoration: none; font-weight: 600; font-size: 13px;">
                                     View Details <i class="bi bi-arrow-right ms-1"></i>
                                 </a>

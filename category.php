@@ -83,8 +83,7 @@ include 'includes/breadcrumb.php';
                             style="border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); background: #ffffff; transition: transform 0.3s ease, box-shadow 0.3s ease;">
 
                             <!-- Product Image -->
-                            <a href="product-details.php?slug=<?php echo htmlspecialchars($prodSlug); ?>"
-                                style="text-decoration:none;">
+                            <a href="product/<?php echo htmlspecialchars($prodSlug); ?>" style="text-decoration:none;">
                                 <div
                                     style="height: 220px; overflow: hidden; background: #f8f9fa; padding: 20px; text-align: center; position: relative;">
                                     <?php if(isset($prod['trending']) && $prod['trending'] == 1): ?>
@@ -101,7 +100,7 @@ include 'includes/breadcrumb.php';
                             <!-- Product Content -->
                             <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
                                 <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">
-                                    <a href="product-details.php?slug=<?php echo htmlspecialchars($prodSlug); ?>"
+                                    <a href="product/<?php echo htmlspecialchars($prodSlug); ?>"
                                         style="color: #222; text-decoration: none;">
                                         <?php echo htmlspecialchars($prod['pro_name']); ?>
                                     </a>
@@ -115,7 +114,7 @@ include 'includes/breadcrumb.php';
                                 <!-- Action Buttons -->
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 15px; margin-top: auto;">
-                                    <a href="product-details.php?slug=<?php echo htmlspecialchars($prodSlug); ?>"
+                                    <a href="product/<?php echo htmlspecialchars($prodSlug); ?>"
                                         style="color: var(--primary-green, #2b5e2c); text-decoration: none; font-weight: 700; font-size: 13px;">
                                         View Details <i class="bi bi-arrow-right ms-1"></i>
                                     </a>
@@ -172,7 +171,7 @@ include 'includes/breadcrumb.php';
                                 $isActive = ($sideCat['cate_id'] == $cate_id || $sideCat['slug_url'] == $slug) ? 'fw-bold active-cat' : 'text-muted';
                             ?>
                             <li class="mb-2 pb-2 border-bottom" style="border-color: #f8f9fa !important;">
-                                <a href="category.php?slug=<?= htmlspecialchars($sideCat['slug_url']) ?>"
+                                <a href="category/<?= htmlspecialchars($sideCat['slug_url']) ?>"
                                     class="text-decoration-none d-flex justify-content-between align-items-center category-link <?= $isActive ?>"
                                     style="font-size: 0.95rem;">
                                     <span><i class="fa-solid fa-angle-right me-2" style="font-size: 0.75rem;"></i>
