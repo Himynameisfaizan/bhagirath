@@ -304,7 +304,7 @@ body.location-page {
     <div class="container">
         <nav aria-label="Breadcrumb">
             <ol class="location-breadcrumb">
-                <li><a href="index.php">Home</a></li>
+                <li><a href="./">Home</a></li>
                 <li aria-hidden="true">›</li>
                 <li aria-current="page">Locations</li>
             </ol>
@@ -339,7 +339,7 @@ body.location-page {
                         }
 
                         $slug = trim((string)($customPage['slug_url'] ?? ''));
-                        $pageUrl = 'page.php?slug=' . rawurlencode($slug);
+                        $pageUrl = 'page/' . rawurlencode($slug);
                     ?>
                 <div class="col-12 col-md-6 col-lg-4">
                     <article class="location-card">
