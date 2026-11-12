@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Shared frontend header for Bhagirath Enterprises.
  * Resolve all shared asset and navigation URLs from the actual PHP project root,
@@ -284,10 +285,10 @@ $is_blog_page = in_array($current_page, ['blog.php', 'blog-details.php'], true);
     }
     </script>
     <?php } ?>
-
     <?php
     if (isset($page_schema) && is_string($page_schema) && trim($page_schema) !== '') {
-        echo $page_schema;
+        $clean_schema = preg_replace('/,\s*([\]}])/', '$1', $page_schema);
+        echo $clean_schema;
     }
     ?>
 </head>
