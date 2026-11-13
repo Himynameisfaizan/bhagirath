@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Shared frontend header for Bhagirath Enterprises.
  * Resolve all shared asset and navigation URLs from the actual PHP project root,
@@ -165,7 +164,13 @@ $is_https = (
     isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443
 );
 $protocol = $is_https ? 'https://' : 'http://';
-$domain = $_SERVER['HTTP_HOST'] ?? 'bhagirathenterprises.co.in';
+$domain = $_SERVER['HTTP_HOST'] ?? 'www.bhagirathenterprises.co.in';
+
+// Force 'www.' prefix for SEO canonicals (ignoring localhost for local development testing)
+if (strpos($domain, 'www.') !== 0 && strpos($domain, 'localhost') === false && strpos($domain, '127.0.0.1') === false) {
+    $domain = 'www.' . $domain;
+}
+
 $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 
 if ($current_page === 'index.php' || $current_page === '') {
@@ -285,6 +290,7 @@ $is_blog_page = in_array($current_page, ['blog.php', 'blog-details.php'], true);
     }
     </script>
     <?php } ?>
+
     <?php
     if (isset($page_schema) && is_string($page_schema) && trim($page_schema) !== '') {
         $clean_schema = preg_replace('/,\s*([\]}])/', '$1', $page_schema);

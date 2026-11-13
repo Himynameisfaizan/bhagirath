@@ -12,14 +12,14 @@ echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     // 1. Static Pages
     $staticPages = [
     ["url" => "", "priority" => "1.0", "changefreq" => "daily"],
-    ["url" => "about.php", "priority" => "0.8", "changefreq" => "monthly"],
-    ["url" => "products.php", "priority" => "0.9", "changefreq" => "daily"],
-    ["url" => "blog.php", "priority" => "0.8", "changefreq" => "weekly"],
-    ["url" => "contact.php", "priority" => "0.7", "changefreq" => "monthly"],
-    ["url" => "terms-condition.php", "priority" => "0.3", "changefreq" => "yearly"],
-    ["url" => "privacy-policy.php", "priority" => "0.3", "changefreq" => "yearly"],
-    ["url" => "shipping-return.php", "priority" => "0.3", "changefreq" => "yearly"],
-    ["url" => "refund-policy.php", "priority" => "0.3", "changefreq" => "yearly"]
+    ["url" => "about", "priority" => "0.8", "changefreq" => "daily"],
+    ["url" => "products", "priority" => "0.9", "changefreq" => "daily"],
+    ["url" => "blog", "priority" => "0.8", "changefreq" => "daily"],
+    ["url" => "contact", "priority" => "0.7", "changefreq" => "daily"],
+    ["url" => "terms-condition", "priority" => "0.3", "changefreq" => "daily"],
+    ["url" => "privacy-policy", "priority" => "0.3", "changefreq" => "daily"],
+    ["url" => "shipping-return", "priority" => "0.3", "changefreq" => "daily"],
+    ["url" => "refund-policy", "priority" => "0.3", "changefreq" => "daily"]
     ];
 
     foreach ($staticPages as $page) {
@@ -37,8 +37,8 @@ echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     while ($row = mysqli_fetch_assoc($catQuery)) {
     $catVal = !empty($row['slug_url']) ? $row['slug_url'] : $row['cate_id'];
     echo '<url>';
-        echo '<loc>' . $baseUrl . 'products.php?category=' . urlencode($catVal) . '</loc>';
-        echo '<changefreq>weekly</changefreq>';
+        echo '<loc>' . $baseUrl . 'category/' . urlencode($catVal) . '</loc>';
+        echo '<changefreq>daily</changefreq>';
         echo '<priority>0.8</priority>';
         echo '</url>';
     }
@@ -56,12 +56,12 @@ echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     if (!empty($row['slug_url'])) {
     echo '<url>';
         echo '<loc>' . htmlspecialchars(
-            rtrim($baseUrl, '/') . '/page.php?slug=' .
+            rtrim($baseUrl, '/') . '/page/' .
             rawurlencode($row['slug_url']),
             ENT_XML1,
             'UTF-8'
             ) . '</loc>';
-        echo '<changefreq>monthly</changefreq>';
+        echo '<changefreq>daily</changefreq>';
         echo '<priority>0.7</priority>';
         echo '</url>';
     }
@@ -75,8 +75,8 @@ echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     $prodVal = !empty($row['slug_url']) ? $row['slug_url'] : $row['id'];
     echo '<url>';
         // Note: product details mein humne id ya slug jo update kiya tha uske hisaab se yahan parameter match kar lein
-        echo '<loc>' . $baseUrl . 'product-details.php?id=' . $prodVal . '</loc>';
-        echo '<changefreq>weekly</changefreq>';
+        echo '<loc>' . $baseUrl . 'products/' . $prodVal . '</loc>';
+        echo '<changefreq>daily</changefreq>';
         echo '<priority>0.8</priority>';
         echo '</url>';
     }
@@ -88,8 +88,8 @@ echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     while ($row = mysqli_fetch_assoc($blogQuery)) {
     if (!empty($row['slug'])) {
     echo '<url>';
-        echo '<loc>' . $baseUrl . 'blog-details.php?slug=' . htmlspecialchars($row['slug']) . '</loc>';
-        echo '<changefreq>weekly</changefreq>';
+        echo '<loc>' . $baseUrl . 'blog/' . htmlspecialchars($row['slug']) . '</loc>';
+        echo '<changefreq>daily</changefreq>';
         echo '<priority>0.7</priority>';
         echo '</url>';
     }
